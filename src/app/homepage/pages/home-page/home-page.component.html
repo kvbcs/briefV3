@@ -1,0 +1,10 @@
+<div class="home-container">
+  <!-- Formulaire de connexion -->
+  <app-login-form (openSignup)="openModal()"></app-login-form>
+
+  <!-- Modale d'inscription (s'affiche au clic sur le bouton "S’inscrire") -->
+  <app-signup-modal
+    *ngIf="isModalOpen"
+    (close)="closeModal()"
+  ></app-signup-modal>
+</div>
