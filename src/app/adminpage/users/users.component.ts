@@ -12,7 +12,7 @@ export class UsersComponent implements OnInit {
   private http = inject(HttpClient);
   users = signal<Users[]>([]);
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.http.get<Users[]>('/assets/users.json').subscribe((data) => {
       this.users.set(data);
     });

@@ -4,3 +4,11 @@ export type Users = {
   lastname: string;
   email: string;
 };
+
+export type Lists = {
+  id: number;
+  name: string;
+  personAmount: number;
+  tirageAmount: number;
+  userId: number;
+};
