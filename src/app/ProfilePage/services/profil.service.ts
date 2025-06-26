@@ -18,4 +18,13 @@ export class ProfilService {
   getUser(): Observable<User> {
     return of(this.userMock);
   }
+   updateUser(updated: User): Observable<User> {
+  this.userMock = { ...updated };
+  return of(this.userMock);
+}
+deleteUser(): Observable<void> {
+  console.log('Utilisateur supprimé (simulé)');
+  return of();
+}
+
 }
