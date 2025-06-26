@@ -6,29 +6,41 @@
     <h2>Créer un compte</h2>
 
     <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
-      <label>Prénom</label>
-      <input type="text" formControlName="firstName" />
-      <p class="error" *ngIf="submitted && signupForm.get('firstName')?.invalid">
-        Prénom requis.
-      </p>
+      <label for="firstName">Prénom</label>
+      <input id="firstName" type="text" formControlName="firstName" />
+      @if (submitted && signupForm.get('firstName')?.invalid) {
+        <p class="error">Prénom requis.</p>
+      }
 
-      <label>Nom</label>
-      <input type="text" formControlName="lastName" />
-      <p class="error" *ngIf="submitted && signupForm.get('lastName')?.invalid">
-        Nom requis.
-      </p>
+      <label for="lastName">Nom</label>
+      <input id="lastName" type="text" formControlName="lastName" />
+      @if (submitted && signupForm.get('lastName')?.invalid) {
+        <p class="error">Nom requis.</p>
+      }
 
-      <label>Email</label>
-      <input type="email" formControlName="email" />
-      <p class="error" *ngIf="submitted && signupForm.get('email')?.invalid">
-        Email valide requis.
-      </p>
+      <label for="email">Email</label>
+      <input id="email" type="email" formControlName="email" />
+      @if (submitted && signupForm.get('email')?.invalid) {
+        <p class="error">Email valide requis.</p>
+      }
 
-      <label>Mot de passe</label>
-      <input type="password" formControlName="password" />
-      <p class="error" *ngIf="submitted && signupForm.get('password')?.invalid">
-        Mot de passe requis (6 caractères minimum).
-      </p>
+      <label for="emailConfirm">Confirmer l’email</label>
+      <input id="emailConfirm" type="email" formControlName="emailConfirm" />
+      @if (submitted && signupForm.errors?.['emailMismatch']) {
+        <p class="error">Les emails ne correspondent pas.</p>
+      }
+
+      <label for="password">Mot de passe</label>
+      <input id="password" type="password" formControlName="password" />
+      @if (submitted && signupForm.get('password')?.invalid) {
+        <p class="error">Mot de passe requis (6 caractères minimum).</p>
+      }
+
+      <label for="passwordConfirm">Confirmer le mot de passe</label>
+      <input id="passwordConfirm" type="password" formControlName="passwordConfirm" />
+      @if (submitted && signupForm.errors?.['passwordMismatch']) {
+        <p class="error">Les mots de passe ne correspondent pas.</p>
+      }
 
       <div class="form-buttons">
         <button type="submit">S’inscrire</button>

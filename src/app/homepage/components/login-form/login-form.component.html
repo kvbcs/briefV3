@@ -1,8 +1,22 @@
 <div class="login-wrapper">
-  <div class="login-text">
-    <h3>Bienvenue chez Simplon !</h3>
-    <p>Connectez-vous pour découvrir nos fonctionnalités. Si vous n’avez pas de compte, créez-en un en un clic !</p>
-  </div>
+<div class="welcome-container">
+  <h1>Bienvenue sur <span class="highlight">Simplon Group Generator</span></h1>
+
+  <p>
+    Créez un compte ou connectez-vous pour gérer vos <strong>listes de personnes</strong> 
+    et générer des <strong>groupes aléatoires</strong> selon vos critères.
+  </p>
+
+  <p>
+    Utilisez la <strong>barre latérale</strong> pour naviguer entre vos listes, groupes ou profil utilisateur.  
+    Restez organisé·e et gagnez du temps !
+  </p>
+
+  <p class="tagline">
+    <em>Organisez, personnalisez, partagez... simplement.</em>
+  </p>
+</div>
+
 
   <div class="login-form-container">
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
