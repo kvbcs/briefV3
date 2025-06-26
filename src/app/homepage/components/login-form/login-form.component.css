@@ -102,6 +102,13 @@
   }
 }
 
+.error-message {
+  color: red;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+
 /* 💻 Responsive : aligné en ligne, toujours centré */
 @media (min-width: 768px) {
   .login-wrapper {

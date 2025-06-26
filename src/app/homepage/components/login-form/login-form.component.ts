@@ -1,5 +1,7 @@
 import { Component, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FakeAuthService } from '../../../core/services/fake-auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-form',
@@ -15,28 +17,34 @@ export class LoginFormComponent {
 
   // Output pour dire au parent : "ouvre la modale d’inscription"
   @Output() openSignup = new EventEmitter<void>();
+  errorMessage: string = '';
 
-  constructor(private readonly fb: FormBuilder) {
+  constructor(private readonly fb: FormBuilder, private readonly auth: FakeAuthService,  private readonly router: Router) {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
+      email: [''],
+      password: ['']
     });
   }
 
   // Soumission du formulaire de connexion
-  onSubmit() {
-    if (this.loginForm.valid) {
-      console.log('Connexion avec :', this.loginForm.value);
-      // TODO: appeler un service d’authentification
-    } else {
-      console.warn('Formulaire de connexion invalide');
-    }
+ onSubmit() {
+    const { email, password } = this.loginForm.value;
+    this.auth.login(email, password).subscribe({
+      next: user => {
+        console.log('Connexion réussie :', user);
+        this.errorMessage = '';
+        // rediriger plus tard si besoin
+      },
+      error: err => {
+        this.errorMessage = 'Email ou mot de passe incorrect';
+      }
+    });
   }
 
   // Clic sur "S’inscrire"
   onSignupClick() {
-    this.openSignup.emit();
-  }
+  this.router.navigate(['/signup'])
+}
 
   
 }
