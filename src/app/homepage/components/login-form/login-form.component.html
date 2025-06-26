@@ -1,24 +1,28 @@
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
-  <h2>Se connecter</h2>
-
-  <div class="form-group">
-    <label for="email">Email</label>
-    <input id="email" type="email" formControlName="email" />
-    <div class="error" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
-      L'email est requis et doit être valide.
-    </div>
+<div class="login-wrapper">
+  <div class="login-text">
+    <h3>Bienvenue chez Simplon !</h3>
+    <p>Connectez-vous pour découvrir nos fonctionnalités. Si vous n’avez pas de compte, créez-en un en un clic !</p>
   </div>
 
-  <div class="form-group">
-    <label for="password">Mot de passe</label>
-    <input id="password" type="password" formControlName="password" />
-    <div class="error" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
-      Le mot de passe est requis.
-    </div>
-  </div>
+  <div class="login-form-container">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <h2>Se connecter</h2>
 
-  <div class="form-buttons">
-    <button type="submit" [disabled]="loginForm.invalid">Se connecter</button>
-    <button type="button" (click)="onSignupClick()">S’inscrire</button>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" type="email" formControlName="email" />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <input id="password" type="password" formControlName="password" />
+        
+      </div>
+
+      <div class="form-buttons">
+        <button type="submit" [disabled]="loginForm.invalid">Se connecter</button>
+        <button type="button" (click)="onSignupClick()">S’inscrire</button>
+      </div>
+    </form>
   </div>
-</form>
+</div>

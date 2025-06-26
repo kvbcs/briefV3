@@ -7,7 +7,7 @@ import { SignupModalComponent } from '../../components/signup-modal/signup-modal
   standalone: true,
   imports: [LoginFormComponent, SignupModalComponent], // ajoute d'autres composants si besoin
   templateUrl: './home-page.component.html',
-  styleUrl: './home-page.component.scss'
+  styleUrl: './home-page.component.css'
 })
 export class HomePageComponent {
   isModalOpen = false;

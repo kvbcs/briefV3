@@ -1,0 +1,117 @@
+.login-wrapper {
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  gap: 2rem;
+  box-sizing: border-box;
+}
+
+.login-text {
+  text-align: center;
+  max-width: 400px;
+  font-family: 'Montserrat', sans-serif;
+  color: #333;
+  font-weight: 600;
+
+  h3 {
+    font-size: 30px;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+  }
+
+  p {
+    font-size: 16px;
+    line-height: 1.4;
+    font-weight: 600;
+  }
+}
+
+.login-form-container {
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-form {
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 30px 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  width: 100%;
+  box-sizing: border-box;
+
+  h2 {
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+}
+
+.form-group {
+  margin-bottom: 20px;
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+    font-size: 15px;
+    color: #333;
+  }
+
+  input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none;
+      border-color: #123744;
+      box-shadow: 0 0 0 0.2rem rgba(18, 55, 68, 0.25);
+    }
+  }
+}
+
+.form-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  button {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    background-color: #123744;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #1a4c5c;
+    }
+  }
+}
+
+/* 💻 Responsive : aligné en ligne, toujours centré */
+@media (min-width: 768px) {
+  .login-wrapper {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .login-text {
+    text-align: left;
+    padding-right: 2rem;
+  }
+}
