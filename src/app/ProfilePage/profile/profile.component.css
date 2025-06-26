@@ -61,20 +61,14 @@ button[type='button'] {
 .btn-danger {
   background-color: #ef4444;
   color: white;
-  margin-top: 2rem;
-  border: none;
+  transition: all 0.2s ease-in-out;
 }
 
 .btn-danger:hover {
-  background-color: #dc2626;
+  opacity: 0.92;
+  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.25);
 }
 
-/* Message de suppression */
-p[style*='color: #d10000'] {
-  font-size: 1.1rem;
-  text-align: center;
-  margin-top: 3rem;
-}
 
 /* === TABLETTE (768px et +) === */
 @media (min-width: 768px) {

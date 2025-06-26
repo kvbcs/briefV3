@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { User } from '../models/user.model';
-
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root', // Le service est accessible globalement dans l'application
+  providedIn: 'root',
 })
-export class ProfilService {
-    // Utilisateur simulé, utilisé pour tester sans appel API
 
-  private userMock: User = {
+export class ProfilService {
+  // Activer les mocks (true = données simulées / false = appel API réel)
+  private useMock = true;
+
+  // Données User factices (mock)
+  private mockUser: User = {
     lastname: 'Dupont',
     firstname: 'Marie',
     email: 'marie.dupont@example.com',
@@ -17,21 +20,46 @@ export class ProfilService {
     cguAcceptedAt: new Date('2024-01-01'),
   };
 
-    // Méthode simulant un appel GET vers l'API pour récupérer l'utilisateur
+  constructor(private http: HttpClient) {}
+
+  /**
+   *  Récupère l'utilisateur courant
+   * - en mock : retourne un Observable simulé
+   * - en prod : effectue un appel GET vers /api/Users/me
+   */
   getUser(): Observable<User> {
-    return of(this.userMock); // Crée un observable avec l'utilisateur factice
+    if (this.useMock) {
+      return of(this.mockUser);
+    } else {
+      return this.http.get<User>('/api/users/me');
+    }
   }
 
-    // Méthode simulant la mise à jour du profil utilisateur
-   updateUser(updated: User): Observable<User> {
-  this.userMock = { ...updated }; // Remplace le mock par les nouvelles données
-  return of(this.userMock); // Renvoie les données mises à jour comme si le serveur avait répondu
-}
+  /**
+   *  Met à jour l'utilisateur
+   * - en mock : met à jour la variable locale
+   * - en prod : envoie les nouvelles données via un PUT
+   */
+  updateUser(updated: User): Observable<User> {
+    if (this.useMock) {
+      this.mockUser = { ...updated };
+      return of(this.mockUser);
+    } else {
+      return this.http.put<User>('/api/users/me', updated);
+    }
+  }
 
-  // Méthode simulant la suppression du compte utilisateur
-deleteUser(): Observable<void> {
-  console.log('Utilisateur supprimé (simulé)');
-  return of(); // Renvoie un observable vide (comme si la suppression avait réussi)
-}
-
+  /**
+   * Supprime le compte utilisateur
+   * - en mock : affiche un message en console
+   * - en prod : appelle l'API DELETE
+   */
+  deleteUser(): Observable<void> {
+    if (this.useMock) {
+      console.log('Utilisateur supprimé (mock)');
+      return of();
+    } else {
+      return this.http.delete<void>('/api/users/me');
+    }
+  }
 }
