@@ -14,7 +14,6 @@ export class UsersComponent implements OnInit {
 
   ngOnInit() {
     this.http.get<Users[]>('/assets/users.json').subscribe((data) => {
-      console.log(data);
       this.users.set(data);
     });
   }
