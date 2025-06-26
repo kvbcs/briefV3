@@ -1,0 +1,30 @@
+<main>
+  <h1>Liste d'utilisateurs</h1>
+
+  @if (users().length > 0){
+  <table>
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Email</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (user of users(); track user.id){
+      <tr>
+        <td>{{ user.id }}</td>
+        <td>{{ user.firstname }}</td>
+        <td>{{ user.lastname }}</td>
+        <td>{{ user.email }}</td>
+        <td>🗑️ / ✏️</td>
+      </tr>
+      }
+    </tbody>
+  </table>
+  } @else {
+  <p>Aucun utilisateur trouvé</p>
+  }
+</main>
