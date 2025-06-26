@@ -3,5 +3,9 @@ import { HomePageComponent } from './homepage/pages/home-page/home-page.componen
 
 
 export const routes: Routes = [
-  { path: '', component: HomePageComponent }  // route par défaut
+  {
+    path: '',
+    component: HomePageComponent
+  }
 ];
+

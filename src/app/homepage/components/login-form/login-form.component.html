@@ -21,8 +21,9 @@
 
       <div class="form-buttons">
         <button type="submit" [disabled]="loginForm.invalid">Se connecter</button>
-        <button type="button" >S’inscrire</button>
+        <button type="button" (click)="onSignupClick()">S’inscrire</button>
       </div>
     </form>
   </div>
 </div>
+

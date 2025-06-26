@@ -3,12 +3,13 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FakeAuthService } from '../../../core/services/fake-auth.service';
 import { Router } from '@angular/router';
 
+
 @Component({
   selector: 'app-login-form',
   standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './login-form.component.html',
-  styleUrl: './login-form.component.css'
+  styleUrls: ['./login-form.component.css']
 })
 export class LoginFormComponent {
 
@@ -27,23 +28,25 @@ export class LoginFormComponent {
   }
 
   // Soumission du formulaire de connexion
- onSubmit() {
-    const { email, password } = this.loginForm.value;
-    this.auth.login(email, password).subscribe({
-      next: user => {
-        console.log('Connexion réussie :', user);
-        this.errorMessage = '';
-        // rediriger plus tard si besoin
-      },
-      error: err => {
-        this.errorMessage = 'Email ou mot de passe incorrect';
-      }
-    });
-  }
+onSubmit() {
+  const { email, password } = this.loginForm.value;
+  console.log('Tentative de connexion avec :', email, password); // 👈 TEST 1
 
-  // Clic sur "S’inscrire"
-  onSignupClick() {
-  this.router.navigate(['/signup'])
+  this.auth.login(email, password).subscribe({
+    next: user => {
+      console.log('Connexion réussie :', user); // 👈 TEST 2
+      this.errorMessage = '';
+    },
+    error: err => {
+      console.error('Erreur de connexion :', err); // 👈 TEST 3
+      this.errorMessage = 'Email ou mot de passe incorrect';
+    }
+  });
+}
+
+
+onSignupClick() {
+  this.openSignup.emit(); // ✅ dit au parent "ouvre la modale"
 }
 
   

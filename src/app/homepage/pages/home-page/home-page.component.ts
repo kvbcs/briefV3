@@ -5,7 +5,7 @@ import { SignupModalComponent } from '../../components/signup-modal/signup-modal
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [LoginFormComponent, SignupModalComponent], // ajoute d'autres composants si besoin
+  imports: [LoginFormComponent, SignupModalComponent, LoginFormComponent], // ajoute d'autres composants si besoin
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.css'
 })
