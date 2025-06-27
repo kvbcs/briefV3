@@ -15,6 +15,10 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit(): void {
     this.userRole = this.auth.getCurrentUserRole();
+    // Si écran large (desktop), la sidebar reste ouverte
+    if (window.innerWidth >= 768) {
+      this.isOpen.set(true);
+    }
   }
 
   isAdmin(): boolean {

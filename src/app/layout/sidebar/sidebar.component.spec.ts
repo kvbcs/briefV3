@@ -12,14 +12,14 @@ describe('SidebarComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [SidebarComponent],
-      providers: [
-        { provide: AuthService, useValue: spy }
-      ]
+      providers: [{ provide: AuthService, useValue: spy }],
     });
 
     fixture = TestBed.createComponent(SidebarComponent);
     component = fixture.componentInstance;
-    mockAuthService = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
+    mockAuthService = TestBed.inject(
+      AuthService
+    ) as jasmine.SpyObj<AuthService>;
   });
 
   it('should create', () => {
@@ -58,5 +58,21 @@ describe('SidebarComponent', () => {
     spyOn(console, 'log');
     component.logout();
     expect(console.log).toHaveBeenCalledWith('Déconnexion');
+  });
+
+  it('should open sidebar automatically on desktop screens (>= 768px)', () => {
+    spyOnProperty(window, 'innerWidth').and.returnValue(1024); // simulate desktop
+    mockAuthService.getCurrentUserRole.and.returnValue('user');
+
+    component.ngOnInit();
+    expect(component.isOpen()).toBeTrue();
+  });
+
+  it('should keep sidebar closed by default on mobile screens (< 768px)', () => {
+    spyOnProperty(window, 'innerWidth').and.returnValue(500); // simulate mobile
+    mockAuthService.getCurrentUserRole.and.returnValue('user');
+
+    component.ngOnInit();
+    expect(component.isOpen()).toBeFalse();
   });
 });
