@@ -1,3 +1,13 @@
-<p>Branche Main</p>
+<div class="container">
+  <h1>Bienvenu dans mon application</h1>
+  <router-outlet></router-outlet>
 
-<router-outlet></router-outlet>
+  <!-- Message si aucune route ne charge -->
+  @if (false) {
+  <div class="fallback"></div>
+  } @if (true) {
+  <ng-container>
+    <!-- contenu -->
+  </ng-container>
+  }
+</div>
