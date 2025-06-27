@@ -6,7 +6,7 @@ import { Observable, map } from 'rxjs';
 export class FakeAuthService {
   private readonly mockUrl = 'assets/mock-data.json';
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(private readonly http: HttpClient) { }
 
   login(email: string, password: string): Observable<any> {
     return this.http.get<any>(this.mockUrl).pipe(
@@ -33,4 +33,31 @@ export class FakeAuthService {
     const user = localStorage.getItem('connectedUser');
     return user ? JSON.parse(user) : null;
   }
+
+  register(user: any): Observable<any> {
+    const users = JSON.parse(localStorage.getItem('mockUsers') || '[]');
+    const exists = users.find((u: any) => u.email === user.email);
+
+    if (exists) {
+      throw new Error('Email déjà utilisé');
+    }
+
+    const newUser = {
+      ...user,
+      emailConfirmed: false // L’email n’est pas encore confirmé
+    };
+
+    users.push(newUser);
+    localStorage.setItem('mockUsers', JSON.stringify(users));
+    localStorage.setItem('connectedUser', JSON.stringify(newUser));
+
+    console.log(`Un email de confirmation a été envoyé à ${user.email}`);
+
+    return new Observable(observer => {
+      observer.next(newUser);
+      observer.complete();
+    });
+  }
+
+
 }

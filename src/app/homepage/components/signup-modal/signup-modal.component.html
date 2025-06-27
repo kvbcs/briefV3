@@ -1,51 +1,64 @@
 <div class="modal">
   <div class="modal-content">
+
     <!-- ❌ Croix de fermeture -->
     <button class="close-button" (click)="onClose()">×</button>
 
     <h2>Créer un compte</h2>
 
     <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
-      <label for="firstName">Prénom</label>
-      <input id="firstName" type="text" formControlName="firstName" />
+
+      <label>Prénom</label>
+      <input type="text" formControlName="firstName" autocomplete="given-name" />
       @if (submitted && signupForm.get('firstName')?.invalid) {
         <p class="error">Prénom requis.</p>
       }
 
-      <label for="lastName">Nom</label>
-      <input id="lastName" type="text" formControlName="lastName" />
+      <label>Nom</label>
+      <input type="text" formControlName="lastName" autocomplete="family-name" />
       @if (submitted && signupForm.get('lastName')?.invalid) {
         <p class="error">Nom requis.</p>
       }
 
-      <label for="email">Email</label>
-      <input id="email" type="email" formControlName="email" />
+      <label>Email</label>
+      <input type="email" formControlName="email" autocomplete="email" />
       @if (submitted && signupForm.get('email')?.invalid) {
         <p class="error">Email valide requis.</p>
       }
 
-      <label for="emailConfirm">Confirmer l’email</label>
-      <input id="emailConfirm" type="email" formControlName="emailConfirm" />
+      <label>Confirmer l’email</label>
+      <input type="email" formControlName="emailConfirm" autocomplete="email" />
       @if (submitted && signupForm.errors?.['emailMismatch']) {
         <p class="error">Les emails ne correspondent pas.</p>
       }
 
-      <label for="password">Mot de passe</label>
-      <input id="password" type="password" formControlName="password" />
+      <label>Mot de passe</label>
+      <input type="password" formControlName="password" autocomplete="new-password" />
       @if (submitted && signupForm.get('password')?.invalid) {
         <p class="error">Mot de passe requis (6 caractères minimum).</p>
       }
 
-      <label for="passwordConfirm">Confirmer le mot de passe</label>
-      <input id="passwordConfirm" type="password" formControlName="passwordConfirm" />
+      <label>Confirmer le mot de passe</label>
+      <input type="password" formControlName="passwordConfirm" autocomplete="new-password" />
       @if (submitted && signupForm.errors?.['passwordMismatch']) {
         <p class="error">Les mots de passe ne correspondent pas.</p>
       }
 
-      <div class="form-buttons">
-        <button type="submit">S’inscrire</button>
-        <button type="button" (click)="onClose()">Annuler</button>
-      </div>
+      @if (errorMessage) {
+        <div class="error-message">
+          {{ errorMessage }}
+        </div>
+      }
+
+      @if (successMessage) {
+        <div class="success-message">
+          {{ successMessage }}
+        </div>
+      }
+
+      <button type="submit" class="submit-button">
+        S'inscrire
+      </button>
     </form>
   </div>
 </div>
