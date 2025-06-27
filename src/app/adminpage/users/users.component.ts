@@ -1,6 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { Users } from '../../../model/types';
-import { HttpClient } from '@angular/common/http';
+import { UsersService } from '../services/users.service';
 
 @Component({
   selector: 'app-users',
@@ -9,11 +8,11 @@ import { HttpClient } from '@angular/common/http';
   styleUrl: './users.component.css',
 })
 export class UsersComponent implements OnInit {
-  private http = inject(HttpClient);
-  users = signal<Users[]>([]);
+  private userService = inject(UsersService);
+  users = this.userService.getUsersSignal()
 
   ngOnInit(): void {
-    this.http.get<Users[]>('/assets/users.json').subscribe((data) => {
+    this.userService.getUsers().subscribe((data) => {
       this.users.set(data);
     });
   }
