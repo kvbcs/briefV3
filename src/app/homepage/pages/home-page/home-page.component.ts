@@ -10,6 +10,7 @@ import { SignupModalComponent } from '../../components/signup-modal/signup-modal
   styleUrl: './home-page.component.css'
 })
 export class HomePageComponent {
+
   isModalOpen = false;
 
   openModal() {

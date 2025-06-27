@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 
@@ -6,7 +6,7 @@ import { Observable, map } from 'rxjs';
 export class FakeAuthService {
   private readonly mockUrl = 'assets/mock-data.json';
 
-  constructor(private readonly http: HttpClient) { }
+  constructor(@Inject(HttpClient) private readonly http: HttpClient) { }
 
   login(email: string, password: string): Observable<any> {
     return this.http.get<any>(this.mockUrl).pipe(
@@ -35,7 +35,7 @@ export class FakeAuthService {
   }
 
   register(user: any): Observable<any> {
-    const users = JSON.parse(localStorage.getItem('mockUsers') || '[]');
+    const users = JSON.parse(localStorage.getItem('mockUsers') ?? '[]');
     const exists = users.find((u: any) => u.email === user.email);
 
     if (exists) {
