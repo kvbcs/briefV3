@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
+
 @Component({
   selector: 'app-root',
    standalone: true,
@@ -10,6 +11,6 @@ import { CommonModule } from '@angular/common';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'briefV3';
-  isLoading = false;
+
+  title = 'ShuffleMyTeam';
 }

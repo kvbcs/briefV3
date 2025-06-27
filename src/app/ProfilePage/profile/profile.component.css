@@ -1,0 +1,106 @@
+/* === Base mobile (par défaut) === */
+
+.profile-card {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  width: 90%;
+  margin: 2rem auto;
+  font-family: 'Montserrat', sans-serif;
+  color: #333333;
+}
+
+form label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+form input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.25rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+form input:focus {
+  outline: 2px solid #d10000;
+}
+
+button {
+  margin-top: 1.5rem;
+  padding: 0.5rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  width: 100%;
+}
+
+/* Bouton principal (ex: Enregistrer, Modifier) */
+button[type='submit'],
+button:not([type]) {
+  background-color: #d10000;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+/* Bouton secondaire (Annuler) */
+button[type='button'] {
+  background-color: transparent;
+  color: #d10000;
+  border: 1px solid #d10000;
+}
+
+/* Bouton suppression */
+.btn-danger {
+  background-color: #ef4444;
+  color: white;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-danger:hover {
+  opacity: 0.92;
+  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.25);
+}
+
+
+/* === TABLETTE (768px et +) === */
+@media (min-width: 768px) {
+  .profile-card {
+    max-width: 600px;
+    padding: 2rem;
+  }
+
+  button {
+    width: auto;
+    margin-right: 1rem;
+  }
+}
+
+/* === ORDINATEUR (1024px et +) === */
+@media (min-width: 1024px) {
+  .profile-card {
+    max-width: 700px;
+    padding: 2.5rem;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  form label {
+    font-size: 1rem;
+  }
+
+  form input {
+    font-size: 1rem;
+  }
+}
