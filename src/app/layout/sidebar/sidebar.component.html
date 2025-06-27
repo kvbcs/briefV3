@@ -1,22 +1,58 @@
-<!-- Bouton visible en haut à gauche -->
-<button class="sidebar-toggle" (click)="toggleSidebar()">☰</button>
+<!-- Bouton pour ouvrir/fermer la sidebar -->
+<button class="sidebar-toggle" (click)="toggleSidebar()">
+  {{ isOpen() ? "✕" : "☰" }}
+</button>
 
-<!-- Contenu conditionnel de la sidebar -->
+<!-- Sidebar affichée seulement si isOpen() -->
 @if (isOpen()) {
-  <nav class="sidebar">
-    @if (role === 'user') {
-      <ul>
-        <li><a routerLink="/listes">Mes listes</a></li>
-        <li><a routerLink="/groupes">Mes groupes</a></li>
-        <li><a routerLink="/profil">Mon profil</a></li>
-        <li><a (click)="logout()">Déconnexion</a></li>
-      </ul>
-    } @else if (role === 'admin') {
-      <ul>
-        <li><a routerLink="/admin/dashboard">Dashboard</a></li>
-        <li><a routerLink="/admin/users">Gestion utilisateurs</a></li>
-        <li><a (click)="logout()">🚪 Déconnexion</a></li>
-      </ul>
+<nav class="sidebar">
+  <ul class="nav-links">
+    <!-- Liens utilisateur -->
+    @if (userRole === 'user') {
+    <li>
+      <a routerLink="/lists" routerLinkActive="active" (click)="closeSidebar()"
+        >Mes listes</a
+      >
+    </li>
+    <li>
+      <a
+        routerLink="/groups"
+        routerLinkActive="active"
+        (click)="closeSidebar()"
+        >Mes groupes</a
+      >
+    </li>
     }
-  </nav>
+
+    <!-- Liens admin -->
+    @else if (userRole === 'admin') {
+    <li>
+      <a
+        routerLink="/admin/dashboard"
+        routerLinkActive="active"
+        (click)="closeSidebar()"
+        >Dashboard</a
+      >
+    </li>
+    <li>
+      <a
+        routerLink="/admin/users"
+        routerLinkActive="active"
+        (click)="closeSidebar()"
+        >Gestion utilisateurs</a
+      >
+    </li>
+    }
+
+    <!-- Icônes (profil + logout) : TOUJOURS LES 2 DERNIERS -->
+   <li>
+  <a routerLink="/profile">
+    <img src="icons/Profile.png" alt="Profil" class="icon-img" />
+  </a>
+  <a (click)="logout()">
+    <img src="icons/Logout.png" alt="Déconnexion" class="icon-img" />
+  </a>
+</li>
+  </ul>
+</nav>
 }
