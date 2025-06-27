@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { User } from '../models/user.model';
 import { HttpClient } from '@angular/common/http';
@@ -8,6 +8,9 @@ import { HttpClient } from '@angular/common/http';
 })
 
 export class ProfilService {
+
+  private http = inject(HttpClient);
+
   // Activer les mocks (true = données simulées / false = appel API réel)
   private useMock = true;
 
@@ -20,7 +23,7 @@ export class ProfilService {
     cguAcceptedAt: new Date('2024-01-01'),
   };
 
-  constructor(private http: HttpClient) {}
+  constructor() {}
 
   /**
    *  Récupère l'utilisateur courant
@@ -55,11 +58,12 @@ export class ProfilService {
    * - en prod : appelle l'API DELETE
    */
   deleteUser(): Observable<void> {
-    if (this.useMock) {
-      console.log('Utilisateur supprimé (mock)');
-      return of();
-    } else {
-      return this.http.delete<void>('/api/users/me');
-    }
+  if (this.useMock) {
+    console.log('Utilisateur supprimé (mock)');
+    return of(undefined); // déclenche bien la chaîne asynchrone
+  } else {
+    return this.http.delete<void>('/api/users/me');
   }
+}
+
 }
