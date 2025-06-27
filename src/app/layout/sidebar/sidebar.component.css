@@ -49,7 +49,7 @@
 /* Bloc des deux dernières icônes 👤 🚪 */
 
 .nav-links li:last-child{
-  margin-top: 18rem;
+  margin-top: 16rem;
   padding-top: 1rem;
   border-top: 1px solid #ddd;
   display: flex;

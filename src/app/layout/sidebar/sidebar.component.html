@@ -10,49 +10,28 @@
     <!-- Liens utilisateur -->
     @if (userRole === 'user') {
     <li>
-      <a routerLink="/lists" routerLinkActive="active" (click)="closeSidebar()"
-        >Mes listes</a
-      >
+      <a routerLink="/lists" routerLinkActive="active" (click)="closeSidebar()">Mes listes</a>
     </li>
     <li>
-      <a
-        routerLink="/groups"
-        routerLinkActive="active"
-        (click)="closeSidebar()"
-        >Mes groupes</a
-      >
+      <a routerLink="/groups" routerLinkActive="active" (click)="closeSidebar()">Mes groupes</a>
     </li>
     }
 
     <!-- Liens admin -->
     @else if (userRole === 'admin') {
-    <li>
-      <a
-        routerLink="/admin/dashboard"
-        routerLinkActive="active"
-        (click)="closeSidebar()"
-        >Dashboard</a
-      >
-    </li>
-    <li>
-      <a
-        routerLink="/admin/users"
-        routerLinkActive="active"
-        (click)="closeSidebar()"
-        >Gestion utilisateurs</a
-      >
-    </li>
+    <li><a routerLink="/admin/listes" (click)="closeSidebar()">Listes</a></li>
+    <li><a routerLink="/admin/users" (click)="closeSidebar()">Utilisateurs</a></li>
+    <li><a routerLink="/admin/stats" (click)="closeSidebar()">Statistiques</a></li>
     }
 
-    <!-- Icônes (profil + logout) : TOUJOURS LES 2 DERNIERS -->
-   <li>
-  <a routerLink="/profile">
-    <img src="icons/Profile.png" alt="Profil" class="icon-img" />
-  </a>
-  <a (click)="logout()">
-    <img src="icons/Logout.png" alt="Déconnexion" class="icon-img" />
-  </a>
-</li>
+    <li>
+      <a routerLink="/profile">
+        <img src="icons/Profile.png" alt="Profil" class="icon-img" />
+      </a>
+      <a (click)="logout()">
+        <img src="icons/Logout.png" alt="Déconnexion" class="icon-img" />
+      </a>
+    </li>
   </ul>
 </nav>
 }
