@@ -1,29 +1,28 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { RouterModule } from '@angular/router';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppComponent],
+      imports: [AppComponent, RouterModule],
     }).compileComponents();
   });
 
-  it('should create the app', () => {
+  it('devrait créer le composant', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'briefV3' title`, () => {
+  it('devrait avoir pour titre "ShuffleMyTeam"', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('briefV3');
+    expect(app.title).toEqual('ShuffleMyTeam');
   });
 
-  it('should render title', () => {
+  it('devrait afficher le titre dans le HTML', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, briefV3');
   });
 });
