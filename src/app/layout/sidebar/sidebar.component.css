@@ -1,0 +1,39 @@
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  margin-bottom: 1rem;
+}
+
+.sidebar a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 600;
+}
+
+.sidebar-toggle {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 75%;
+  height: 100vh;
+  background-color: #f3f3f3;
+  padding: 2rem 1rem;
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+

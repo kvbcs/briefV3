@@ -1,1 +1,22 @@
-<p>sidebar works!</p>
+<!-- Bouton visible en haut à gauche -->
+<button class="sidebar-toggle" (click)="toggleSidebar()">☰</button>
+
+<!-- Contenu conditionnel de la sidebar -->
+@if (isOpen()) {
+  <nav class="sidebar">
+    @if (role === 'user') {
+      <ul>
+        <li><a routerLink="/listes">Mes listes</a></li>
+        <li><a routerLink="/groupes">Mes groupes</a></li>
+        <li><a routerLink="/profil">Mon profil</a></li>
+        <li><a (click)="logout()">Déconnexion</a></li>
+      </ul>
+    } @else if (role === 'admin') {
+      <ul>
+        <li><a routerLink="/admin/dashboard">Dashboard</a></li>
+        <li><a routerLink="/admin/users">Gestion utilisateurs</a></li>
+        <li><a (click)="logout()">🚪 Déconnexion</a></li>
+      </ul>
+    }
+  </nav>
+}
