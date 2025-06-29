@@ -1,0 +1,65 @@
+.groups-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.group-card {
+  background-color: #F3F3F3;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.group-card h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #D10000;
+  margin-bottom: 0.5rem;
+}
+
+.member-list {
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background-color: #ffffff;
+  border-radius: 8px;
+  border: 1px dashed #ccc;
+  padding: 0.5rem;
+}
+
+.member-item {
+  background-color: #ffffff; 
+  color: #333333;
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: grab;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.member-item:active {
+  cursor: grabbing;
+}
+
+.validate-btn {
+  display: block;
+  margin: 1.5rem auto 0;
+  background-color: #D10000;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.validate-btn:hover {
+  background-color: #b80000;
+}
