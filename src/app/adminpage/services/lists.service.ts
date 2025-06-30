@@ -22,6 +22,10 @@ export class ListsService {
     return this.mockLists;
   }
 
+   getListByIdSignal(id: number): Lists | null {
+      return this.mockLists().find((l) => l.id === id) ?? null;
+    }
+
   getLists(): Observable<Lists[]> {
     return of(this.mockLists());
     // return this.http.get<Lists[]>(`${this.baseUrl}/show`)
