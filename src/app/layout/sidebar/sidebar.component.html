@@ -3,35 +3,39 @@
   {{ isOpen() ? "✕" : "☰" }}
 </button>
 
-<!-- Sidebar affichée seulement si isOpen() -->
 @if (isOpen()) {
 <nav class="sidebar">
+  
+  <!-- Zone scrollable -->
   <ul class="nav-links">
-    <!-- Liens utilisateur -->
-    @if (userRole === 'user') {
-    <li>
-      <a routerLink="/lists" routerLinkActive="active" (click)="closeSidebar()">Mes listes</a>
-    </li>
-    <li>
-      <a routerLink="/groups" routerLinkActive="active" (click)="closeSidebar()">Mes groupes</a>
-    </li>
+    @for (link of sidebarLinks; track link.id) {
+      @if (link.roles.includes(userRole)) {
+        <li>
+          <a
+            [routerLink]="link.path"
+            [class.active]="selectedLink === link.id"
+            (click)="setActive(link.id)"
+          >
+            {{ link.label }}
+          </a>
+        </li>
+      }
     }
-
-    <!-- Liens admin -->
-    @else if (userRole === 'admin') {
-    <li><a routerLink="/admin/listes" (click)="closeSidebar()">Listes</a></li>
-    <li><a routerLink="/admin/users" (click)="closeSidebar()">Utilisateurs</a></li>
-    <li><a routerLink="/admin/stats" (click)="closeSidebar()">Statistiques</a></li>
-    }
-
-    <li>
-      <a routerLink="/profile">
-        <img src="icons/Profile.png" alt="Profil" class="icon-img" />
-      </a>
-      <a (click)="logout()">
-        <img src="icons/Logout.png" alt="Déconnexion" class="icon-img" />
-      </a>
-    </li>
   </ul>
+
+  <!-- Zone fixe en bas -->
+  <div class="sidebar-bottom">
+    <a
+      routerLink="/profile"
+      [class.active]="selectedLink === 'profile'"
+      (click)="setActive('profile')"
+      title="Profil"
+    >
+      <img src="icons/Profile.png" alt="Profil" class="icon-img" />
+    </a>
+    <a (click)="logout()" title="Déconnexion">
+      <img src="icons/Logout.png" alt="Déconnexion" class="icon-img" />
+    </a>
+  </div>
 </nav>
 }
