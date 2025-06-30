@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { Lists, Users } from '../../../model/types';
 
 @Component({
@@ -21,12 +21,37 @@ export class StatsComponent implements OnInit {
     this.http.get<Lists[]>('/assets/lists.json').subscribe((data) => {
       this.lists.set(data);
     });
-  } // nombre de listes créées par utilisateur
-  listAmount = signal<number>(0);
+  }
+
+  // nombre de listes créées par utilisateur
+  listCount = computed(() => {
+    const count = this.lists().length;
+    return count;
+  });
+
   // ◦ nombre de personnes par liste en moyenne
-  personAmount = signal<number>(0);
+  personCount = computed(() => {
+    const lists = this.lists();
+    if (!lists.length) return 0;
+    const total = lists.reduce(
+      (sum, list) => sum + (list.personAmount || 0),
+      0
+    );
+    const average = Math.round(total / lists.length);
+    return average;
+  });
+
   // ◦ nombre de groupes créés par liste en moyenne
-  groupAmount = signal<number>(0);
+  groupCount = computed(() => {
+    const lists = this.lists();
+    if (!lists.length) return 0;
+    const total = lists.reduce(
+      (sum, list) => sum + (list.tirageAmount || 0),
+      0
+    );
+    const average = Math.round(total / lists.length);
+    return average;
+  });
   // ◦ nombre de listes partagées
   sharedListsAmount = signal<number>(0);
   // ◦ nombre d’utilisateurs associés à une liste partagée en moyenne
