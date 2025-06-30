@@ -5,9 +5,9 @@ import { AppComponent } from './app.component';
 import { ListsComponent } from './adminpage/lists/lists.component';
 import { ProfilComponent } from './ProfilePage/profile/profile.component';
 import { HomePageComponent } from './homepage/pages/home-page/home-page.component';
-import { ListsComponent } from './lists/lists.component';
 import { ListDetailComponent } from './list-detail/list-detail.component';
 import { ListPreviewComponent } from './list-preview/list-preview.component';
+import { ListsUserComponent } from './lists/lists.component';
 
 export const routes: Routes = [
     {
@@ -20,7 +20,7 @@ export const routes: Routes = [
     component: ListsComponent,
   },
   { path: 'profil', component: ProfilComponent },
-    { path: 'lists', component: ListsComponent },
+    { path: 'lists', component: ListsUserComponent },
   {
     path: 'lists/:id',
     component: ListDetailComponent,
