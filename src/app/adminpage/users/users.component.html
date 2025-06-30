@@ -1,8 +1,8 @@
 <main>
   <h1>Liste d'utilisateurs</h1>
+  @if (users().length > 0){
 
   <div class="table-wrapper">
-    @if (users().length > 0){
     <table>
       <thead>
         <tr>
@@ -25,8 +25,8 @@
         }
       </tbody>
     </table>
-    } @else {
-    <p>Aucun utilisateur trouvé</p>
-    }
   </div>
+  } @else {
+  <p>Aucun utilisateur trouvé</p>
+  }
 </main>

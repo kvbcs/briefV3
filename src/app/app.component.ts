@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { CommonModule } from '@angular/common';
-
+import { UpdateModalComponent } from './adminpage/components/update-modal/update-modal.component';
 
 @Component({
   selector: 'app-root',
-   standalone: true,
-  imports: [CommonModule, RouterOutlet],
+  imports: [RouterOutlet, UpdateModalComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
