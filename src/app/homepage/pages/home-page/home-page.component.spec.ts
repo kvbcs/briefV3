@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HomePageComponent } from './home-page.component';
 import { HttpClient } from '@angular/common/http';
-import { FakeAuthService } from '../../../core/services/fake-auth.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { SignupModalComponent } from '../../components/signup-modal/signup-modal.component';
 import { LoginFormComponent } from '../../components/login-form/login-form.component';
 import { By } from '@angular/platform-browser';
@@ -18,7 +18,7 @@ describe('HomePageComponent', () => {
       imports: [HomePageComponent, LoginFormComponent, SignupModalComponent],
       providers: [
         { provide: HttpClient, useValue: httpSpy },
-        { provide: FakeAuthService, useClass: FakeAuthService }
+        { provide: AuthService, useClass: AuthService }
       ]
     }).compileComponents();
 

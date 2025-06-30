@@ -1,9 +1,7 @@
 import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-
-
-import { FakeAuthService } from '../../../core/services/fake-auth.service';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-signup-modal',
@@ -16,9 +14,17 @@ import { FakeAuthService } from '../../../core/services/fake-auth.service';
 
 export class SignupModalComponent {
   @Output() close = new EventEmitter<void>();
-  private readonly auth = inject(FakeAuthService);
+  private readonly auth = inject(AuthService);
 
-  signupForm: FormGroup;
+signupForm!: FormGroup<{
+  email: FormControl<string>;
+  emailConfirm: FormControl<string>;
+  password: FormControl<string>;
+  passwordConfirm: FormControl<string>;
+  firstName: FormControl<string>;
+  lastName: FormControl<string>;
+}>;
+
   submitted = false;
   successMessage: string | null = null;
   errorMessage: string | null = null;
