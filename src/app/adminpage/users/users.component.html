@@ -1,0 +1,39 @@
+<main>
+  <h1>Liste d'utilisateurs</h1>
+  @if (users().length > 0){
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Nom</th>
+          <th>Prénom</th>
+          <th>Email</th>
+          <th>Suppr / Editer</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (user of users(); track user.id){
+        <tr>
+          <td class="id-column" #id>{{ user.id }}</td>
+          <td>{{ user.firstname }}</td>
+          <td>{{ user.lastname }}</td>
+          <td>{{ user.email }}</td>
+          <td>
+            <button>🗑️</button><button (click)="openModal(user.id)">✏️</button>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  } @else {
+  <p>Aucun utilisateur trouvé</p>
+  }
+</main>
+<app-update-modal
+  [showModal]="modalOpen()"
+  (close)="closeModal()"
+  [userId]="selectedUserId()"
+></app-update-modal>
