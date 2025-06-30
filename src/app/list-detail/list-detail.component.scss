@@ -247,69 +247,7 @@
     }
   }
 
-  .previous-draws {
-    margin-top: 3rem;
 
-    h2 {
-      margin-bottom: 1.5rem;
-      color: #333;
-    }
-
-    .draws-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .draw-card {
-      background-color: white;
-      border-radius: 8px;
-      padding: 1.5rem;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-      h3 {
-        margin-top: 0;
-        margin-bottom: 1.2rem;
-        color: #333;
-        font-size: 1.1rem;
-      }
-
-      .draw-groups {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 1rem;
-
-        .group {
-          background-color: #f7f7f7;
-          border-radius: 6px;
-          padding: 1rem;
-
-          h4 {
-            margin-top: 0;
-            margin-bottom: 0.8rem;
-            color: #e53e3e;
-            font-size: 1rem;
-          }
-
-          ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-
-            li {
-              padding: 0.3rem 0;
-              font-size: 0.9rem;
-              border-bottom: 1px solid #eee;
-
-              &:last-child {
-                border-bottom: none;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
 }
 
 .loading {
@@ -349,17 +287,6 @@
       }
     }
 
-    .previous-draws {
-      .draws-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .draw-card {
-        .draw-groups {
-          grid-template-columns: 1fr;
-        }
-      }
-    }
   }
 }
 
