@@ -17,7 +17,7 @@ import { List } from '../gk/models/list';
   templateUrl: './lists.component.html',
   styleUrls: ['./lists.component.scss'],
 })
-export class ListsComponent implements OnInit {
+export class ListsUserComponent implements OnInit {
   lists: List[] = [];
   newListForm!: FormGroup;
   showNewListForm = false;
