@@ -1,5 +1,4 @@
-/* === Base mobile (par défaut) === */
-
+/* === Base mobile-first === */
 .profile-card {
   background-color: #ffffff;
   padding: 1.5rem;
@@ -11,66 +10,79 @@
   color: #333333;
 }
 
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
 form label {
-  display: block;
-  margin-top: 1rem;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
 }
 
 form input {
   width: 100%;
   padding: 0.5rem;
-  margin-top: 0.25rem;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
+  border: 1px solid #E0E0E0;
+  border-radius: 8px;
   font-size: 1rem;
+  font-family: inherit;
+  background-color: #F9F9FB;
+  transition: border-color 0.2s ease;
 }
 
 form input:focus {
-  outline: 2px solid #d10000;
+  border-color: #5E47D2;
+  outline: none;
 }
 
+/* Boutons génériques */
 button {
-  margin-top: 1.5rem;
-  padding: 0.5rem 1.2rem;
+  padding: 0.6rem 1.5rem;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 1rem;
-  cursor: pointer;
   font-weight: 600;
-  width: 100%;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Bouton principal (ex: Enregistrer, Modifier) */
+/* Bouton principal */
 button[type='submit'],
 button:not([type]) {
-  background-color: #d10000;
-  color: white;
-  margin-bottom: 1rem;
+  background-color: #5E47D2;
+  color: #ffffff;
+  margin-top: 1rem;
 }
 
-/* Bouton secondaire (Annuler) */
+button[type='submit']:hover {
+  background-color: #4534A1;
+}
+
+/* Bouton secondaire */
 button[type='button'] {
   background-color: transparent;
-  color: #d10000;
-  border: 1px solid #d10000;
+  color: #5E47D2;
+  border: 1px solid #5E47D2;
+}
+
+button[type='button']:hover {
+  background-color: #F3F3F3;
 }
 
 /* Bouton suppression */
 .btn-danger {
   background-color: #ef4444;
   color: white;
-  transition: all 0.2s ease-in-out;
 }
 
 .btn-danger:hover {
-  opacity: 0.92;
   box-shadow: 0 2px 6px rgba(239, 68, 68, 0.25);
 }
 
-
-/* === TABLETTE (768px et +) === */
+/* === Tablette (768px +) === */
 @media (min-width: 768px) {
   .profile-card {
     max-width: 600px;
@@ -83,17 +95,11 @@ button[type='button'] {
   }
 }
 
-/* === ORDINATEUR (1024px et +) === */
+/* === Ordinateur (1024px +) === */
 @media (min-width: 1024px) {
   .profile-card {
     max-width: 700px;
     padding: 2.5rem;
-  }
-
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
   }
 
   form label {
