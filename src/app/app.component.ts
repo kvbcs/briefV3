@@ -10,5 +10,6 @@ import { FooterComponent } from './shared/footer/footer.component';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'briefV3';
+
+  title = 'ShuffleMyTeam';
 }
