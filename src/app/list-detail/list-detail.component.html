@@ -8,13 +8,12 @@
       <button class="btn-border" (click)="togglePersonForm()">
         {{ showPersonForm ? "Cancel" : "Add Person" }}
       </button>
-      <button
+      <!-- <button
         class="btn-red"
         [disabled]="list.people.length < 2"
-        (click)="generateGroups()"
-      >
+        (click)="openGroupDialog(list.id)"
         Generate Groups
-      </button>
+      </button> -->
     </div>
   </div>
 

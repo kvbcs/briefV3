@@ -10,6 +10,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ListService } from '../gk/services/list.service';
 import { List } from '../gk/models/list';
 import { Person, Gender, Profile } from '../gk/models/person';
+// import { MatDialog } from '@angular/material/dialog';
+// import { GroupPageComponent } from '../chemin/vers/group-page.component';
+
 
 @Component({
   selector: 'app-list-detail',
@@ -38,6 +41,7 @@ export class ListDetailComponent implements OnInit {
     private router: Router,
     private formBuilder: FormBuilder,
     private listService: ListService,
+    // private dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -166,4 +170,15 @@ export class ListDetailComponent implements OnInit {
   goBack(): void {
     this.router.navigate(['/lists']);
   }
+
+//   openGroupDialog(listId: string) {
+//   this.dialog.open(GroupPageComponent, {
+//   panelClass: 'group-dialog',
+//   width: '90vw',
+//   maxHeight: '90vh',
+//   autoFocus: false,
+//     data: { listId } // optionnel, selon les besoins
+//   });
+// }
+
 }
