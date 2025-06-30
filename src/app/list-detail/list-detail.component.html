@@ -1,19 +1,23 @@
 <div class="list-detail-container" *ngIf="!isLoading && list; else loading">
   <div class="header-actions">
     <div>
-      <button class="btn-back" (click)="goBack()">&larr; Back to Lists</button>
+      <button class="btn-back" (click)="goBack()">
+        &larr; Retour Aux Listes
+      </button>
       <h1>{{ list.name }}</h1>
     </div>
     <div class="action-buttons">
       <button class="btn-border" (click)="togglePersonForm()">
-        {{ showPersonForm ? "Cancel" : "Add Person" }}
+        {{ showPersonForm ? "Annuler" : "Ajouter Personne" }}
       </button>
     </div>
   </div>
 
   <!-- ✅ FORMULAIRE D’AJOUT / MODIF PERSONNE -->
   <div *ngIf="showPersonForm" class="person-form-card">
-    <h2>{{ editingPerson ? "Edit Person" : "Add New Person" }}</h2>
+    <h2>
+      {{ editingPerson ? "Modifier Personne" : "Ajouter Nouvelle Personne" }}
+    </h2>
 
     <form [formGroup]="personForm" (ngSubmit)="onSubmit()">
       <div class="form-row">
@@ -151,7 +155,7 @@
           <td>{{ person.profile }}</td>
           <td>{{ person.frenchFluency }}/4</td>
           <td>{{ person.technicalLevel }}/4</td>
-          <td>{{ person.formerDWWM ? "Yes" : "No" }}</td>
+          <td>{{ person.formerDWWM ? "Oui" : "Non" }}</td>
           <td class="actions">
             <button
               class="btn-icon edit"
