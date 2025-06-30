@@ -8,6 +8,13 @@
       <button class="btn-border" (click)="togglePersonForm()">
         {{ showPersonForm ? "Cancel" : "Add Person" }}
       </button>
+      <button
+        class="btn-red"
+        [disabled]="list.people.length < 2"
+        (click)="generateGroups()"
+      >
+        Generate Groups
+      </button>
     </div>
   </div>
 

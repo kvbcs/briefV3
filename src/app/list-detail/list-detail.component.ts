@@ -40,9 +40,6 @@ export class ListDetailComponent implements OnInit {
     private listService: ListService,
   ) {}
 
-  generateGroups(): void {
-    console.warn('Fonctionnalité désactivée');}
-
   ngOnInit(): void {
     this.initForm();
 
@@ -162,6 +159,9 @@ export class ListDetailComponent implements OnInit {
     }
   }
 
+   generateGroups(): void {
+    this.router.navigate(['/lists', this.listId, 'generate']);
+  }
 
   goBack(): void {
     this.router.navigate(['/lists']);
