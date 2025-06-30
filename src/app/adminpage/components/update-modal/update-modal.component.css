@@ -48,7 +48,12 @@ section {
   background-color: red;
   color: white;
   border-radius: 100px;
- position: absolute;
- top: 20px;
- right: 20px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+small {
+  font-weight: bold;
+  color: red;
 }

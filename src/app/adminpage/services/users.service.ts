@@ -6,14 +6,13 @@ import { Observable, of } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class UsersService {  
+export class UsersService {
+  mockUsers = signal<Users[]>([]);
 
-  mockUsers = signal<Users[]>([])
-  
   constructor(private http: HttpClient) {
-     this.http.get<Users[]>('/assets/users.json').subscribe((data) => {    
-          this.mockUsers.set(data);
-        });
+    this.http.get<Users[]>('/assets/users.json').subscribe((data) => {
+      this.mockUsers.set(data);
+    });
   }
 
   //Temporaire en attendant le back
@@ -21,6 +20,10 @@ export class UsersService {
 
   getUsersSignal() {
     return this.mockUsers;
+  }
+
+  getUserByIdSignal(id: number): Users | null {
+    return this.mockUsers().find((u) => u.id === id) ?? null;
   }
 
   getUsers(): Observable<Users[]> {
@@ -52,7 +55,7 @@ export class UsersService {
     const filtered = this.mockUsers().filter((user) => user.id !== id);
     this.mockUsers.set(filtered);
     return of(filtered);
-  
+
     // return this.http.delete<Users>(`${this.baseUrl}/delete/${id}`)
   }
 }

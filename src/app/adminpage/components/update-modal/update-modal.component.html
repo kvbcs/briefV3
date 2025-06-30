@@ -1,20 +1,34 @@
-@if (showModal){
+@if (showModal && user()){
 <main>
-  <form action="submit">
+  <form [formGroup]="updateForm" (ngOnSubmit)="onSubmit()">
     <button (click)="closeModal()" id="close">X</button>
     <h2>Mettre à jour</h2>
     <section>
       <label for="firstName">Prénom :</label
-      ><input type="text" name="firstName" />
+      ><input formControlName="firstName" type="text" />
+      @if (updateForm.get("firstName")?.touched &&
+      updateForm.get("firstName")?.invalid){
+      <small>Minimum 3 charactères</small>
+      }
     </section>
     <section>
-      <label for="lastName">Nom :</label><input type="text" name="lastName" />
+      <label for="lastName">Nom :</label
+      ><input formControlName="lastName" type="text" />
+      @if (updateForm.get("lastName")?.touched &&
+      updateForm.get("lastName")?.invalid){
+      <small>Minimum 3 charactères</small>
+      }
     </section>
 
     <section>
-      <label for="email">Email :</label><input type="email" name="email" />
+      <label for="email">Email :</label
+      ><input formControlName="email" type="email" />
+      @if (updateForm.get("email")?.touched &&
+      updateForm.get("email")?.invalid){
+      <small>Format invalide</small>
+      }
     </section>
-    <button type="submit" id="submit">Valider</button>
+    <button type="submit" id="submit" (click)="onSubmit()">Valider</button>
   </form>
 </main>
 
