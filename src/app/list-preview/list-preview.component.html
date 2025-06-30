@@ -40,23 +40,6 @@
     </table>
   </div>
 
-  <div *ngIf="list.draws && list.draws.length > 0" class="previous-draws">
-    <h2>Previous Group Draws</h2>
-    <div class="draws-grid">
-      <div *ngFor="let draw of list.draws" class="draw-card">
-        <h3>Draw from {{ draw.date | date: "medium" }}</h3>
-        <div class="draw-groups">
-          <div *ngFor="let group of draw.groups" class="group">
-            <h4>{{ group.name }}</h4>
-            <ul>
-              <li *ngFor="let person of group.people">{{ person.name }}</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <div *ngIf="errorMessage" class="error-msg">
     {{ errorMessage }}
   </div>
