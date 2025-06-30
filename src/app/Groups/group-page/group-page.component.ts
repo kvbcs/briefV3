@@ -1,10 +1,11 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, Inject, Optional } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GroupFormComponent } from '../group-form/group-form.component';
 import { GroupGenerationConfig } from '../../models/group.model';
 import { GroupService } from '../../services/group.service';
 import { Group } from '../../models/group.model';
 import { GroupDisplayComponent } from '../group-display/group-display.component';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-group-page',
@@ -14,6 +15,11 @@ import { GroupDisplayComponent } from '../group-display/group-display.component'
   styleUrls: ['./group-page.component.css'],
 })
 export class GroupPageComponent {
+  constructor(
+    @Optional() private dialogRef: MatDialogRef<GroupPageComponent>,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: { listId: string }
+  ) {}
+
   groups = signal<Group[]>([]);
   private groupservice = inject(GroupService);
 
@@ -32,5 +38,12 @@ export class GroupPageComponent {
         console.error("Erreur lors de l'enregistrement des groupes ❌", error);
       },
     });
+  }
+
+  // fermeture de la modale groupe
+  close() {
+    if (this.dialogRef) {
+      this.dialogRef.close();
+    }
   }
 }
