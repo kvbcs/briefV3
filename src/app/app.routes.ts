@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-
+import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { UsersComponent } from './adminpage/users/users.component';
 import { AppComponent } from './app.component';
 import { ListsComponent } from './adminpage/lists/lists.component';
@@ -9,6 +9,7 @@ import { HomePageComponent } from './homepage/pages/home-page/home-page.componen
 import { ListDetailComponent } from './list-detail/list-detail.component';
 import { ListPreviewComponent } from './list-preview/list-preview.component';
 import { ListsUserComponent } from './lists/lists.component';
+
 
 export const routes: Routes = [
     {
@@ -29,5 +30,5 @@ export const routes: Routes = [
     component: ListDetailComponent,
   },
   { path: 'list-preview/:id', component: ListPreviewComponent },
-
+  { path: 'sidebar', component: SidebarComponent },
 ];
