@@ -1,5 +1,21 @@
+@if (showModal){
 <main>
-    <form action="submit">
-        
-    </form>
+  <form action="submit">
+    <button (click)="closeModal()" id="close">X</button>
+    <h2>Mettre à jour</h2>
+    <section>
+      <label for="firstName">Prénom :</label
+      ><input type="text" name="firstName" />
+    </section>
+    <section>
+      <label for="lastName">Nom :</label><input type="text" name="lastName" />
+    </section>
+
+    <section>
+      <label for="email">Email :</label><input type="email" name="email" />
+    </section>
+    <button type="submit" id="submit">Valider</button>
+  </form>
 </main>
+
+}

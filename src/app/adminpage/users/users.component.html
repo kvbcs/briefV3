@@ -20,7 +20,7 @@
           <td>{{ user.firstname }}</td>
           <td>{{ user.lastname }}</td>
           <td>{{ user.email }}</td>
-          <td><button>🗑️</button><button>✏️</button></td>
+          <td><button>🗑️</button><button (click)="openModal()">✏️</button></td>
         </tr>
         }
       </tbody>
@@ -30,3 +30,7 @@
   <p>Aucun utilisateur trouvé</p>
   }
 </main>
+<app-update-modal
+  [showModal]="modalOpen()"
+  (close)="closeModal()"
+></app-update-modal>
