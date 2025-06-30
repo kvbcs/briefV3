@@ -24,10 +24,12 @@ export class GroupPageComponent {
   private groupservice = inject(GroupService);
 
   onGenerate(config: GroupGenerationConfig): void {
-    this.groupservice.generateGroups(config).subscribe((generatedGroups) => {
-      this.groups.set(generatedGroups);
-    });
-  }
+  this.groupservice.generateGroups(config).subscribe({
+    next: (generatedGroups) => this.groups.set(generatedGroups),
+    error: (error) => console.error('Erreur lors de la génération des groupes ❌', error),
+  });
+}
+
   onValidate(groupsFinal: Group[]) {
     this.groupservice.validateGroups(groupsFinal).subscribe({
       next: (response) => {

@@ -1,5 +1,5 @@
 <div class="groups-container">
-  @for (group of groups(); track group.name; let i = $index) {
+  @for (group of groups; track group.name; let i = $index) {
     <div class="group-card">
       <h4>{{ group.name }}</h4>
 

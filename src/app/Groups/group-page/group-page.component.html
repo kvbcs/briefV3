@@ -4,7 +4,7 @@
 
 @if (groups().length > 0) {
   <app-group-display
-  [groups]="groups"
+  [groups]="groups()"
   (validate)="onValidate($event)"
 ></app-group-display>
 
