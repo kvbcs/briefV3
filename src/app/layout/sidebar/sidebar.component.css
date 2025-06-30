@@ -4,8 +4,6 @@ body {
   height: 100vh;
   overflow: hidden; /* désactive le scroll global */
 }
-
-
 .sidebar-toggle {
   position: fixed;
   top: 1rem;
@@ -36,6 +34,7 @@ body {
   border-right: 1px solid #f3f3f3;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
   font-family: "Montserrat", sans-serif;
+  margin-right: 2rem;
 }
 
 /* Liste de navigation */
@@ -152,6 +151,7 @@ body {
   .sidebar {
     width: 120px;
     padding-bottom: 2rem;
+    margin-right: 4rem;
   }
 
   .sidebar-toggle {

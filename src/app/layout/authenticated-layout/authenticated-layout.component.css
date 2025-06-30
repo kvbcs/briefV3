@@ -7,9 +7,3 @@
 app-sidebar {
   flex-shrink: 0;
 }
-
-router-outlet {
-  flex-grow: 1;
-  width: 100%;
-  height: 100%;
-}
