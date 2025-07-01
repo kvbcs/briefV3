@@ -1,68 +1,70 @@
-import { Component, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { AuthService } from '../../../core/services/auth.service';
+// ✅ Importation des modules nécessaires Angular
+import { Component, Output, EventEmitter } from '@angular/core'; // Pour créer le composant et émettre des événements vers le parent
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms'; // Pour créer et valider un formulaire réactif
+import { Router } from '@angular/router'; // Pour naviguer entre les routes Angular
+import { AuthService } from '../../../core/services/auth.service'; // Service d’authentification personnalisé
 
+// ✅ Déclaration du composant avec métadonnées
 @Component({
-  selector: 'app-login-form',
-  standalone: true,
-  imports: [ReactiveFormsModule],
-  templateUrl: './login-form.component.html',
-  styleUrls: ['./login-form.component.css']
+  selector: 'app-login-form', // nom de la balise utilisée dans le HTML
+  standalone: true,           // composant autonome, sans passer par un module Angular classique
+  imports: [ReactiveFormsModule], // modules nécessaires pour les formulaires réactifs
+  templateUrl: './login-form.component.html', // chemin du fichier HTML associé
+  styleUrls: ['./login-form.component.css']   // chemin du fichier CSS associé
 })
 export class LoginFormComponent {
 
-  // Formulaire réactif avec 2 champs (email et mot de passe)
+  // ✅ Déclaration d’un groupe de contrôles de formulaire
   loginForm: FormGroup;
 
-  // Pour dire au composant parent "ouvre la modale d’inscription"
+  // ✅ Déclaration d’un événement envoyé au parent quand l’utilisateur veut s’inscrire
   @Output() openSignup = new EventEmitter<void>();
 
-  // Message d’erreur à afficher si la connexion échoue
-  errorMessage: string = '';
+  // ✅ Message affiché si erreur de connexion
+  errorMessage = '';
 
+  // ✅ Injection des services nécessaires via le constructeur
   constructor(
-    private readonly fb: FormBuilder,
-    private readonly auth: AuthService,
-    private readonly router: Router
+    private readonly fb: FormBuilder, // pour construire le formulaire
+    private readonly auth: AuthService, // pour appeler l’API de login
+    private readonly router: Router // pour rediriger après connexion
   ) {
-    // Initialisation du formulaire avec validation des champs
+    // ✅ Initialisation du formulaire avec des champs et des validateurs
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]]
+      email: ['', [Validators.required, Validators.email]], // champ requis + format email
+      password: ['', [Validators.required]] // champ requis
     });
   }
 
-  /**
-   * 🔐 Soumission du formulaire de connexion
-   * Envoie les identifiants à l'API (avec 'identifier' attendu par le backend),
-   * gère la réponse et redirige vers /profile en cas de succès
-   */
-  onSubmit() {
-    const { email, password } = this.loginForm.value;
+  // ✅ Méthode appelée à la soumission du formulaire
+  onSubmit(): void {
+    const { email, password } = this.loginForm.value; // extraction des valeurs
 
-    console.log('Tentative de connexion avec :', email, password);
+    console.log('🧪 Données envoyées à l’API :', { email, password });
 
-    // ⚠️ L'API attend 'identifier' au lieu de 'email'
-    this.auth.login({ identifier: email, password }).subscribe({
-      next: (user: any) => {
-        console.log('Connexion réussie :', user);
+    // ✅ Appel du service d’authentification
+    this.auth.login({ email, password }).subscribe({
+      next: () => {
         this.errorMessage = '';
-        this.router.navigate(['/profile']); // Redirection si tout va bien
+        this.router.navigate(['/profil']); // redirection vers la page profil
       },
-      error: (err: any) => {
-        console.error('Erreur de connexion :', err);
-        this.errorMessage = 'Email ou mot de passe incorrect';
+      error: (err) => {
+        console.error('❌ Erreur reçue depuis l’API :', err);
+        if (err.status === 400) {
+          this.errorMessage = 'Requête invalide : vérifiez vos champs.';
+        } else if (err.status === 401) {
+          this.errorMessage = 'Identifiants incorrects.';
+        } else {
+          this.errorMessage = 'Erreur inattendue, veuillez réessayer.';
+        }
       }
+
+
     });
   }
 
-  /**
-   * 📩 Appelé quand on clique sur "Créer un compte"
-   * Informe le parent pour qu’il ouvre la modale d’inscription
-   */
-  onSignupClick() {
-    this.openSignup.emit();
+  // ✅ Méthode déclenchée lors du clic sur "Créer un compte"
+  onSignupClick(): void {
+    this.openSignup.emit(); // envoie un événement vers le parent
   }
-
 }

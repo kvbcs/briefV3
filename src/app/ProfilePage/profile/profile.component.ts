@@ -15,11 +15,11 @@ import { ReactiveFormsModule } from '@angular/forms';
   styleUrl: './profile.component.css'
 })
 
-export class ProfilComponent implements OnInit {
+export class ProfileComponent implements OnInit {
 
     // Injection du service Profil et du FormBuilder (avec la syntaxe `inject()`)
-  private profilService = inject(ProfilService);
-  private formBuilder = inject(FormBuilder);
+  private readonly profilService = inject(ProfilService);
+  private readonly formBuilder = inject(FormBuilder);
 
     // Objet utilisateur à afficher et modifier
   user!: User;

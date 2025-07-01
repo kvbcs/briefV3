@@ -9,7 +9,7 @@ import { Lists } from '../../../model/types';
   styleUrl: './lists.component.css',
 })
 export class ListsComponent implements OnInit{
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
   lists = signal<Lists[]>([]);
 
   ngOnInit(): void {
