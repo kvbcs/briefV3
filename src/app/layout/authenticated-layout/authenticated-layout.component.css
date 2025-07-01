@@ -1,0 +1,9 @@
+:host {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+
+app-sidebar {
+  flex-shrink: 0;
+}
