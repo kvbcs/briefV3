@@ -109,7 +109,6 @@ export class LoginFormComponent {
         this.toast.error('Email ou mot de passe incorrect', 'Erreur');
 
               console.error('❌ Erreur reçue depuis l’API :', err);
-              
         if (err.status === 400) {
           this.toast.error('Requête invalide : vérifiez vos champs.', 'Erreur');
         } else if (err.status === 401) {
