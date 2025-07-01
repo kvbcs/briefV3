@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Group, GroupGenerationConfig } from '../models/group.model';
+import { DrawHistoryEntry, Group, GroupGenerationConfig } from '../models/group.model';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -47,6 +47,41 @@ export class GroupService {
       });
     }
   }
+
+  getDrawHistory(): Observable<DrawHistoryEntry[]> {
+  if (this.isMock) {
+    // Données mock pour l'historique
+    const mockHistory: DrawHistoryEntry[] = [
+      {
+        id: '1',
+        date: new Date(),
+        numberOfGroups: 3,
+        mixAge: true,
+        mixGender: false,
+        mixDWWM: true,
+        mixLevel: false,
+        groups: [
+          {
+            name: 'Groupe 1',
+            members: [{ id: 'p11', name: 'Personne 1' }, { id: 'p12', name: 'Personne 2' }]
+          },
+          {
+            name: 'Groupe 2',
+            members: [{ id: 'p21', name: 'Personne 3' }]
+          }
+        ],
+      },
+      // Autres tirages mockés si besoin
+    ];
+    
+    return of(mockHistory);
+  } else {
+    // Requête GET vers le backend
+    return this.http.get<DrawHistoryEntry[]>('/api/groups/draw-history', {
+      withCredentials: true
+    });
+  }
+}
 
 
 }

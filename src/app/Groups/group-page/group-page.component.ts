@@ -30,12 +30,15 @@ export class GroupPageComponent {
   private router = inject(Router);
 
   onGenerate(config: GroupGenerationConfig): void {
-    this.groupservice.generateGroups(config).subscribe({
-      next: (generatedGroups) => this.groups.set(generatedGroups),
-      error: (error) =>
-        console.error('Erreur lors de la génération des groupes ❌', error),
-    });
-  }
+  this.groupservice.generateGroups(config).subscribe({
+    next: (generatedGroups) => this.groups.set(generatedGroups),
+    error: (error) => {
+      console.error('Erreur lors de la génération des groupes ❌', error);
+      this.groups.set([]); // vide la liste en cas d'erreur
+    },
+  });
+}
+
 
 handleValidateAndRedirect(groupsFinal: Group[]) {
   if (this.loading()) return; // protège contre clics multiples
@@ -44,18 +47,30 @@ handleValidateAndRedirect(groupsFinal: Group[]) {
   this.groupservice.validateGroups(groupsFinal).subscribe({
     next: () => {
       this.isValidated.set(true);
-      this.loading.set(false);
-      this.router.navigate(['/historique']);
+
+      // Récupère l'historique à jour
+      this.groupservice.getDrawHistory().subscribe({
+        next: (history) => {
+          // Si tu as un signal ou variable pour stocker l’historique
+          // Ex : this.history.set(history);
+
+          this.loading.set(false);
+          this.router.navigate(['/draw-history']); // navigation vers historique
+        },
+        error: (error) => {
+          this.loading.set(false);
+          console.error('Erreur lors du chargement de l’historique', error);
+          // Affichage message erreur possible
+        }
+      });
     },
     error: (error) => {
       this.loading.set(false);
-      console.error('Erreur lors de la validation', error);
-      // Ajouter affichage message d’erreur utilisateur ici
+      console.error("Erreur lors de l'enregistrement des groupes ❌", error);
+      // Affichage message erreur possible
     },
   });
 }
-
-
   // fermeture de la modale groupe
   close() {
     if (this.dialogRef) {

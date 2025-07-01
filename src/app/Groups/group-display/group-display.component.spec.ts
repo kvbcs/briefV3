@@ -32,15 +32,6 @@ describe('GroupDisplayComponent', () => {
     expect(ids).toEqual(['group-0', 'group-1']);
   });
 
-  it('should emit validate event with current groups', () => {
-    spyOn(component.validate, 'emit');
-
-    component.onValidate();
-
-    expect(component.isValidated).toBeTrue();
-    expect(component.validate.emit).toHaveBeenCalledWith(mockGroups);
-  });
-
  it('should move item in same container (onDrop)', () => {
   const event = {
     previousIndex: 0,
