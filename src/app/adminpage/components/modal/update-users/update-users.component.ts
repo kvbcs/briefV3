@@ -8,7 +8,7 @@ import {
   signal,
   SimpleChanges,
 } from '@angular/core';
-import { Users } from '../../../../../model/types';
+import { User } from '../../../../models/user.model';
 import { UsersService } from '../../../services/users.service';
 import {
   FormBuilder,
@@ -38,7 +38,7 @@ export class UpdateUsersComponent implements OnChanges {
     email: new FormControl('', [Validators.email]),
   });
 
-  user = signal<Users | null>(null);
+  user = signal<User | null>(null);
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['userId'] && this.userId !== null) {
@@ -46,8 +46,8 @@ export class UpdateUsersComponent implements OnChanges {
       if (existingUser) {
         this.user.set(existingUser);
         this.updateForm.patchValue({
-          firstName: existingUser.firstname,
-          lastName: existingUser.lastname,
+          firstName: existingUser.first_name,
+          lastName: existingUser.last_name,
           email: existingUser.email,
         });
       }
@@ -60,8 +60,8 @@ export class UpdateUsersComponent implements OnChanges {
   closeModal() {
     if (this.user()) {
       this.updateForm.reset({
-        firstName: this.user()?.firstname,
-        lastName: this.user()?.lastname,
+        firstName: this.user()?.first_name,
+        lastName: this.user()?.last_name,
         email: this.user()?.email,
       });
     }

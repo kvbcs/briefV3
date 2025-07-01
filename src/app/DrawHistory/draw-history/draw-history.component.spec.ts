@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { DrawHistoryComponent } from './draw-history.component';
 import { of, throwError } from 'rxjs';
-import { DrawHistoryEntry } from '../models/draw-history-entry.model';
-import { DrawHistoryService } from '../services/mock-draw-history.service';
+import { DrawHistoryEntry } from '../../models/draw-history-entry.model';
+import { GroupService } from '../../core/services/group.service';
 
 describe('DrawHistoryComponent', () => {
   let component: DrawHistoryComponent;
@@ -24,15 +24,15 @@ describe('DrawHistoryComponent', () => {
     },
   ];
 
-  const mockDrawHistoryService = {
-    getDrawHistory: jasmine.createSpy('getDrawHistory').and.returnValue(of(mockHistory)),
-  };
+  const mockGroupService = {
+  getDrawHistory: jasmine.createSpy('getDrawHistory').and.returnValue(of(mockHistory)),
+};
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [DrawHistoryComponent],
       providers: [
-        { provide: DrawHistoryService, useValue: mockDrawHistoryService }
+        { provide: GroupService, useValue: mockGroupService}
       ]
     }).compileComponents();
 
@@ -45,12 +45,11 @@ describe('DrawHistoryComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should load history on init', fakeAsync(() => {
-    component.ngOnInit();
-    tick();
-    expect(mockDrawHistoryService.getDrawHistory).toHaveBeenCalled();
-    expect(component.history()).toEqual(mockHistory);
-  }));
+  it('should load history on init', () => {
+  expect(mockGroupService.getDrawHistory).toHaveBeenCalled();
+  expect(component.history()).toEqual(mockHistory);
+});
+
 
   it('should set selectedEntry on selectEntry call', () => {
     component.selectEntry(mockHistory[0]);
@@ -65,7 +64,7 @@ describe('DrawHistoryComponent', () => {
 
   it('should log error when loadHistory fails', fakeAsync(() => {
     const consoleSpy = spyOn(console, 'error');
-    mockDrawHistoryService.getDrawHistory.and.returnValue(throwError(() => new Error('Load error')));
+    mockGroupService.getDrawHistory.and.returnValue(throwError(() => new Error('Load error')));
 
     component.loadHistory();
     tick();

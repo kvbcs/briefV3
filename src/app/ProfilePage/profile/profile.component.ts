@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { ProfilService } from '../services/profil.service';
-import { User } from '../models/user.model';
+import { ProfileService } from '../../core/services/profile.service';
+import { User } from '../../models/user.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -15,10 +15,10 @@ import { ReactiveFormsModule } from '@angular/forms';
   styleUrl: './profile.component.css'
 })
 
-export class ProfilComponent implements OnInit {
+export class ProfileComponent implements OnInit {
 
     // Injection du service Profil et du FormBuilder (avec la syntaxe `inject()`)
-  private profilService = inject(ProfilService);
+  private profilService = inject(ProfileService);
   private formBuilder = inject(FormBuilder);
 
     // Objet utilisateur à afficher et modifier
@@ -39,11 +39,14 @@ export class ProfilComponent implements OnInit {
   }
   // Création du formulaire avec les données existantes
    initForm(): void {
-    this.profileForm = this.formBuilder.group({
-      firstname: [this.user.firstname],
-      lastname: [this.user.lastname],
-    });
-  }
+  if (!this.user) return; // Protection simple
+
+  this.profileForm = this.formBuilder.group({
+    firstname: [this.user.first_name],
+    lastname: [this.user.last_name],
+  });
+}
+
 
     // Active ou désactive le mode édition (affichage formulaire)
  toggleEditMode(): void {

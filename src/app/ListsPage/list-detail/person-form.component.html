@@ -1,0 +1,51 @@
+<form [formGroup]="personForm" (ngSubmit)="formSubmitted.emit()">
+  <label>
+    Nom :
+    <input type="text" formControlName="name" />
+  </label>
+
+  <label>
+    Genre :
+    <select formControlName="gender">
+      @for (gender of genderOptions; track gender) {
+        <option [value]="gender">{{ gender }}</option>
+      }
+    </select>
+  </label>
+
+  <label>
+    Aisance en français :
+    <input type="number" formControlName="frenchFluency" min="1" max="4" />
+  </label>
+
+  <label>
+    Ancien DWWM :
+    <input type="checkbox" formControlName="formerDWWM" />
+  </label>
+
+  <label>
+    Niveau technique :
+    <input type="number" formControlName="technicalLevel" min="1" max="4" />
+  </label>
+
+  <label>
+    Profil :
+    <select formControlName="profile">
+      @for (profile of profileOptions; track profile) {
+        <option [value]="profile">{{ profile }}</option>
+      }
+    </select>
+  </label>
+
+  <label>
+    Âge :
+    <input type="number" formControlName="age" min="1" max="99" />
+  </label>
+
+  <button type="submit">Valider</button>
+  <button type="button" (click)="cancelEdit.emit()">Annuler</button>
+
+  @if (errorMessage) {
+    <p class="error">{{ errorMessage }}</p>
+  }
+</form>

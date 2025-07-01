@@ -1,23 +1,25 @@
 <div class="profile-card">
   @if (editMode()) {
-  <h2>Modifier mon profil</h2>
-  <form [formGroup]="profileForm" (ngSubmit)="save()">
-    <label>Prénom :</label>
-    <input type="text" formControlName="firstname" />
-    <label>Nom :</label>
-    <input type="text" formControlName="lastname" />
-    <button type="submit">Enregistrer</button>
-    <button type="button" (click)="toggleEditMode()">Annuler</button>
-  </form>
-  } @else {
-  <h2>Mon profil</h2>
-  <p><strong>Nom :</strong> {{ user.lastname }}</p>
-  <p><strong>Prénom :</strong> {{ user.firstname }}</p>
-  <p><strong>Email :</strong> {{ user.email }}</p>
-  <p><strong>Créé le :</strong> {{ user.createdAt | date : "longDate" }}</p>
-  <p><strong>CGU Acceptée le :</strong> {{ user.cguAcceptedAt | date : "longDate" }}</p>
+    <h2>Modifier mon profil</h2>
+    <form [formGroup]="profileForm" (ngSubmit)="save()">
+      <label>Prénom :</label>
+      <input type="text" formControlName="firstname" />
+      <label>Nom :</label>
+      <input type="text" formControlName="lastname" />
+      <button type="submit">Enregistrer</button>
+      <button type="button" (click)="toggleEditMode()">Annuler</button>
+    </form>
+  } @else if (user) {
+    <h2>Mon profil</h2>
+    <p><strong>Nom :</strong> {{ user.last_name }}</p>
+    <p><strong>Prénom :</strong> {{ user.first_name }}</p>
+    <p><strong>Email :</strong> {{ user.email }}</p>
+    <p><strong>Créé le :</strong> {{ user.created_at | date : "longDate" }}</p>
+    <p><strong>CGU Acceptée le :</strong> {{ user.cgu_accepted_at | date : "longDate" }}</p>
 
-  <button (click)="toggleEditMode()">Modifier mes informations</button>
+    <button (click)="toggleEditMode()">Modifier mes informations</button>
+  } @else {
+    <p>Chargement du profil...</p>
   }
 
   <hr />
