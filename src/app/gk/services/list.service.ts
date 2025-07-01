@@ -142,6 +142,9 @@ export class ListService {
 
   addPerson(listId: number, personData: Omit<Person, 'id'>): Person {
     const list = this.lists.find(l => l.id === listId);
+    console.log(list);
+    
+    
     if (!list) throw new Error('List not found');
 
     const newPerson: Person = {
@@ -151,6 +154,7 @@ export class ListService {
 
     list.people.push(newPerson);
     this.saveLists();
+    console.log('Person added:', newPerson);
     return { ...newPerson };
   }
 

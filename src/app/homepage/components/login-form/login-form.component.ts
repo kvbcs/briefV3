@@ -64,6 +64,7 @@ export class LoginFormComponent {
       this.editModeLogo = false;
     }
   }
+  // private router = new Router()
   // Formulaire réactif avec 2 champs
   loginForm: FormGroup;
 
@@ -90,6 +91,7 @@ export class LoginFormComponent {
     this.auth.login(email, password).subscribe({
       next: (user) => {
         console.log('Connexion réussie :', user); // 👈 TEST 2
+         this.router.navigate(['/profil']);
         this.errorMessage = '';
       },
       error: (err) => {

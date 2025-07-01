@@ -1,0 +1,215 @@
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow: hidden; /* désactive le scroll global */
+}
+.sidebar-toggle {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1101;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* CONTENEUR SIDEBAR */
+.sidebar {
+  overflow: hidden;
+  background-color: #ffffff;
+  width: 100px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 3rem;
+  padding-bottom: 1rem;
+  border-right: 1px solid #f3f3f3;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+  font-family: "Montserrat", sans-serif;
+  margin-right: 2rem;
+}
+
+/* Liste de navigation */
+.nav-links {
+  overflow-y: auto;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  list-style: none;
+  align-items: center;
+}
+
+/* Icônes dans les liens */
+.nav-links a {
+  text-decoration: none;
+  background: none;
+  border: none;
+  outline: none;
+  display: block;
+  width: calc(100% - 2rem);
+  margin: 0 auto;
+  text-align: left;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: #333333;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+/* État hover */
+.nav-links a:hover {
+  background-color: #f9f9fb;
+}
+
+/* État actif */
+.nav-links a.active {
+  background-color: #ffecef;
+  color: #b80000;
+  font-weight: 200;
+  border-left: 0.5px solid #b80000;
+  border-radius: 0 5px 5px 0;
+  box-shadow: inset 3px 0 0 #b80000;
+  margin-left: 0;
+}
+.nav-links a:focus,
+.nav-links a:active {
+  outline: none;
+  box-shadow: none;
+  border: none;
+}
+
+/* Séparation en bas */
+.sidebar-bottom {
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  padding: 1rem 0;
+  width: 100%;
+  margin-bottom: 5rem;
+}
+
+/* Icônes (profil + logout) */
+.sidebar-bottom a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+
+}
+
+/* Hover visible partout */
+.sidebar-bottom a:hover {
+  background-color: #f9f9fb;
+}
+
+/* Image par défaut */
+.sidebar-bottom img.icon-img {
+  width: 24px;
+  height: 24px;
+  filter: grayscale(100%);
+  opacity: 0.6;
+  transition: filter 0.2s ease, opacity 0.2s ease;
+}
+
+/* Hover sur image */
+.sidebar-bottom a:hover img.icon-img {
+  filter: none;
+  opacity: 1;
+}
+
+/* Active uniquement sur profil */
+.sidebar-bottom a.active {
+  background-color: #ffecef;
+}
+
+.sidebar-bottom a.active img.icon-img {
+  filter: none;
+  opacity: 1;
+}
+
+/*Media queries pour tablette et pc*/
+@media (min-width: 768px) {
+  .sidebar {
+    width: 120px;
+    padding-bottom: 2rem;
+    margin-right: 4rem;
+  }
+
+  .sidebar-toggle {
+    display: none;
+  }
+
+  .nav-links {
+    width: 100%;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nav-links li {
+    width: 100%;
+  }
+
+  .nav-links a {
+    width: 100%;
+    display: block;
+    padding: 0.6rem 1rem;
+    padding-left: 1.4rem;
+    text-align: left;
+    box-sizing: border-box;
+  }
+
+  .nav-links a.active {
+    border-left: 0.5px solid #b80000;
+    box-shadow: inset 3px 0 0 #b80000;
+    margin-left: 0rem;
+    background-color: #ffecef;
+    color: #b80000;
+    font-weight: 500;
+    border-radius: 0 5px 5px 0;
+  }
+
+  .sidebar-bottom {
+    border-top: 1px solid #e0e0e0;
+    padding: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 1rem;
+    margin-bottom: 5rem;
+    width: 80%;
+  }
+  .sidebar-bottom .icon-img {
+    width: 24px;
+    height: 24px;
+    filter: grayscale(100%);
+    opacity: 0.6;
+    transition: filter 0.2s ease, opacity 0.2s ease;
+  }
+
+  .sidebar-bottom a.active .icon-img {
+    filter: none;
+    opacity: 1;
+  }
+}

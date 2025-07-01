@@ -1,8 +1,8 @@
 <div class="lists-container">
   <div class="header-actions">
-    <h1>My Lists</h1>
+    <h1>Mes Listes</h1>
     <button class="btn-red" (click)="toggleNewListForm()">
-      {{ showNewListForm ? "Cancel" : "Create New List" }}
+      {{ showNewListForm ? "Annuler" : "Créer Nouvelle Liste" }}
     </button>
   </div>
 
@@ -60,8 +60,8 @@
       <div class="list-content">
         <h3>{{ list.name }}</h3>
         <div class="list-stats">
-          <p>👤 {{ list.people.length }} people</p>
-          <p>👥 {{ list.draws.length }} draws</p>
+          <p>👤 {{ list.people.length }} personne(s)</p>
+          <p>👥 {{ list.draws.length }} tirage(s)</p>
         </div>
       </div>
       <div class="list-actions">
