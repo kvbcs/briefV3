@@ -9,8 +9,7 @@ import { ListPreviewComponent } from './list-preview/list-preview.component';
 import { ListsUserComponent } from './lists/lists.component';
 import { MentionsLegalesComponent } from './legal/mentions-legales/mentions-legales.component';
 import { AuthenticatedLayoutComponent } from './layout/authenticated-layout/authenticated-layout.component';
-
-
+import { GroupPageComponent } from './Groups/group-page/group-page.component';
 
 export const routes: Routes = [
   {
@@ -35,6 +34,10 @@ export const routes: Routes = [
   { path: 'list-preview/:id', component: ListPreviewComponent },
   { path: 'sidebar', component: SidebarComponent },
     { path: 'legal', component: MentionsLegalesComponent },
+    {
+    path: 'groups',
+    component: GroupPageComponent
+  }
 
   ]
 }
