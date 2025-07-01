@@ -3,24 +3,30 @@
 <app-group-form (generate)="onGenerate($event)"></app-group-form>
 
 @if (groups().length > 0) {
+<section class="group-display-wrapper">
   <app-group-display
-  [groups]="groups()"
-  (validate)="onValidate($event)"
-></app-group-display>
+    [groups]="groups()"
+    [isValidated]="isValidated()"
+  ></app-group-display>
 
-}
-
-
-@if (groups.length > 0) {
-  <section>
-    <h3>Groupes générés :</h3>
-    @for (group of groups(); track group.name) {
-      <h4>{{ group.name }}</h4>
-      <ul>
-        @for (member of group.members; track member.id) {
-          <li>{{ member.name }}</li>
-        }
-      </ul>
+  <button
+    (click)="handleValidateAndRedirect(groups())"
+    [disabled]="isValidated() || groups().length === 0"
+    class="validate-btn"
+  >
+    Valider le tirage
+  </button>
+</section>
+} @if (groups.length > 0) {
+<section>
+  <h3>Groupes générés :</h3>
+  @for (group of groups(); track group.name) {
+  <h4>{{ group.name }}</h4>
+  <ul>
+    @for (member of group.members; track member.id) {
+    <li>{{ member.name }}</li>
     }
-  </section>
+  </ul>
+  }
+</section>
 }

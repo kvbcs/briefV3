@@ -28,7 +28,7 @@
 /* Liste des membres */
 .member-list {
   min-height: 80px;
-  background-color: #F3F3F3;
+  background-color: #ffffff;
   border-radius: 8px;
   padding: 0.75rem;
   display: flex;
@@ -53,24 +53,24 @@
   cursor: grabbing;
 }
 
-/* Bouton de validation */
-.validate-btn {
-  margin: 2rem auto 0;
-  display: block;
-  background-color: #5E47D2;
-  color: white;
-  font-weight: 600;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+input {
+  margin-bottom: 10px; /* remonte l'input de 6px */
 }
 
-.validate-btn:hover {
-  background-color: #4534A1;
+input.readonly {
+  background-color: transparent;
+  border: none;         
+  color: #555;
+  cursor: default;
+  outline: none;        
 }
+
+input:not(.readonly):focus {
+  border-color: #007BFF;
+  box-shadow: 0 0 5px rgba(0,123,255,.5);
+}
+
+
 
 @media (min-width: 768px) {
   .groups-container {

@@ -13,6 +13,7 @@ export class GroupService {
 
    generateGroups(config: GroupGenerationConfig): Observable<Group[]> {
     if (this.isMock) {
+          // Génère des groupes factices localement selon la config
       const mockGroups: Group[] = [];
 
       for (let i = 0; i < config.numberOfGroups; i++) {
@@ -25,8 +26,9 @@ export class GroupService {
         });
       }
 
-      return of(mockGroups);
+      return of(mockGroups); // Observable local avec groupes mockés
     } else {
+          // Envoi la config complète au backend pour tirage réel
       return this.http.post<Group[]>('/api/groups/draw', config, {
         withCredentials: true
       });
@@ -37,8 +39,9 @@ export class GroupService {
  validateGroups(groups: Group[]): Observable<{ success: boolean }> {
     if (this.isMock) {
       console.log('[MOCK] Groupes validés :', groups);
-      return of({ success: true });
+      return of({ success: true }); // succès simulé
     } else {
+          // Envoi la composition finale des groupes au backend
       return this.http.post<{ success: boolean }>('/api/groups/validate', groups, {
         withCredentials: true
       });

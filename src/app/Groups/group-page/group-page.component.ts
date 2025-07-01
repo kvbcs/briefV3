@@ -6,6 +6,7 @@ import { GroupService } from '../../services/group.service';
 import { Group } from '../../models/group.model';
 import { GroupDisplayComponent } from '../group-display/group-display.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-group-page',
@@ -23,24 +24,37 @@ export class GroupPageComponent {
   groups = signal<Group[]>([]);
   private groupservice = inject(GroupService);
 
+  // gestion de la validation
+  loading = signal(false);
+  isValidated = signal(false);
+  private router = inject(Router);
+
   onGenerate(config: GroupGenerationConfig): void {
-  this.groupservice.generateGroups(config).subscribe({
-    next: (generatedGroups) => this.groups.set(generatedGroups),
-    error: (error) => console.error('Erreur lors de la génération des groupes ❌', error),
+    this.groupservice.generateGroups(config).subscribe({
+      next: (generatedGroups) => this.groups.set(generatedGroups),
+      error: (error) =>
+        console.error('Erreur lors de la génération des groupes ❌', error),
+    });
+  }
+
+handleValidateAndRedirect(groupsFinal: Group[]) {
+  if (this.loading()) return; // protège contre clics multiples
+  this.loading.set(true);
+
+  this.groupservice.validateGroups(groupsFinal).subscribe({
+    next: () => {
+      this.isValidated.set(true);
+      this.loading.set(false);
+      this.router.navigate(['/historique']);
+    },
+    error: (error) => {
+      this.loading.set(false);
+      console.error('Erreur lors de la validation', error);
+      // Ajouter affichage message d’erreur utilisateur ici
+    },
   });
 }
 
-  onValidate(groupsFinal: Group[]) {
-    this.groupservice.validateGroups(groupsFinal).subscribe({
-      next: (response) => {
-        console.log('Groupes enregistrés avec succès ✔️');
-        // Tu peux afficher un toast ou message de confirmation ici
-      },
-      error: (error) => {
-        console.error("Erreur lors de l'enregistrement des groupes ❌", error);
-      },
-    });
-  }
 
   // fermeture de la modale groupe
   close() {
