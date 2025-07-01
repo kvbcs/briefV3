@@ -10,6 +10,8 @@ import { ListsUserComponent } from './lists/lists.component';
 import { MentionsLegalesComponent } from './legal/mentions-legales/mentions-legales.component';
 import { AuthenticatedLayoutComponent } from './layout/authenticated-layout/authenticated-layout.component';
 import { GroupPageComponent } from './Groups/group-page/group-page.component';
+import { DrawHistoryComponent } from './DrawHistory/draw-history/draw-history.component';
+
 
 export const routes: Routes = [
   {
@@ -37,7 +39,8 @@ export const routes: Routes = [
     {
     path: 'groups',
     component: GroupPageComponent
-  }
+  },
+    { path: 'draw-history', component: DrawHistoryComponent }
 
   ]
 }
