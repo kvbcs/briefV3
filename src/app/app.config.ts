@@ -11,6 +11,7 @@ providers: [
   { provide: AUTH_SERVICE, useClass: AuthService }
 ]
 
+
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideHttpClient(), provideAnimations(), provideToastr()]
 };

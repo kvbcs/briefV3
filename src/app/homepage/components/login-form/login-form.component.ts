@@ -5,10 +5,11 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { FakeAuthService } from '../../../core/services/fake-auth.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
+// ✅ Déclaration du composant avec métadonnées
 @Component({
   selector: 'app-login-form',
   standalone: true,
@@ -16,6 +17,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './login-form.component.html',
   styleUrls: ['./login-form.component.css'],
 })
+
 export class LoginFormComponent {
   logo = signal<string>(localStorage.getItem('siteLogo') || 'assets/logo.png');
   tempLogo = signal<string>(this.logo());
@@ -23,6 +25,7 @@ export class LoginFormComponent {
   editMode: boolean = false;
   title = signal<string>(localStorage.getItem('siteTitle') || 'ShuffleMyTeam');
   tempTitle = signal<string>(this.title());
+
 
   editTitle() {
     this.tempTitle.set(this.title());
@@ -69,45 +72,62 @@ export class LoginFormComponent {
   }
   // private router = new Router()
   // Formulaire réactif avec 2 champs
+
+  // ✅ Déclaration d’un groupe de contrôles de formulaire
+
   loginForm: FormGroup;
 
-  // Output pour dire au parent : "ouvre la modale d’inscription"
+  // ✅ Déclaration d’un événement envoyé au parent quand l’utilisateur veut s’inscrire
   @Output() openSignup = new EventEmitter<void>();
-  errorMessage: string = '';
+
 
   constructor(
     private readonly fb: FormBuilder,
-    private readonly auth: FakeAuthService,
+    private readonly auth: AuthService,
     private readonly router: Router,
     private toast: ToastrService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
-    });
-  }
 
-  // Soumission du formulaire de connexion
-  onSubmit() {
-    const { email, password } = this.loginForm.value;
-    console.log('Tentative de connexion avec :', email, password); // 👈 TEST 1
+    })};
 
-    this.auth.login(email, password).subscribe({
+  // ✅ Méthode appelée à la soumission du formulaire
+  onSubmit(): void {
+    const { email, password } = this.loginForm.value; // extraction des valeurs
+
+
+    this.auth.login({ email, password }).subscribe({
       next: (user) => {
-        console.log('Connexion réussie :', user); // 👈 TEST 2
+        console.log('Connexion réussie :', user); 
         this.toast.success('Connexion réussie', 'Succès');
         this.router.navigate(['/profil']);
-        this.errorMessage = '';
       },
       error: (err) => {
-        console.error('Erreur de connexion :', err); // 👈 TEST 3
-        this.errorMessage = 'Email ou mot de passe incorrect';
+        console.error('Erreur de connexion :', err); 
         this.toast.error('Email ou mot de passe incorrect', 'Erreur');
+
+              console.error('❌ Erreur reçue depuis l’API :', err);
+              
+        if (err.status === 400) {
+          this.toast.error('Requête invalide : vérifiez vos champs.', 'Erreur');
+        } else if (err.status === 401) {
+          this.toast.error('Identifiants incorrects.', 'Erreur');
+        } else {
+          this.toast.error('Erreur inattendue, veuillez réessayer.', 'Erreur');
+        }
+
       },
     });
   }
 
   onSignupClick() {
     this.openSignup.emit(); // ✅ dit au parent "ouvre la modale"
+    
+
+        
+      }
   }
-}
+
+

@@ -163,6 +163,7 @@ img {
 
   .login-form-container {
     max-width: 400px;
+    margin-right: 90px; 
   }
 
   .form-buttons {
@@ -174,3 +175,4 @@ img {
     }
   }
 }
+

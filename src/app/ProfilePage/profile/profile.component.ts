@@ -13,11 +13,13 @@ import { Router } from '@angular/router';
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css',
 })
+
 export class ProfilComponent implements OnInit {
   constructor(private toast: ToastrService, private readonly router: Router) {}
   // Injection du service Profil et du FormBuilder (avec la syntaxe `inject()`)
   private profilService = inject(ProfilService);
   private formBuilder = inject(FormBuilder);
+
 
   // Objet utilisateur à afficher et modifier
   user!: User;
