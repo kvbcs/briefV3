@@ -16,6 +16,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./login-form.component.css'],
 })
 export class LoginFormComponent {
+  logo = signal<string>(localStorage.getItem('siteLogo') || 'assets/logo.png');
+  tempLogo = signal<string>(this.logo());
+  editModeLogo: boolean = false;
   editMode: boolean = false;
   title = signal<string>(localStorage.getItem('siteTitle') || 'ShuffleMyTeam');
   tempTitle = signal<string>(this.title());
@@ -31,9 +34,35 @@ export class LoginFormComponent {
       this.title.set(newTitle);
       localStorage.setItem('siteTitle', newTitle);
     } else {
-      alert("Titre invalide")
+      alert('Titre invalide');
     }
     this.editMode = false;
+  }
+
+  editLogo() {
+    this.editModeLogo = true;
+    this.tempLogo.set(this.logo());
+  }
+
+  saveLogo(event?: Event) {
+    const input = event?.target as HTMLInputElement;
+    const file = input?.files?.[0];
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = reader.result as string;
+        this.logo.set(result);
+        this.tempLogo.set(result);
+        localStorage.setItem('siteLogo', result);
+        this.editModeLogo = false;
+      };
+      reader.readAsDataURL(file); // conversion en base64
+    } else {
+      // fallback si aucune image sélectionnée
+      alert('error');
+      this.editModeLogo = false;
+    }
   }
   // Formulaire réactif avec 2 champs
   loginForm: FormGroup;
