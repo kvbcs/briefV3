@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { FakeAuthService } from '../../../core/services/fake-auth.service';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login-form',
@@ -32,9 +33,10 @@ export class LoginFormComponent {
     const newTitle = this.tempTitle().trim();
     if (newTitle.length > 0) {
       this.title.set(newTitle);
+      this.toast.success('Titre modifié', 'Succès');
       localStorage.setItem('siteTitle', newTitle);
     } else {
-      alert('Titre invalide');
+      this.toast.error('Titre invalide', 'Erreur');
     }
     this.editMode = false;
   }
@@ -55,13 +57,14 @@ export class LoginFormComponent {
         this.logo.set(result);
         this.tempLogo.set(result);
         localStorage.setItem('siteLogo', result);
+        this.toast.success('Logo modifié', 'Succès');
         this.editModeLogo = false;
       };
       reader.readAsDataURL(file); // conversion en base64
     } else {
       // fallback si aucune image sélectionnée
-      alert('error');
-      this.editModeLogo = false;
+      this.toast.error('Fichier invalide', 'Erreur'),
+        (this.editModeLogo = false);
     }
   }
   // private router = new Router()
@@ -75,7 +78,8 @@ export class LoginFormComponent {
   constructor(
     private readonly fb: FormBuilder,
     private readonly auth: FakeAuthService,
-    private readonly router: Router
+    private readonly router: Router,
+    private toast: ToastrService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -91,12 +95,14 @@ export class LoginFormComponent {
     this.auth.login(email, password).subscribe({
       next: (user) => {
         console.log('Connexion réussie :', user); // 👈 TEST 2
-         this.router.navigate(['/profil']);
+        this.toast.success('Connexion réussie', 'Succès');
+        this.router.navigate(['/profil']);
         this.errorMessage = '';
       },
       error: (err) => {
         console.error('Erreur de connexion :', err); // 👈 TEST 3
         this.errorMessage = 'Email ou mot de passe incorrect';
+        this.toast.error('Email ou mot de passe incorrect', 'Erreur');
       },
     });
   }

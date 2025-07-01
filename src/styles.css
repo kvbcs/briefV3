@@ -1,13 +1,21 @@
+@import 'ngx-toastr/toastr';
+
 body {
   margin: 0;
   padding: 0;
-  background-image: url('assets/BGSimplon.png');
-  background-size: cover;         
-  background-repeat: no-repeat;   
-  background-position: center;    
-  min-height: 100vh;         
-  font-family: 'Montserrat', sans-serif;     
+  background-image: url("assets/BGSimplon.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  min-height: 100vh;
+  font-family: "Montserrat", sans-serif;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
