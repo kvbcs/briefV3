@@ -18,21 +18,16 @@ export const routes: Routes = [
     path: '',
     component: HomePageComponent,
   },
-    {
-  path: '',
-  component: AuthenticatedLayoutComponent,
-  children: [
-    { path: 'lists', component: ListsUserComponent },
-    // { path: 'groupes', component: GroupsComponent },
-    { path: 'profil', component: ProfilComponent },
-      { path: 'admin/users', component: UsersComponent },
-     {
-    path: 'admin/stats', component: StatsComponent
-  },
+
   {
-    path: 'lists/:id',
-    component: ListDetailComponent,
-  },
+    path: '',
+    component: AuthenticatedLayoutComponent,
+    children: [
+      { path: 'lists', component: ListsUserComponent },
+      // { path: 'groupes', component: GroupsComponent },
+      { path: 'profil', component: ProfilComponent },
+      { path: 'admin/users', component: UsersComponent },
+      {path: 'lists/:id', component: ListDetailComponent},
   { path: 'list-preview/:id', component: ListPreviewComponent },
   { path: 'sidebar', component: SidebarComponent },
     { path: 'legal', component: MentionsLegalesComponent },
@@ -40,8 +35,18 @@ export const routes: Routes = [
     path: 'groups',
     component: GroupPageComponent
   },
-    { path: 'draw-history', component: DrawHistoryComponent }
-
-  ]
-}
+    { path: 'draw-history', component: DrawHistoryComponent },
+      {
+        path: 'admin/stats',
+        component: StatsComponent,
+      },
+      {
+        path: 'lists/:id',
+        component: ListDetailComponent,
+      },
+      { path: 'list-preview/:id', component: ListPreviewComponent },
+      { path: 'sidebar', component: SidebarComponent },
+      { path: 'legal', component: MentionsLegalesComponent },
+    ],
+  },
 ];

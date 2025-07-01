@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 
 
 import { FakeAuthService } from '../../../core/services/fake-auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-signup-modal',
@@ -24,7 +25,7 @@ export class SignupModalComponent {
   errorMessage: string | null = null;
 
 
-  constructor(private readonly fb: FormBuilder) {
+  constructor(private readonly fb: FormBuilder, private toast: ToastrService) {
     this.signupForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       emailConfirm: ['', [Validators.required, Validators.email]],
@@ -47,6 +48,9 @@ export class SignupModalComponent {
       this.auth.register(formData).subscribe({
         next: (user: any) => {
           this.successMessage = 'Inscription réussie ! 🎉 Un email de confirmation vous a été envoyé.';
+          this.toast.success(
+            'Inscription réussie ! 🎉 Un email de confirmation vous a été envoyé.', "Succès"
+          );
           this.signupForm.reset();
           this.submitted = false;
           this.close.emit();
