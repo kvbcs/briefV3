@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { UsersComponent } from './adminpage/users/users.component';
-import { ListsComponent } from './adminpage/lists/lists.component';
 import { ProfilComponent } from './ProfilePage/profile/profile.component';
 import { StatsComponent } from './adminpage/stats/stats.component';
 import { HomePageComponent } from './homepage/pages/home-page/home-page.component';
@@ -14,9 +13,9 @@ import { AuthenticatedLayoutComponent } from './layout/authenticated-layout/auth
 
 
 export const routes: Routes = [
-    {
+  {
     path: '',
-    component: HomePageComponent
+    component: HomePageComponent,
   },
     {
   path: '',
@@ -26,10 +25,7 @@ export const routes: Routes = [
     // { path: 'groupes', component: GroupsComponent },
     { path: 'profil', component: ProfilComponent },
       { path: 'admin/users', component: UsersComponent },
-      {
-    path: 'admin/lists',
-    component: ListsComponent,
-  }, {
+     {
     path: 'admin/stats', component: StatsComponent
   },
   {

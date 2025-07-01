@@ -9,15 +9,19 @@
   box-sizing: border-box;
   overflow: hidden;
 }
-
+img {
+  height: 100px;
+  width: 100px;
+}
 /* Texte au-dessus du formulaire */
 .login-text {
   text-align: center;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: #333;
   font-weight: 600;
   max-width: 100%;
 
+ 
   h3 {
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
@@ -41,7 +45,7 @@
   border-radius: 20px;
   padding: 1.5rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 600;
   width: 100%;
   box-sizing: border-box;
@@ -88,7 +92,7 @@
   gap: 12px;
 
   button {
-    font-family: 'Montserrat', sans-serif;
+    font-family: "Montserrat", sans-serif;
     font-weight: 700;
     font-size: 1rem;
     background-color: #123744;
@@ -117,7 +121,7 @@
   max-width: 600px;
   margin: 0 auto;
   padding: 1rem;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 600;
   color: #333;
 }
@@ -135,6 +139,7 @@
 
 /* 💻 Responsive : 2 colonnes côte à côte sur écrans larges */
 @media (min-width: 768px) {
+  
   .login-wrapper {
     flex-direction: row;
     align-items: center;

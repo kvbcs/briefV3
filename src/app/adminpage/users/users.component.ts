@@ -7,11 +7,11 @@ import {
   ViewChild,
 } from '@angular/core';
 import { UsersService } from '../services/users.service';
-import { UpdateModalComponent } from '../components/update-modal/update-modal.component';
+import { UpdateUsersComponent } from '../components/modal/update-users/update-users.component';
 
 @Component({
   selector: 'app-users',
-  imports: [UpdateModalComponent],
+  imports: [UpdateUsersComponent],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css',
 })
@@ -27,8 +27,8 @@ export class UsersComponent implements OnInit {
     });
   }
   openModal(id: number) {
-    this.selectedUserId.set(id)
-    
+    this.selectedUserId.set(id);
+
     this.modalOpen.set(true);
   }
 

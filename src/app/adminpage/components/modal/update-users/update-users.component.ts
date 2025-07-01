@@ -8,8 +8,8 @@ import {
   signal,
   SimpleChanges,
 } from '@angular/core';
-import { Users } from '../../../../model/types';
-import { UsersService } from '../../services/users.service';
+import { Users } from '../../../../../model/types';
+import { UsersService } from '../../../services/users.service';
 import {
   FormBuilder,
   FormControl,
@@ -19,13 +19,13 @@ import {
 } from '@angular/forms';
 
 @Component({
-  selector: 'app-update-modal',
+  selector: 'app-update-users',
   standalone: true,
   imports: [ReactiveFormsModule],
-  templateUrl: './update-modal.component.html',
-  styleUrl: './update-modal.component.css',
+  templateUrl: './update-users.component.html',
+  styleUrl: './update-users.component.css',
 })
-export class UpdateModalComponent implements OnChanges {
+export class UpdateUsersComponent implements OnChanges {
   private userService = inject(UsersService);
   private formBuilder = inject(FormBuilder);
   @Input() showModal: boolean = false;
@@ -70,7 +70,7 @@ export class UpdateModalComponent implements OnChanges {
 
   onSubmit(): void {
     if (this.updateForm.pristine) {
-      alert('rien changé');
+      alert('Aucune modification effectuée');
       this.closeModal();
     } else if (this.updateForm.valid) {
       const updatedUser = { ...this.updateForm.value };
