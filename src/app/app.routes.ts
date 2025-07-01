@@ -10,32 +10,32 @@ import { ListsUserComponent } from './lists/lists.component';
 import { MentionsLegalesComponent } from './legal/mentions-legales/mentions-legales.component';
 import { AuthenticatedLayoutComponent } from './layout/authenticated-layout/authenticated-layout.component';
 
-
-
 export const routes: Routes = [
   {
     path: '',
     component: HomePageComponent,
   },
-    {
-  path: '',
-  component: AuthenticatedLayoutComponent,
-  children: [
-    { path: 'lists', component: ListsUserComponent },
-    // { path: 'groupes', component: GroupsComponent },
-    { path: 'profil', component: ProfilComponent },
-      { path: 'admin/users', component: UsersComponent },
-     {
-    path: 'admin/stats', component: StatsComponent
-  },
-  {
-    path: 'lists/:id',
-    component: ListDetailComponent,
-  },
-  { path: 'list-preview/:id', component: ListPreviewComponent },
-  { path: 'sidebar', component: SidebarComponent },
-    { path: 'legal', component: MentionsLegalesComponent },
 
-  ]
-}
+  {
+    path: '',
+    component: AuthenticatedLayoutComponent,
+    children: [
+      { path: 'lists', component: ListsUserComponent },
+      // { path: 'groupes', component: GroupsComponent },
+      { path: 'profil', component: ProfilComponent },
+      { path: 'admin/users', component: UsersComponent },
+
+      {
+        path: 'admin/stats',
+        component: StatsComponent,
+      },
+      {
+        path: 'lists/:id',
+        component: ListDetailComponent,
+      },
+      { path: 'list-preview/:id', component: ListPreviewComponent },
+      { path: 'sidebar', component: SidebarComponent },
+      { path: 'legal', component: MentionsLegalesComponent },
+    ],
+  },
 ];
