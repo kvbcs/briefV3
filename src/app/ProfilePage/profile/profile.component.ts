@@ -43,6 +43,7 @@ export class ProfileComponent implements OnInit {
       if (!this.user) return; // Protection simple
 
     this.profileForm = this.formBuilder.group({
+      email: [this.user.email],
       firstname: [this.user.first_name],
       lastname: [this.user.last_name],
     });

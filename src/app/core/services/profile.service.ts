@@ -11,7 +11,7 @@ export class ProfileService {
   private http = inject(HttpClient);
 
   // Activer les mocks (true = données simulées / false = appel API réel)
-  private useMock = true;
+  private useMock = false;
 
   // Données User factices (mock)
   private mockUser = mockUsers.find(
@@ -35,7 +35,6 @@ export class ProfileService {
     } else {
       return this.http
         .get<{ success: boolean; data: User }>(`${this.API_URL}/user/show/me`, {
-          withCredentials: true,
         })
         .pipe(map((res) => res.data));
     }
@@ -46,16 +45,21 @@ export class ProfileService {
    * - en mock : met à jour la variable locale
    * - en prod : envoie les nouvelles données via un PUT
    */
-  updateUser(updated: User): Observable<User> {
+    updateUser(updated: {
+    email: string;
+    first_name: string;
+    last_name: string;
+  }): Observable<User> {
     if (this.useMock) {
-      this.mockUser = { ...updated };
+      this.mockUser = { ...this.mockUser, ...updated };
       return of(this.mockUser);
     } else {
-      return this.http.put<User>(
-      `${this.API_URL}/user/update/me`,
-      updated,
-      { withCredentials: true }
-    );
+      return this.http
+        .post<{ success: boolean; data: User }>(
+          `${this.API_URL}/user/edit/me`,
+          updated
+        )
+        .pipe(map((res) => res.data));
     }
   }
 
@@ -69,10 +73,7 @@ export class ProfileService {
       console.log('Utilisateur supprimé (mock)');
       return of(undefined); // déclenche bien la chaîne asynchrone
     } else {
-      return this.http.delete<void>(
-      `${this.API_URL}/user/delete/me`,
-      { withCredentials: true }
-    );
+      return this.http.delete<void>(`${this.API_URL}/user/delete/me`);
     }
   }
 }

@@ -1,51 +1,49 @@
 import { inject, Injectable } from '@angular/core';
-import { List } from '../../models/list';
+import { HttpClient } from '@angular/common/http';
 import { Person } from '../../models/person';
-import { ListService } from './list.service';
+import { Observable, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ListPersonService {
-  private listService = inject(ListService);
+  private http = inject(HttpClient);
+  private apiUrl = 'http://193.134.250.16/api';
 
-  private getListById(id: number): List {
-    const list = this.listService.getAllLists().find(l => l.id === id);
-    if (!list) throw new Error('List not found');
-    return list;
+  // 🔄 Créer une nouvelle personne
+  addPerson(personData: Omit<Person, 'id' | 'liste'> & { list_slug: string }): Observable<Person> {
+    return this.http.post<{ success: boolean; person: Person; token: string }>(
+      `${this.apiUrl}/person/new`,
+      { ...personData, liste: { slug: personData.list_slug } }
+    ).pipe(map(res => res.person));
   }
 
-  addPerson(listId: number, personData: Omit<Person, 'id'>): Person {
-    const list = this.getListById(listId);
-    const newPerson: Person = {
-      ...personData,
-      id: Date.now(),
-    };
-
-    list.people.push(newPerson);
-    this.listService.saveLists();
-    return { ...newPerson };
+  // ✏️ Modifier une personne (via son slug)
+  updatePerson(personSlug: string, updatedData: Partial<Person>): Observable<Person> {
+    return this.http.put<{ success: boolean; person: Person; token: string }>(
+      `${this.apiUrl}/person/edit/${personSlug}`,
+      updatedData
+    ).pipe(map(res => res.person));
   }
 
-  updatePerson(listId: number, person: Person): Person {
-    const list = this.getListById(listId);
-    const index = list.people.findIndex(p => p.id === person.id);
-    if (index === -1) throw new Error('Person not found');
-
-    list.people[index] = person;
-    this.listService.saveLists();
-    return { ...person };
+  // ❌ Supprimer une personne (via son slug)
+  deletePerson(personSlug: string): Observable<void> {
+    return this.http.delete<{ success: boolean; token: string }>(
+      `${this.apiUrl}/person/delete/${personSlug}`
+    ).pipe(map(() => void 0));
   }
 
-  deletePerson(listId: number, personId: number): boolean {
-    const list = this.getListById(listId);
-    const initialLength = list.people.length;
-    list.people = list.people.filter(p => p.id !== personId);
+  // 👤 Récupérer une personne par slug
+  getPersonBySlug(slug: string): Observable<Person> {
+    return this.http.get<{ success: boolean; person: Person; token: string }>(
+      `${this.apiUrl}/person/show/${slug}`
+    ).pipe(map(res => res.person));
+  }
 
-    if (initialLength !== list.people.length) {
-      this.listService.saveLists();
-      return true;
-    }
-    return false;
+  // 👥 Récupérer toutes les personnes d'une liste
+  getPersonsByListSlug(listSlug: string): Observable<Person[]> {
+    return this.http.get<{ success: boolean; persons: Person[]; token: string }>(
+      `${this.apiUrl}/persons/show/${listSlug}`
+    ).pipe(map(res => res.persons));
   }
 }

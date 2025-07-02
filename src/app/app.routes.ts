@@ -27,7 +27,7 @@ export const routes: Routes = [
     { path: 'profile', component: ProfileComponent },
       { path: 'admin/users', component: UsersComponent },
       {path: 'lists/:id', component: ListDetailComponent},
-  { path: 'list-preview/:id', component: ListPreviewComponent },
+  { path: 'list-preview/:slug', component: ListPreviewComponent },
   { path: 'sidebar', component: SidebarComponent },
     { path: 'legal', component: MentionsLegalesComponent },
     {

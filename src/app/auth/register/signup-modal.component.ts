@@ -25,9 +25,10 @@ export class SignupModalComponent {
     email: FormControl<string>;
     emailConfirm: FormControl<string>;
     password: FormControl<string>;
-    passwordConfirm: FormControl<string>;
-    firstName: FormControl<string>;
-    lastName: FormControl<string>;
+    confirm_password: FormControl<string>;
+    first_name: FormControl<string>;
+    last_name: FormControl<string>;
+    cgu_accepted: FormControl<boolean>;
   }>;
 
   submitted = false;
@@ -40,23 +41,13 @@ export class SignupModalComponent {
         email: ['', [Validators.required, Validators.email]],
         emailConfirm: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required, Validators.minLength(6)]],
-        passwordConfirm: ['', [Validators.required]],
-        firstName: ['', Validators.required],
-        lastName: ['', Validators.required],
+        confirm_password: ['', [Validators.required]],
+        first_name: ['', Validators.required],
+        last_name: ['', Validators.required],
+        cgu_accepted: [false, Validators.requiredTrue]
       },
       { validators: [this.matchEmails, this.matchPasswords] }
     );
-  }
-
-  private adaptSignupForm(form: any) {
-    return {
-      email: form.email,
-      password: form.password,
-      confirm_password: form.passwordConfirm,
-      first_name: form.firstName,
-      last_name: form.lastName,
-      cgu_accepted: true, // ou récupéré depuis une case à cocher si tu l’ajoutes plus tard
-    };
   }
 
   onSubmit() {
@@ -65,10 +56,16 @@ export class SignupModalComponent {
     this.errorMessage = null;
 
     if (this.signupForm.valid) {
-      const formData = this.signupForm.value;
-      const payload = this.adaptSignupForm(formData);
-      this.auth.register(payload).subscribe({
-        next: (user: any) => {
+      const formData = this.signupForm.getRawValue();
+      this.auth.register(formData).subscribe({
+        next: (response: any) => {
+          // on vérifie si la réponse est un succès 
+          if (response.success === false) {
+            // on gere la validation d'erreur côté serveur
+            this.errorMessage = response.message || `Erreur lors de l'inscription.`;
+            this.toast.error(this.errorMessage!, "Erreur");
+          } else {
+            // cas de réussite
           this.successMessage =
             'Inscription réussie ! 🎉 Un email de confirmation vous a été envoyé.';
           this.toast.success(
@@ -78,9 +75,7 @@ export class SignupModalComponent {
           this.signupForm.reset();
           this.submitted = false;
           this.close.emit();
-        },
-        error: (err: { message: any }) => {
-          this.errorMessage = err.message || "Erreur lors de l'inscription.";
+        }
         },
       });
     }
@@ -97,7 +92,7 @@ export class SignupModalComponent {
 
   matchPasswords(group: FormGroup) {
     const pass = group.get('password')?.value;
-    const passConfirm = group.get('passwordConfirm')?.value;
+    const passConfirm = group.get('confirm_password')?.value;
     return pass === passConfirm ? null : { passwordMismatch: true };
   }
 }

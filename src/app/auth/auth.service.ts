@@ -51,22 +51,13 @@ export class AuthService {
    * Supprime les données de l’utilisateur du localStorage
    */
   logout(): void {
-  const token = localStorage.getItem('token');
-
-  if (!token) {
-    this.clearSession();
-    return;
-  }
-
-  this.http
-    .post(`${this.apiUrl}/logout`, {}, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+  this.http.post(`${this.apiUrl}/logout`, {})
     .subscribe({
       next: () => this.clearSession(),
-      error: () => this.clearSession(), // même en cas d'erreur, on nettoie localement
+      error: () => this.clearSession(),
     });
 }
+
 
 private clearSession(): void {
   this.currentUser = null;
@@ -75,9 +66,10 @@ private clearSession(): void {
 }
 
 
-  isLoggedIn(): boolean {
-    return this.currentUser !== null;
-  }
+ isLoggedIn(): boolean {
+  return !!localStorage.getItem('token');
+}
+
 
   getCurrentUser(): User | null {
     return this.currentUser;
@@ -93,6 +85,7 @@ private clearSession(): void {
 
     return 'user';
   }
+  
   needsToAcceptTerms(): boolean {
     if (!this.currentUser?.cgu_accepted_at) return true;
 
@@ -132,6 +125,7 @@ private clearSession(): void {
     return this.http.post<any>(`${this.apiUrl}/register`, formData).pipe(
       map((res) => {
         if (res.success && res.user) {
+          localStorage.removeItem('token'); // ← si une ancienne session reste en cache
           localStorage.setItem('currentUser', JSON.stringify(res.user));
           this.currentUser = res.user;
           return res.user;

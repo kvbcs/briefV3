@@ -27,7 +27,7 @@ import { PeopleTableComponent } from './people-table.component';
 })
 export class ListDetailComponent implements OnInit {
   list: List | undefined;
-  listId!: number;
+  listSlug!: string;
   isLoading = true;
 
   personForm!: FormGroup;
@@ -49,12 +49,12 @@ export class ListDetailComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.route.paramMap.subscribe((params) => {
-      const id = Number(params.get('id'));
-      if (isNaN(id)) {
+       const slug = params.get('slug'); // ✅ on récupère un string
+      if (!slug) {
         this.router.navigate(['/lists']);
         return;
       }
-      this.listId = id;
+      this.listSlug = slug; // ✅ slug est bien une string
       this.loadList();
     });
   }
@@ -76,19 +76,20 @@ export class ListDetailComponent implements OnInit {
   }
 
   loadList(): void {
-    try {
-      this.isLoading = true;
-      this.list = this.listService.getListById(this.listId);
+  this.isLoading = true;
+  this.listService.getListBySlug(this.listSlug).subscribe({
+    next: (data) => {
+      this.list = data;
       this.isLoading = false;
-
-      if (!this.list) {
-        this.router.navigate(['/lists']);
-      }
-    } catch (error: any) {
-      this.errorMessage = error.message;
+    },
+    error: (err) => {
+      this.errorMessage = err.message || 'Erreur chargement liste';
+      this.router.navigate(['/lists']);
       this.isLoading = false;
     }
-  }
+  });
+}
+
 
   togglePersonForm(person?: Person): void {
     this.showPersonForm = !this.showPersonForm;
@@ -113,39 +114,47 @@ export class ListDetailComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.personForm.invalid) return;
+  if (this.personForm.invalid) return;
 
-    try {
-      if (this.editingPerson) {
-        const updatedPerson: Person = {
-          ...this.editingPerson,
-          ...this.personForm.value,
-        };
-        this.listPersonService.updatePerson(this.listId, updatedPerson);
-      } else {
-        this.listPersonService.addPerson(this.listId, this.personForm.value);
-      }
+  const formValue = this.personForm.value;
 
-      this.loadList();
-      this.togglePersonForm();
-    } catch (error: any) {
-      this.errorMessage = error.message;
-    }
-  }
-
-  deletePerson(person: Person): void {
-    if (confirm(`Supprimer ${person.first_name} ?`)) {
-      try {
-        this.listPersonService.deletePerson(this.listId, person.id);
+  if (this.editingPerson) {
+    this.listPersonService.updatePerson(this.editingPerson.slug, {
+      ...formValue,
+      list_slug: this.listSlug
+    }).subscribe({
+      next: () => {
         this.loadList();
-      } catch (error: any) {
-        this.errorMessage = error.message;
-      }
-    }
+        this.togglePersonForm();
+      },
+      error: (err) => this.errorMessage = err.message
+    });
+  } else {
+    this.listPersonService.addPerson({
+      ...formValue,
+      list_slug: this.listSlug
+    }).subscribe({
+      next: () => {
+        this.loadList();
+        this.togglePersonForm();
+      },
+      error: (err) => this.errorMessage = err.message
+    });
   }
+}
+
+deletePerson(person: Person): void {
+  if (confirm(`Supprimer ${person.first_name} ?`)) {
+    this.listPersonService.deletePerson(person.slug).subscribe({
+      next: () => this.loadList(),
+      error: (err) => this.errorMessage = err.message
+    });
+  }
+}
+
 
   generateGroups(): void {
-    this.router.navigate(['/lists', this.listId, 'generate']);
+    this.router.navigate(['/lists', this.listSlug, 'generate']);
   }
 
   goBack(): void {
