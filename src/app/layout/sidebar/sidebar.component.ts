@@ -30,10 +30,12 @@ export class SidebarComponent implements OnInit {
 
   // Signal représentant l'état d'ouverture de la sidebar
   isOpen = signal(false);
+window: any;
 
- isActive(path: string): boolean {
-    return this.router.url === path;
-  }
+isActive(path: string): boolean {
+  return this.router.url.startsWith(path);
+}
+
 
   
   ngOnInit(): void {
@@ -76,4 +78,10 @@ export class SidebarComponent implements OnInit {
   this.auth.logout(); // ← déconnecte proprement via le service
   this.router.navigate(['/']);
 }
+isMobile(): boolean {
+  return window.innerWidth < 768;
+}
+
+
+
 }
