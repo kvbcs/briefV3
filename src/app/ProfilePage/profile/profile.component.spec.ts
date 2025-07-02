@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ProfilComponent } from './profile.component';
 import { ProfilService } from '../services/profil.service';
 import { of } from 'rxjs';
-import { User } from '../models/user.model';
+import { User } from '../../models/user.model';
 
 describe('ProfileComponent', () => {
   let component: ProfilComponent;

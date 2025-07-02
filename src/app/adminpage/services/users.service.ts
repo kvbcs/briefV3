@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { Users } from '../../../model/types';
+import { User } from '../../models/user.model';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 
@@ -7,10 +7,10 @@ import { Observable, of } from 'rxjs';
   providedIn: 'root',
 })
 export class UsersService {
-  mockUsers = signal<Users[]>([]);
+  mockUsers = signal<User[]>([]);
 
   constructor(private http: HttpClient) {
-    this.http.get<Users[]>('/assets/users.json').subscribe((data) => {
+    this.http.get<User[]>('/assets/users.json').subscribe((data) => {
       this.mockUsers.set(data);
     });
   }
@@ -22,22 +22,22 @@ export class UsersService {
     return this.mockUsers;
   }
 
-  getUserByIdSignal(id: number): Users | null {
+  getUserByIdSignal(id: number): User | null {
     return this.mockUsers().find((u) => u.id === id) ?? null;
   }
 
-  getUsers(): Observable<Users[]> {
+  getUsers(): Observable<User[]> {
     return of(this.mockUsers());
     // return this.http.get<Users[]>(`${this.baseUrl}/show`)
   }
 
-  getUser(id: number): Observable<Users | undefined> {
+  getUser(id: number): Observable<User | undefined> {
     const user = this.mockUsers().find((user) => user.id === id);
     return of(user);
     // return this.http.get<Users>(`${this.baseUrl}/show/${id}`);
   }
 
-  updateUser(id: number, updatedUser: Users): Observable<Users> {
+  updateUser(id: number, updatedUser: User): Observable<User> {
     const users = this.mockUsers();
     const index = users.findIndex((u) => u.id === id);
     if (index !== -1) {
@@ -51,7 +51,7 @@ export class UsersService {
     // return this.http.put<Users>(`${this.baseUrl}/update/${id}`, user);
   }
 
-  deleteUser(id: number): Observable<Users[]> {
+  deleteUser(id: number): Observable<User[]> {
     const filtered = this.mockUsers().filter((user) => user.id !== id);
     this.mockUsers.set(filtered);
     return of(filtered);

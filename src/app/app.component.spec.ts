@@ -1,11 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { RouterModule } from '@angular/router';
+import { provideRouter } from '@angular/router';
+
+// Si AppComponent utilise un <router-outlet>, RouterTestingModule suffit
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppComponent, RouterModule],
+      providers: [provideRouter([])],
+      imports: [AppComponent],
     }).compileComponents();
   });
 
@@ -15,14 +18,11 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it('devrait avoir pour titre "ShuffleMyTeam"', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('ShuffleMyTeam');
-  });
 
   it('devrait afficher le titre dans le HTML', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.textContent).toContain('ShuffleMyTeam');
   });
 });

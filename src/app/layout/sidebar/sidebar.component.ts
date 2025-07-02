@@ -1,6 +1,8 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../auth/auth.service';
 import { RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
+
 
 @Component({
   standalone: true,
@@ -13,15 +15,15 @@ export class SidebarComponent implements OnInit {
 
   sidebarLinks = [
   { id: 'lists', label: 'Mes listes', path: '/lists', roles: ['user', 'admin'] },
-  { id: 'groups', label: 'Mes groupes', path: '/groups', roles: ['user', 'admin'] },
+  { id: 'draw-history', label: 'Mes Groupes', path: '/draw-history', roles: ['user', 'admin'] },
   { id: 'admin-listes', label: 'Listes (admin)', path: '/admin/listes', roles: ['admin'] },
   { id: 'admin-users', label: 'Utilisateurs', path: '/admin/users', roles: ['admin'] },
   { id: 'admin-stats', label: 'Statistiques', path: '/admin/stats', roles: ['admin'] }
   ];
   
   private auth = inject(AuthService);
+  private router = inject(Router);
 
-  selectedLink = '';
 
   // Stocke le rôle courant de l'utilisateur (admin ou user)
   userRole: 'admin' | 'user' = 'user';
@@ -29,8 +31,8 @@ export class SidebarComponent implements OnInit {
   // Signal représentant l'état d'ouverture de la sidebar
   isOpen = signal(false);
 
-  setActive(link: string) {
-    this.selectedLink = link;
+ isActive(path: string): boolean {
+    return this.router.url === path;
   }
   ngOnInit(): void {
     // Récupération du rôle de l'utilisateur via AuthService
@@ -54,9 +56,8 @@ export class SidebarComponent implements OnInit {
   closeSidebar(): void {
     this.isOpen.set(false);
   }
-  // Simule une déconnexion (sera complété plus tard)
-  logout() {
-    console.log('Déconnexion');
-    // redirect ou clear storage ici plus tard
-  }
+  logout(): void {
+  this.auth.logout(); // ← déconnecte proprement via le service
+  this.router.navigate(['/']);
+}
 }

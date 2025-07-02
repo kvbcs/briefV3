@@ -1,0 +1,27 @@
+@if (persons.length > 0) {
+  <table>
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Genre</th>
+        <th>Âge</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (person of persons; track person.id) {
+        <tr>
+          <td>{{ person.first_name }}</td>
+          <td>{{ person.gender }}</td>
+          <td>{{ person.age }}</td>
+          <td>
+            <button (click)="editPerson.emit(person)">Modifier</button>
+            <button (click)="deletePerson.emit(person)">Supprimer</button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+} @else {
+  <p>Aucune personne dans cette liste.</p>
+}

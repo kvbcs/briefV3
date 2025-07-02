@@ -13,8 +13,7 @@
         <li>
           <a
             [routerLink]="link.path"
-            [class.active]="selectedLink === link.id"
-            (click)="setActive(link.id)"
+            [class.active]="isActive(link.path)"
           >
             {{ link.label }}
           </a>
@@ -26,9 +25,8 @@
   <!-- Zone fixe en bas -->
   <div class="sidebar-bottom">
     <a
-      routerLink="/profile"
-      [class.active]="selectedLink === 'profile'"
-      (click)="setActive('profile')"
+      routerLink="/profil"
+      [class.active]="isActive('/profil')"
       title="Profil"
     >
       <img src="icons/Profile.png" alt="Profil" class="icon-img" />

@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { FooterComponent } from './shared/footer/footer.component';
 
 
+
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, FooterComponent],
@@ -10,6 +11,5 @@ import { FooterComponent } from './shared/footer/footer.component';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-
   title = 'ShuffleMyTeam';
 }

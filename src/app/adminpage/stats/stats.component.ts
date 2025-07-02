@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
-import { Lists, Users } from '../../../model/types';
+import { ListStats } from '../../models/liststats.model';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-stats',
@@ -11,14 +12,14 @@ import { Lists, Users } from '../../../model/types';
 export class StatsComponent implements OnInit {
   private http = inject(HttpClient);
 
-  users = signal<Users[]>([]);
-  lists = signal<Lists[]>([]);
+  users = signal<User[]>([]);
+  lists = signal<ListStats[]>([]);
 
   ngOnInit(): void {
-    this.http.get<Users[]>('/assets/users.json').subscribe((data) => {
+    this.http.get<User[]>('/assets/users.json').subscribe((data) => {
       this.users.set(data);
     });
-    this.http.get<Lists[]>('/assets/lists.json').subscribe((data) => {
+    this.http.get<ListStats[]>('/assets/lists.json').subscribe((data) => {
       this.lists.set(data);
     });
   }
