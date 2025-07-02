@@ -126,7 +126,7 @@ button:hover {
 .submit-button {
   margin-top: 1rem;
   padding: 10px 20px;
-  background-color: #e2001a;
+  background-color: #5E47D2;
   color: white;
   border: none;
   border-radius: 6px;
@@ -136,7 +136,7 @@ button:hover {
 }
 
 .submit-button:hover {
-  background-color: #c00017;
+  background-color: #4534A1;
 }
 
 /* 💻 Desktop : modale plus grande + boutons côte à côte */

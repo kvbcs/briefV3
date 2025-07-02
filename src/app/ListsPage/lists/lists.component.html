@@ -1,7 +1,7 @@
 <div class="lists-container">
   <div class="header-actions">
     <h1>Mes Listes</h1>
-    <button class="btn-red" (click)="toggleNewListForm()">
+    <button class="btn-blue" (click)="toggleNewListForm()">
       {{ showNewListForm ? "Annuler" : "Créer Nouvelle Liste" }}
     </button>
   </div>
@@ -32,8 +32,8 @@
         </div>
       </div>
       <div class="form-actions">
-        <button type="submit" class="btn-red" [disabled]="newListForm.invalid">
-          Create List
+        <button type="submit" class="btn-blue" [disabled]="newListForm.invalid">
+          Créer La Liste
         </button>
       </div>
     </form>

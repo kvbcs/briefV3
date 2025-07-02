@@ -1,46 +1,50 @@
 @if (!isLoading && list) {
-  <div class="list-detail-container">
-    <!-- Header -->
-    <div class="header-actions">
-      <div>
-        <button class="btn-back" (click)="goBack()">&larr; Retour Aux Listes</button>
-        <h1>{{ list.name }}</h1>
-      </div>
-      <div class="action-buttons">
-        <button class="btn-border" (click)="togglePersonForm()">
-          {{ showPersonForm ? "Annuler" : "Ajouter Personne" }}
-        </button>
-        <button (click)="openGroupDialog(list.id.toString())">🎲 Tirer des groupes</button>
-      </div>
+<div class="list-detail-container">
+  <!-- Header -->
+  <div class="header-actions">
+    <div>
+      <button class="btn-back" (click)="goBack()">
+        &larr; Retour Aux Listes
+      </button>
+      <h1>{{ list.name }}</h1>
     </div>
-
-    @if (showPersonForm) {
-      <div class="person-form-card">
-        <h2>{{ editingPerson ? "Modifier Personne" : "Ajouter Nouvelle Personne" }}</h2>
-        <app-person-form
-          [personForm]="personForm"
-          [editingPerson]="editingPerson"
-          [genderOptions]="genderOptions"
-          [profileOptions]="profileOptions"
-          [errorMessage]="errorMessage"
-          (formSubmitted)="onSubmit()"
-          (cancelEdit)="togglePersonForm()"
-        />
-      </div>
-    }
-
-    @if (list.people.length === 0) {
-      <div class="no-people">
-        <p>This list has no people yet. Add some people to get started!</p>
-      </div>
-    } @else {
-      <div class="people-list">
-        <app-people-table
-          [persons]="list.people"
-          (editPerson)="togglePersonForm($event)"
-          (deletePerson)="deletePerson($event)"
-        />
-      </div>
-    }
+    <div class="action-buttons">
+      <button class="btn-border" (click)="togglePersonForm()">
+        {{ showPersonForm ? "Annuler" : "Ajouter Personne" }}
+      </button>
+      <button class="btn-blue" (click)="openGroupDialog(list.id.toString())">
+        🎲 Tirer des groupes
+      </button>
+    </div>
   </div>
+
+  @if (showPersonForm) {
+  <div class="person-form-card">
+    <h2>
+      {{ editingPerson ? "Modifier Personne" : "Ajouter Nouvelle Personne" }}
+    </h2>
+    <app-person-form
+      [personForm]="personForm"
+      [editingPerson]="editingPerson"
+      [genderOptions]="genderOptions"
+      [profileOptions]="profileOptions"
+      [errorMessage]="errorMessage"
+      (formSubmitted)="onSubmit()"
+      (cancelEdit)="togglePersonForm()"
+    />
+  </div>
+  } @if (list.people.length === 0) {
+  <div class="no-people">
+    <p>This list has no people yet. Add some people to get started!</p>
+  </div>
+  } @else {
+  <div class="people-list">
+    <app-people-table
+      [persons]="list.people"
+      (editPerson)="togglePersonForm($event)"
+      (deletePerson)="deletePerson($event)"
+    />
+  </div>
+  }
+</div>
 }

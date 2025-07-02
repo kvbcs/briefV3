@@ -89,8 +89,8 @@
 
       &:hover:not(:disabled) {
         background-color: rgba(229, 62, 62, 0.1);
-        color: #c53030;
-        border-color: #c53030;
+        color: #4534A1;
+        border-color: #4534A1;
       }
 
       &:disabled {

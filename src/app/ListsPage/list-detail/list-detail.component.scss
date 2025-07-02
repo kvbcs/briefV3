@@ -15,14 +15,14 @@
     .btn-back {
       background-color: transparent;
       border: none;
-      color: #666;
+      color: #e53e3e;
       cursor: pointer;
       padding: 0;
       margin-bottom: 0.5rem;
       font-size: 1.3rem;
 
       &:hover {
-        color: #e53e3e;
+        color: #4534A1;
       }
     }
 
@@ -40,21 +40,21 @@
 
       .btn-border {
         background-color: transparent;
-        color: #e53e3e;
-        border: 1px solid #e53e3e;
+        color: #5E47D2;
+        border: 1px solid #5E47D2;
 
         &:hover {
           background-color: rgba(229, 62, 62, 0.1);
         }
       }
 
-      .btn-red {
-        background-color: #e53e3e;
+      .btn-blue {
+        background-color: #5E47D2;
         color: white;
         border: none;
 
         &:hover:not(:disabled) {
-          background-color: #c53030;
+          background-color: #4534A1;
         }
 
         &:disabled {
