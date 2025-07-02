@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
   styleUrl: './profile.component.css',
 })
 
-export class ProfilComponent implements OnInit {
+export class ProfileComponent implements OnInit {
   constructor(private toast: ToastrService, private readonly router: Router) {}
 
     // Injection du service Profil et du FormBuilder (avec la syntaxe `inject()`)
