@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { LoginFormComponent } from '../login/login-form.component';
-import { SignupModalComponent } from '../register/signup-modal.component'; // si tu l’as déjà
+import { SignupModalComponent } from '../register/signup-modal.component';
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [LoginFormComponent, SignupModalComponent, LoginFormComponent], // ajoute d'autres composants si besoin
+  imports: [SignupModalComponent, LoginFormComponent],
   templateUrl: './home-page.component.html',
-  styleUrl: './home-page.component.css'
+  styleUrls: ['./home-page.component.css']
 })
 export class HomePageComponent {
 

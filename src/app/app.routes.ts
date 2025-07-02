@@ -24,15 +24,9 @@ export const routes: Routes = [
   children: [
     { path: 'lists', component: ListsUserComponent },
     // { path: 'groupes', component: GroupsComponent },
-    { path: 'profil', component: ProfileComponent },
+    { path: 'profile', component: ProfileComponent },
       { path: 'admin/users', component: UsersComponent },
-     {
-    path: 'admin/stats', component: StatsComponent
-  },
-  {
-    path: 'lists/:id',
-    component: ListDetailComponent,
-  },
+      {path: 'lists/:id', component: ListDetailComponent},
   { path: 'list-preview/:id', component: ListPreviewComponent },
   { path: 'sidebar', component: SidebarComponent },
     { path: 'legal', component: MentionsLegalesComponent },
@@ -40,8 +34,18 @@ export const routes: Routes = [
     path: 'groups',
     component: GroupPageComponent
   },
-    { path: 'draw-history', component: DrawHistoryComponent }
-
-  ]
-}
+    { path: 'draw-history', component: DrawHistoryComponent },
+      {
+        path: 'admin/stats',
+        component: StatsComponent,
+      },
+      {
+        path: 'lists/:id',
+        component: ListDetailComponent,
+      },
+      { path: 'list-preview/:id', component: ListPreviewComponent },
+      { path: 'sidebar', component: SidebarComponent },
+      { path: 'legal', component: MentionsLegalesComponent },
+    ],
+  },
 ];

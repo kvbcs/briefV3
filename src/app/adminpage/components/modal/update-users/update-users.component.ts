@@ -17,6 +17,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-update-users',
@@ -26,6 +27,7 @@ import {
   styleUrl: './update-users.component.css',
 })
 export class UpdateUsersComponent implements OnChanges {
+  constructor(private toast: ToastrService) {}
   private userService = inject(UsersService);
   private formBuilder = inject(FormBuilder);
   @Input() showModal: boolean = false;
@@ -70,11 +72,11 @@ export class UpdateUsersComponent implements OnChanges {
 
   onSubmit(): void {
     if (this.updateForm.pristine) {
-      alert('Aucune modification effectuée');
+      this.toast.info('Aucune modification effectuée', 'Info');
       this.closeModal();
     } else if (this.updateForm.valid) {
       const updatedUser = { ...this.updateForm.value };
-      alert('Utilisateur mis à jour');
+      this.toast.success('Utilisateur mis à jour', 'Succès');
       console.log(updatedUser);
 
       this.closeModal();

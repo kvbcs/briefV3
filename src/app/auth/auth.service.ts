@@ -2,16 +2,19 @@ import { inject, Injectable } from '@angular/core';
 import { User } from '../models/user.model';
 import { mockUsers } from '../mocks/mock-data';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, throwError } from 'rxjs';
+import { map, Observable, of, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-
 export class AuthService {
   private currentUser: User | null = null;
-private http = inject(HttpClient);
-  
+
+    // 📡 Injection du client HTTP Angular via la fonction `inject()` (nouvelle syntaxe Angular)
+  private http = inject(HttpClient);
+  // 🔒 URL de base de l’API utilisée pour les appels liés à l’authentification
+  private readonly apiUrl = 'https://v3-tirso.feras.fr/api';
+
   constructor() {
     this.loadUserFromStorage();
   }
@@ -21,22 +24,42 @@ private http = inject(HttpClient);
     if (storedUser) {
       this.currentUser = JSON.parse(storedUser);
     }
-  };
-
-login(email: string, password: string): Observable<User> {
-  const user = mockUsers.find(u => u.email === email && u.password === password);
-  if (user) {
-    this.currentUser = user;
-    localStorage.setItem('currentUser', JSON.stringify(user));
-    return of(user); // ✅ observable simulé
   }
-  return throwError(() => new Error('Email ou mot de passe incorrect'));
-}
 
+  /**
+   * 🔐 Méthode de connexion
+   * Envoie les identifiants de connexion à l’API et enregistre le token et l’utilisateur dans le localStorage
+   */
+  login(credentials: { email: string; password: string }): Observable<any> {
+    console.log('🧪 Appel dans AuthService', credentials);
 
+    const adaptedCredentials = {
+      username: credentials.email,
+      password: credentials.password,
+    };
+
+    // Création des en-têtes HTTP personnalisés
+
+    console.log('🧪 Données finales envoyées par HttpClient :', credentials);
+
+    // Envoi de la requête POST à l’API avec les identifiants
+    return this.http.post(`${this.apiUrl}/login`, adaptedCredentials).pipe(
+      map((res: any) => {
+        // Stockage du token et de l'utilisateur dans le localStorage
+        localStorage.setItem('token', res.token);
+        localStorage.setItem('user', JSON.stringify(res.user));
+        return res; // renvoie la réponse complète
+      })
+    );
+  }
+
+/**
+   * 🚪 Déconnexion
+   * Supprime les données de l’utilisateur du localStorage
+   */
   logout(): void {
-    this.currentUser = null;
-    localStorage.removeItem('currentUser');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
   }
 
   isLoggedIn(): boolean {
@@ -82,27 +105,26 @@ login(email: string, password: string): Observable<User> {
 
   // Optionnel : inscription côté mock
   register(formData: any): Observable<User> {
-  const existing = mockUsers.find(u => u.email === formData.email);
-  if (existing) {
-    return throwError(() => new Error('Email déjà utilisé'));
+    const existing = mockUsers.find((u) => u.email === formData.email);
+    if (existing) {
+      return throwError(() => new Error('Email déjà utilisé'));
+    }
+
+    const newUser: User = {
+      id: Date.now(),
+      first_name: formData.firstName,
+      last_name: formData.lastName,
+      email: formData.email,
+      password: formData.password,
+      roles: ['ROLE_USER'],
+      is_verified: false,
+      is_blocked: false,
+      created_at: new Date().toISOString(),
+      cgu_accepted_at: '',
+    };
+
+    mockUsers.push(newUser);
+    localStorage.setItem('currentUser', JSON.stringify(newUser));
+    return of(newUser);
   }
-
-  const newUser: User = {
-    id: Date.now(),
-    first_name: formData.firstName,
-    last_name: formData.lastName,
-    email: formData.email,
-    password: formData.password,
-    roles: ['ROLE_USER'],
-    is_verified: false,
-    is_blocked: false,
-    created_at: new Date().toISOString(),
-    cgu_accepted_at: '',
-  };
-
-  mockUsers.push(newUser);
-  localStorage.setItem('currentUser', JSON.stringify(newUser));
-  return of(newUser);
-}
-
 }

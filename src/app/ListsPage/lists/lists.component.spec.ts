@@ -20,3 +20,7 @@ describe('ListsComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+function compileComponents() {
+  throw new Error('Function not implemented.');
+}
+
