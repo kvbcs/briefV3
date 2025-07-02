@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators,FormControl } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { AuthService } from '../../../core/services/auth.service';
 
-
-import { FakeAuthService } from '../../../core/services/fake-auth.service';
 
 @Component({
   selector: 'app-signup-modal',
@@ -16,15 +16,23 @@ import { FakeAuthService } from '../../../core/services/fake-auth.service';
 
 export class SignupModalComponent {
   @Output() close = new EventEmitter<void>();
-  private readonly auth = inject(FakeAuthService);
+  private readonly auth = inject(AuthService);
 
-  signupForm: FormGroup;
+signupForm!: FormGroup<{
+  email: FormControl<string>;
+  emailConfirm: FormControl<string>;
+  password: FormControl<string>;
+  passwordConfirm: FormControl<string>;
+  firstName: FormControl<string>;
+  lastName: FormControl<string>;
+}>;
+
   submitted = false;
   successMessage: string | null = null;
   errorMessage: string | null = null;
 
 
-  constructor(private readonly fb: FormBuilder) {
+  constructor(private readonly fb: FormBuilder, private toast: ToastrService) {
     this.signupForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       emailConfirm: ['', [Validators.required, Validators.email]],
@@ -47,6 +55,9 @@ export class SignupModalComponent {
       this.auth.register(formData).subscribe({
         next: (user: any) => {
           this.successMessage = 'Inscription réussie ! 🎉 Un email de confirmation vous a été envoyé.';
+          this.toast.success(
+            'Inscription réussie ! 🎉 Un email de confirmation vous a été envoyé.', "Succès"
+          );
           this.signupForm.reset();
           this.submitted = false;
           this.close.emit();

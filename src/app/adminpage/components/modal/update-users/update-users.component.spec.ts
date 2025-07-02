@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UpdateModalComponent } from './update-modal.component';
+import { UpdateModalComponent } from './update-users.component';
 
 describe('UpdateModalComponent', () => {
   let component: UpdateModalComponent;
@@ -8,9 +8,8 @@ describe('UpdateModalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UpdateModalComponent]
-    })
-    .compileComponents();
+      imports: [UpdateModalComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(UpdateModalComponent);
     component = fixture.componentInstance;

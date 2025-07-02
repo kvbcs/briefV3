@@ -2,23 +2,21 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SignupModalComponent } from './signup-modal.component';
 
-import { HttpClient } from '@angular/common/http';
 import { of, throwError } from 'rxjs';
-import { FakeAuthService } from '../../../core/services/fake-auth.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 describe('SignupModalComponent', () => {
   let component: SignupModalComponent;
   let fixture: ComponentFixture<SignupModalComponent>;
-  let httpSpy: jasmine.SpyObj<HttpClient>;
+  let authServiceSpy: jasmine.SpyObj<AuthService>;
 
   beforeEach(async () => {
-    httpSpy = jasmine.createSpyObj('HttpClient', ['get', 'post']);
+    authServiceSpy = jasmine.createSpyObj('AuthService', ['register']);
 
     await TestBed.configureTestingModule({
       imports: [SignupModalComponent, ReactiveFormsModule],
       providers: [
-        { provide: HttpClient, useValue: httpSpy },
-        { provide: FakeAuthService, useClass: FakeAuthService }
+        { provide: AuthService, useValue: authServiceSpy }
       ]
     }).compileComponents();
 
@@ -48,7 +46,7 @@ describe('SignupModalComponent', () => {
   });
 
   it('devrait afficher un message de succès si register() fonctionne', () => {
-    spyOn(component['auth'], 'register').and.returnValue(of({
+    authServiceSpy.register.and.returnValue(of({
       email: 'test@mail.com',
       emailConfirmed: false
     }));
@@ -68,7 +66,7 @@ describe('SignupModalComponent', () => {
   });
 
   it('devrait afficher un message d\'erreur si register() échoue', () => {
-    spyOn(component['auth'], 'register').and.returnValue(throwError(() => new Error('Email déjà utilisé')));
+    authServiceSpy.register.and.returnValue(throwError(() => new Error('Email déjà utilisé')));
 
     component.signupForm.setValue({
       email: 'test@mail.com',
@@ -92,7 +90,7 @@ describe('SignupModalComponent', () => {
 
   it('devrait émettre close après une inscription réussie', () => {
     spyOn(component.close, 'emit');
-    spyOn(component['auth'], 'register').and.returnValue(of({
+    authServiceSpy.register.and.returnValue(of({
       email: 'test@mail.com',
       emailConfirmed: false
     }));

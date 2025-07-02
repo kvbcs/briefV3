@@ -1,3 +1,5 @@
-<footer class="footer">
-  <a routerLink="/mentions-legales">Mentions légales</a>
-</footer>
+@if (router.url !== '/legal') {
+  <footer class="footer">
+    <a routerLink="/legal">Mentions légales</a>
+  </footer>
+}

@@ -4,73 +4,78 @@ import { User } from '../models/user.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-
-
-
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './profile.component.html',
-  styleUrl: './profile.component.css'
+  styleUrl: './profile.component.css',
 })
 
 export class ProfilComponent implements OnInit {
-
-    // Injection du service Profil et du FormBuilder (avec la syntaxe `inject()`)
+  constructor(private toast: ToastrService, private readonly router: Router) {}
+  // Injection du service Profil et du FormBuilder (avec la syntaxe `inject()`)
   private profilService = inject(ProfilService);
   private formBuilder = inject(FormBuilder);
 
-    // Objet utilisateur à afficher et modifier
+
+  // Objet utilisateur à afficher et modifier
   user!: User;
 
-    // Booléen réactif pour afficher le formulaire ou non
-  editMode = signal(false); 
+  // Booléen réactif pour afficher le formulaire ou non
+  editMode = signal(false);
 
-    // Formulaire réactif pour modifier nom/prénom
+  // Formulaire réactif pour modifier nom/prénom
   profileForm!: FormGroup;
 
   ngOnInit(): void {
-        // Récupération de l'utilisateur mocké via le service
+    // Récupération de l'utilisateur mocké via le service
     this.profilService.getUser().subscribe((data) => {
-      this.user = data;  // Stockage local
-      this.initForm();  // Initialisation du formulaire avec les valeurs récupérées
+      this.user = data; // Stockage local
+      this.initForm(); // Initialisation du formulaire avec les valeurs récupérées
     });
   }
   // Création du formulaire avec les données existantes
-   initForm(): void {
+  initForm(): void {
     this.profileForm = this.formBuilder.group({
       firstname: [this.user.firstname],
       lastname: [this.user.lastname],
     });
   }
 
-    // Active ou désactive le mode édition (affichage formulaire)
- toggleEditMode(): void {
+  // Active ou désactive le mode édition (affichage formulaire)
+  toggleEditMode(): void {
     this.editMode.update((currentValue) => !currentValue);
   }
 
-    // Sauvegarde les modifications : fusionne les nouvelles données avec l'utilisateur existant
+  // Sauvegarde les modifications : fusionne les nouvelles données avec l'utilisateur existant
   save(): void {
     const updatedUser = {
       ...this.user, // Copie des anciennes données
       ...this.profileForm.value, // Remplacement de firstname / lastname
     };
-     this.profilService.updateUser(updatedUser).subscribe((response) => {
+    this.profilService.updateUser(updatedUser).subscribe((response) => {
       this.user = response; // Mise à jour locale
+      this.toast.success('Informations mises à jour', 'Succès');
       this.editMode.set(false); // Retour en mode lecture
     });
   }
 
-    // Suppression simulée du compte avec message de confirmation et redirection
- confirmDelete(): void {
-  const confirmed = confirm("Es-tu sûr(e) de vouloir supprimer ton compte ? Cette action est irréversible.");
-  if (confirmed) {
-    this.profilService.deleteUser().subscribe(() => {
-      // Redirection après suppression
-      window.location.href = '/'; // ou via le router si besoin
-    });
-  }
-}
+  // Suppression simulée du compte avec message de confirmation et redirection
+  confirmDelete(): void {
+    const confirmed = confirm(
+      'Es-tu sûr(e) de vouloir supprimer ton compte ? Cette action est irréversible.'
+    );
+    if (confirmed) {
+      this.profilService.deleteUser().subscribe(() => {
+        this.toast.success('Compte supprimé', 'Succès');
 
+        // Redirection après suppression
+        this.router.navigate(['/']);
+        // Utilisation de router pour voir le toast 
+      });
+    }
+  }
 }
