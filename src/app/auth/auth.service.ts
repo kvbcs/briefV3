@@ -70,10 +70,28 @@ export class AuthService {
     return this.currentUser;
   }
 
-  getCurrentUserRole(): 'admin' | 'user' {
-    if (!this.currentUser) return 'user';
-    return this.currentUser.roles.includes('ROLE_ADMIN') ? 'admin' : 'user';
+getCurrentUserRole(): string {
+  const user = this.currentUser; // ou JSON.parse(localStorage.getItem('user'))
+  const roles = user?.roles;
+
+  if (Array.isArray(roles) && roles.includes('admin')) {
+    return 'admin';
   }
+
+  return 'user';
+}
+
+
+
+//ANCIENNE VERSION 
+  // getCurrentUserRole(): 'admin' | 'user' {
+  //   if (!this.currentUser) return 'user';
+  //   return this.currentUser.roles.includes('ROLE_ADMIN') ? 'admin' : 'user';
+  // }
+
+
+
+
 
   needsToAcceptTerms(): boolean {
     if (!this.currentUser?.cgu_accepted_at) return true;

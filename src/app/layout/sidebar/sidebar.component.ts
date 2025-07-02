@@ -21,8 +21,8 @@ export class SidebarComponent implements OnInit {
   { id: 'admin-stats', label: 'Statistiques', path: '/admin/stats', roles: ['admin'] }
   ];
   
-  private auth = inject(AuthService);
-  private router = inject(Router);
+  private readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
 
 
   // Stocke le rôle courant de l'utilisateur (admin ou user)
@@ -34,14 +34,30 @@ export class SidebarComponent implements OnInit {
  isActive(path: string): boolean {
     return this.router.url === path;
   }
+
+  
   ngOnInit(): void {
     // Récupération du rôle de l'utilisateur via AuthService
-    this.userRole = this.auth.getCurrentUserRole();
+    this.userRole = this.auth.getCurrentUserRole() as 'user' | 'admin';
     // En mode desktop, la sidebar est toujours visible
     if (window.innerWidth >= 768) {
       this.isOpen.set(true);
     }
   }
+
+
+//ANCIENNE VERSION
+  //   ngOnInit(): void {
+  //   // Récupération du rôle de l'utilisateur via AuthService
+  //   this.userRole = this.auth.getCurrentUserRole();
+  //   // En mode desktop, la sidebar est toujours visible
+  //   if (window.innerWidth >= 768) {
+  //     this.isOpen.set(true);
+  //   }
+  // }
+
+
+
 
   // Détermine si l'utilisateur courant est un admin
   isAdmin(): boolean {
