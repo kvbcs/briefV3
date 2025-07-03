@@ -1,5 +1,10 @@
 <div class="list-preview-container">
-  @if (!isLoading && list) {
+  @if (!list) {
+  <div class="loading">
+    <p>Loading list...</p>
+  </div>
+}
+  @if (!isLoading && list ) {
     <div class="header-actions">
       <div>
         <button class="btn-back" (click)="goBack()">&larr; Back to Home</button>
@@ -10,11 +15,11 @@
       </div>
     </div>
 
-    @if (list.people.length === 0) {
+    @if (list.people?.length === 0) {
   <div class="no-people">
     <p>This list has no people yet.</p>
   </div>
-} @else if (list.people.length > 0) {
+} @else if ((list.people?.length ?? 0) > 0) {
   <div class="people-list">
     <table>
       <thead>

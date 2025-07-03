@@ -7,32 +7,19 @@ import { Observable, map } from 'rxjs';
   providedIn: 'root',
 })
 export class ListPersonService {
- addPersonToList(listSlug: string, personData: Partial<Person>): Observable<any> {
-  return this.http.post(`${this.apiUrl}/person/new`, personData);
+  
+    private readonly http = inject(HttpClient);
+    private apiUrl = 'http://193.134.250.16/api';
+
+addPersonToList(listSlug: string, personData: Partial<Person>): Observable<any> {
+  const payload = {
+    ...personData,
+    list: listSlug
+  };
+  return this.http.post<{ success: boolean; person: Person }>(`${this.apiUrl}/person/new`, payload)
+  .pipe(map(res => res.person));
+
 }
-
-  private readonly http = inject(HttpClient);
-  private apiUrl = 'http://193.134.250.16/api';
-
-  // 🔄 Créer une nouvelle personne
-addPerson(data: any) {
-  return this.http.post(`${this.apiUrl}/person/new`, data);
-}
-
-
-
-//Ancien
-  // addPerson(personData: Omit<Person, 'id' | 'liste'> & { list_slug: string }): Observable<Person> {
-  //   return this.http.post<{ success: boolean; person: Person; token: string }>(
-  //     `${this.apiUrl}/person/new`,
-  //     { ...personData, liste: { slug: personData.list_slug } }
-  //   ).pipe(map(res => res.person));
-  // }
-
-
-
-
-
 
   // ✏️ Modifier une personne (via son slug)
   updatePerson(personSlug: string, updatedData: Partial<Person>): Observable<Person> {

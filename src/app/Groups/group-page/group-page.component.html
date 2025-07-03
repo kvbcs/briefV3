@@ -24,7 +24,7 @@
   <h4>{{ group.name }}</h4>
   <ul>
     @for (member of group.members; track member.id) {
-    <li>{{ member.name }}</li>
+    <li>{{ member.first_name }}</li>
     }
   </ul>
   }

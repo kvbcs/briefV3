@@ -9,9 +9,8 @@
     </div>
 
     <!-- Liste des personnes -->
-    @if (list && list.people && list.people.length > 0) {
+    @if (list.people && list.people.length > 0) {
       <app-people-table [persons]="list.people"></app-people-table>
-
     } @else {
       <p class="empty-message">Aucune personne dans cette liste.</p>
     }

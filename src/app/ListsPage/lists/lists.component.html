@@ -60,12 +60,10 @@
     <div class="list-card" (click)="viewList(list.slug)">
       <div class="list-content">
         <h3>{{ list.name }}</h3>
-        @if (list.people && list.draws) {
         <div class="list-stats">
-          <p>👤 {{ list.people.length }} personne(s)</p>
-          <p>👥 {{ list.draws.length }} tirage(s)</p>
+          <p>👤 {{ list.people?.length ?? 0 }} personne(s)</p>
+          <p>👥 {{ list.draws?.length ?? 0 }} tirage(s)</p>
         </div>
-        }
       </div>
       <div class="list-actions">
         <button class="btn-delete" (click)="deleteList($event, list.slug)">
@@ -75,10 +73,7 @@
     </div>
     }
   </div>
-  } }
-
-  @if (showNewListForm) {
-  <div style="height: 1px;"></div>
-}
-
+  } } @if (showNewListForm) {
+  <div style="height: 1px"></div>
+  }
 </div>

@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { ListPersonService } from '../../core/services/list-person.service';
-import { Gender, Profile } from '../../models/person';
 
 @Component({
   selector: 'app-person-form',
@@ -44,22 +43,18 @@ onSubmit(): void {
   if (this.form.valid && this.data.listSlug) {
 const personData = {
   ...this.form.value,
- liste_id: this.data.listId,
   age: Number(this.form.value.age),
   french_level: Number(this.form.value.french_level),
   tech_level: Number(this.form.value.tech_level),
   dwwm: Boolean(this.form.value.dwwm)
 };
-
-
-
-    this.listPersonService.addPerson(personData).subscribe({
-      next: () => this.dialogRef.close('success'),
-      error: (err) => {
-        console.error('Erreur API:', err);
-        this.dialogRef.close('error');
-      }
-    });
+this.listPersonService.addPersonToList(this.data.listSlug, personData).subscribe({
+  next: () => this.dialogRef.close('success'),
+  error: (err) => {
+    console.error('Erreur API:', err);
+    this.dialogRef.close('error');
+  }
+});
   }
 }
 

@@ -14,7 +14,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let person of persons">
+      <tr *ngFor="let person of persons; trackBy: trackByPersonId">
         <td>{{ person.first_name }}</td>
         <td>{{ person.last_name }}</td>
         <td>{{ person.gender }}</td>
