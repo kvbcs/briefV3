@@ -7,6 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-profile',
@@ -30,6 +31,12 @@ export class ProfileComponent implements OnInit {
   // Formulaire réactif pour modifier nom/prénom
   profileForm!: FormGroup;
 
+  // permet d'afficher un loading après la sauvegarde de nouvelles informations
+  isLoading: boolean = false;
+
+  // afficher un loading après la suppression
+  isDeleting = false;
+
   ngOnInit(): void {
     // Récupération de l'utilisateur mocké via le service
     this.profilService.getUser().subscribe((data) => {
@@ -43,49 +50,59 @@ export class ProfileComponent implements OnInit {
 
     this.profileForm = this.formBuilder.group({
       email: [this.user.email],
-      firstname: [this.user.first_name],
-      lastname: [this.user.last_name],
+      first_name: [this.user.first_name],
+      last_name: [this.user.last_name],
     });
   }
 
   // Active ou désactive le mode édition (affichage formulaire)
   toggleEditMode(): void {
-  if (this.editMode === false) {
-    this.editMode = true;
-    console.log('🌀 toggle activé');
+    if (this.editMode === false) {
+      this.editMode = true;
+      console.log('🌀 toggle activé');
+    }
   }
-}
-
 
   // Sauvegarde les modifications : fusionne les nouvelles données avec l'utilisateur existant
   save(): void {
-    console.log('💾 save() appelé');
+    this.isLoading = true;
+
     const updatedUser = {
-      ...this.user, // Copie des anciennes données
-      ...this.profileForm.value, // Remplacement de firstname / lastname
+      ...this.user,
+      ...this.profileForm.value,
     };
-    this.profilService.updateUser(updatedUser).subscribe((response) => {
-      console.log('✅ Réponse du backend :', response);
-      this.user = response; // Mise à jour locale
-      console.log('🧠 Nouveau user :', this.user);
-      this.toast.success('Informations mises à jour', 'Succès');
-      console.log('✏️ Mode édition ? =>', this.editMode);
-      this.editMode = false; // Retour en mode lecture
-      setTimeout(() => {
-        console.log('📦 editMode après 100ms :', this.editMode);
-      }, 100);
-    });
+
+    this.profilService
+      .updateUser(updatedUser)
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe({
+        next: (response) => {
+          this.user = response;
+          this.toast.success('Informations mises à jour', 'Succès');
+          this.editMode = false;
+        },
+        error: () => {
+          this.toast.error('Erreur lors de la mise à jour');
+        },
+      });
   }
 
   // Suppression simulée du compte avec message de confirmation et redirection
   confirmDelete(): void {
     const confirmed = confirm('Es-tu sûr(e) de vouloir supprimer ton compte ?');
     if (confirmed) {
-      this.profilService.deleteUser().subscribe(() => {
-        this.toast.success('Compte supprimé', 'Succès');
-        this.authservice.logout(); // 🔥 déconnexion propre
-        this.router.navigate(['/']); // 🧭 redirection
-      });
+      this.isDeleting = true;
+      this.profilService
+        .deleteUser()
+        .pipe(finalize(() => (this.isDeleting = false)))
+        .subscribe(() => {
+          this.toast.success('Compte supprimé', 'Succès');
+          this.authservice.logout(); // 🔥 déconnexion propre
+          // 💡 petite pause avant redirection
+          setTimeout(() => {
+            this.router.navigate(['/']);
+          }, 1000);
+        });
     }
   }
 }

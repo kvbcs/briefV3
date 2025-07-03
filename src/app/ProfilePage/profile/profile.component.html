@@ -1,4 +1,13 @@
 <div class="profile-container">
+  @if (isLoading) {
+  <div class="loader-overlay">
+    <div class="bouncing-loader">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+  }
   <!-- Partie gauche : infos ou formulaire -->
   <div class="profile-card">
     @if (editMode) {
@@ -8,10 +17,10 @@
       <input type="email" formControlName="email" />
 
       <label>Prénom :</label>
-      <input type="text" formControlName="firstname" />
+      <input type="text" formControlName="first_name" />
 
       <label>Nom :</label>
-      <input type="text" formControlName="lastname" />
+      <input type="text" formControlName="last_name" />
 
       <div class="form-actions">
         <button type="submit">Enregistrer</button>
@@ -23,11 +32,11 @@
     <p><strong>Nom :</strong> {{ user.last_name }}</p>
     <p><strong>Prénom :</strong> {{ user.first_name }}</p>
     <p><strong>Email :</strong> {{ user.email }}</p>
-    <p><strong>Créé le :</strong> {{ user.created_at | date : "longDate" }}</p>
+    <!-- <p><strong>Créé le :</strong> {{ user.created_at | date : "longDate" }}</p>
     <p>
       <strong>CGU Acceptée le :</strong>
       {{ user.cgu_accepted_at | date : "longDate" }}
-    </p>
+    </p> -->
     } @else {
     <p>Chargement du profil...</p>
     }
@@ -41,8 +50,13 @@
     </button>
     }
     <hr />
-    <button type="button" class="btn btn-danger" (click)="confirmDelete()">
-      Supprimer mon compte
+    <button
+      type="button"
+      class="btn btn-danger"
+      (click)="confirmDelete()"
+      [disabled]="isDeleting"
+    >
+      @if (isDeleting) { Suppression... } @else { Supprimer mon compte }
     </button>
   </div>
 </div>
