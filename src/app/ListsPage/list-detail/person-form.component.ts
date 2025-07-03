@@ -44,7 +44,7 @@ onSubmit(): void {
   if (this.form.valid && this.data.listSlug) {
 const personData = {
   ...this.form.value,
-  liste: { slug: this.data.listSlug },
+ liste_id: this.data.listId,
   age: Number(this.form.value.age),
   french_level: Number(this.form.value.french_level),
   tech_level: Number(this.form.value.tech_level),

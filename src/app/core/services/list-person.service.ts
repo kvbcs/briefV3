@@ -15,21 +15,8 @@ export class ListPersonService {
   private apiUrl = 'http://193.134.250.16/api';
 
   // 🔄 Créer une nouvelle personne
-addPerson(data: {
-  list: string;
-  first_name: string;
-  last_name: string;
-  gender: string;
-  age: number;
-  french_level: number;
-  tech_level: number;
-  dwwm: boolean;
-  profile: string;
-}) {
-  return this.http.post<{ success: boolean; person: Person }>(
-    `${this.apiUrl}/person/new`, // ⬅️ c'était bien cette URL
-    data
-  );
+addPerson(data: any) {
+  return this.http.post(`${this.apiUrl}/person/new`, data);
 }
 
 
