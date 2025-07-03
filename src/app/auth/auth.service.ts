@@ -59,12 +59,6 @@ export class AuthService {
 }
 
 
-private clearSession(): void {
-  this.currentUser = null;
-  localStorage.removeItem('token');
-  localStorage.removeItem('currentUser');
-}
-
   private clearSession(): void {
     this.currentUser = null;
     localStorage.removeItem('token');
