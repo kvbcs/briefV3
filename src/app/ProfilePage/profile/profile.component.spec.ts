@@ -1,30 +1,30 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ProfilComponent } from './profile.component';
-import { ProfilService } from '../services/profil.service';
+import { ProfileComponent } from './profile.component';
+import { ProfileService } from '../../core/services/profile.service';
 import { of } from 'rxjs';
 import { User } from '../../models/user.model';
 
 describe('ProfileComponent', () => {
-  let component: ProfilComponent;
-  let fixture: ComponentFixture<ProfilComponent>;
+  let component: ProfileComponent;
+  let fixture: ComponentFixture<ProfileComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ProfilComponent],
-      providers: [{ provide: ProfilService, useValue: profilServiceMock }],
+      imports: [ProfileComponent],
+      providers: [{ provide: ProfileService, useValue: profilServiceMock }],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ProfilComponent);
+    fixture = TestBed.createComponent(ProfileComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   const mockUser: User = {
-    firstname: 'Testy',
-    lastname: 'McTestface',
+    first_name: 'Testy',
+    last_name: 'McTestface',
     email: 'test@example.com',
-    createdAt: new Date('2023-01-01'),
-    cguAcceptedAt: new Date('2023-01-01'),
+    created_at: new Date('2023-01-01'),
+    cgu_accepted_at: new Date('2023-01-01'),
   };
 
   const profilServiceMock = {
@@ -74,7 +74,7 @@ describe('ProfileComponent', () => {
 
     expect(spy).toHaveBeenCalled(); // Appel du service
     expect(component.editMode()).toBeFalse(); // Retour en mode lecture
-    expect(component.user.firstname).toBe('Updated'); // Donnée modifiée localement
+    expect(component.user.first_name).toBe('Updated'); // Donnée modifiée localement
   });
 
   it('should call deleteUser when user confirms deletion', () => {

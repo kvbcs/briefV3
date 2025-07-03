@@ -8,10 +8,13 @@ export const jwtInterceptor: HttpInterceptorFn = (
 ): Observable<HttpEvent<any>> => {
   const token = localStorage.getItem('token');
 
-  const authReq = token
+  // 🚫 N’ajoute PAS le token pour ces routes :
+  const isPublic = req.url.includes('/login') || req.url.includes('/register');
+
+  const authReq = token && !isPublic
     ? req.clone({
         setHeaders: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         }
       })
     : req;
@@ -19,7 +22,7 @@ export const jwtInterceptor: HttpInterceptorFn = (
   return next(authReq).pipe(
     tap((event) => {
       if (event instanceof HttpResponse && event.body?.token) {
-        localStorage.setItem('token', event.body.token); // 🔁 Mise à jour du token reçu
+        localStorage.setItem('token', event.body.token); // 🔁 Mise à jour du token reçu après login
       }
     })
   );
