@@ -12,7 +12,7 @@ import { List } from '../../models/list';
   styleUrls: ['./list-preview.component.scss'],
 })
 export class ListPreviewComponent implements OnInit {
-  list: List | undefined;
+  list: List | null = null;
   isLoading = true;
   slug!: string;
   errorMessage = '';
@@ -36,19 +36,26 @@ export class ListPreviewComponent implements OnInit {
   }
 
   loadList(): void {
-    this.isLoading = true;
-    this.listService.getListBySlug(this.slug).subscribe({
-      next: (data) => {
-        this.list = data;
-        this.isLoading = false;
-      },
-      error: (err) => {
-        this.errorMessage = err.message || 'Erreur lors du chargement de la liste.';
-        this.isLoading = false;
-        this.router.navigate(['/']); // redirection si liste introuvable
-      }
-    });
-  }
+  this.isLoading = true;
+
+  this.listService.getListBySlug(this.slug).subscribe({
+    next: (data) => {
+      this.list = {
+        ...data,
+        people: data.people ?? [],
+        draws: data.draws ?? []
+      };
+      this.isLoading = false;
+    },
+    error: (err) => {
+      this.errorMessage =
+        err.message || 'Erreur lors du chargement de la liste.';
+      this.isLoading = false;
+      this.router.navigate(['/']);
+    },
+  });
+}
+
 
   goBack(): void {
     this.router.navigate(['/']);

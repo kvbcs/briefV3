@@ -11,10 +11,19 @@ export class ListService {
   private apiUrl = 'http://193.134.250.16/api/list';
 
   getAllLists(): Observable<List[]> {
-    return this.http
-      .get<{ success: boolean; data: List[] }>(`${this.apiUrl}/show/me`)
-      .pipe(map((res) => res.data));
-  }
+  return this.http
+    .get<{ success: boolean; data: any[] }>(`${this.apiUrl}/show/me`)
+    .pipe(
+      map((res) =>
+        res.data.map((l) => ({
+          ...l,
+          people: [],  // ajout si absent
+          draws: []    // ajout si absent
+        }))
+      )
+    );
+}
+
 
   getListBySlug(slug: string): Observable<List> {
     return this.http
@@ -22,11 +31,11 @@ export class ListService {
       .pipe(map((res) => res.data));
   }
 
-  createList(payload: { name: string; description?: string }): Observable<List> {
-    return this.http
-      .post<{ success: boolean; data: List }>(`${this.apiUrl}/new`, payload)
-      .pipe(map((res) => res.data));
-  }
+  createList(payload: { name: string; description?: string }): Observable<boolean> {
+  return this.http.post<any>(`${this.apiUrl}/new`, payload).pipe(
+    map(res => res.success === true)
+  );
+}
 
   updateList(id: number, payload: { name?: string; description?: string }): Observable<List> {
     return this.http
@@ -34,10 +43,11 @@ export class ListService {
       .pipe(map((res) => res.data));
   }
 
-  deleteList(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
-  }
-
+  deleteList(slug: string): Observable<boolean> {
+  return this.http.delete<any>(`${this.apiUrl}/delete/${slug}`).pipe( // ✅
+    map(res => res.success === true)
+  );
+}
   // Optionnel : utile pour la prévisualisation
   private slugify(text: string): string {
     return text.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');

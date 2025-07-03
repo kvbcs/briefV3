@@ -73,30 +73,39 @@ export class ListsUserComponent implements OnInit {
   };
 
   this.listService.createList(payload).subscribe({
-    next: () => {
+  next: (success) => {
+    if (success) {
       this.loadLists();
       this.toggleNewListForm();
-    },
-    error: (err) => {
-      this.errorMessage = err.message || 'Erreur lors de la création de la liste.';
+    } else {
+      this.errorMessage = 'Erreur lors de la création de la liste.';
     }
-  });
-}
+  },
+  error: (err) => {
+    this.errorMessage = err?.message || 'Erreur réseau.';
+  }
+});
 
+}
 
   viewList(slug: string): void {
   this.router.navigate(['/lists', slug]);
 }
 
-
-  deleteList(event: Event, listId: number): void {
+  deleteList(event: Event, listSlug: string): void {
   event.stopPropagation();
 
   if (confirm('Supprimer cette liste ?')) {
-    this.listService.deleteList(listId).subscribe({
-      next: () => this.loadLists(),
+    this.listService.deleteList(listSlug).subscribe({
+      next: (success) => {
+        if (success) {
+          this.loadLists();
+        } else {
+          this.errorMessage = 'Échec de la suppression de la liste.';
+        }
+      },
       error: (err) => {
-        this.errorMessage = err.message || 'Erreur lors de la suppression de la liste.';
+        this.errorMessage = err?.message || 'Erreur lors de la suppression.';
       }
     });
   }

@@ -56,7 +56,7 @@
   </div>
   } @else {
   <div class="lists-grid">
-    @for (list of lists; track list.id) {
+    @for (list of lists; track list.slug || list.id || $index) {
     <div class="list-card" (click)="viewList(list.slug)">
       <div class="list-content">
         <h3>{{ list.name }}</h3>
@@ -68,7 +68,7 @@
         }
       </div>
       <div class="list-actions">
-        <button class="btn-delete" (click)="deleteList($event, list.id)">
+        <button class="btn-delete" (click)="deleteList($event, list.slug)">
           <span>×</span>
         </button>
       </div>
