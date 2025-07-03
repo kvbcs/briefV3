@@ -17,13 +17,12 @@ import { User } from '../../models/user.model';
   styleUrl: './users.component.css',
 })
 export class UsersComponent implements OnInit {
-  constructor(private toastr: ToastrService) {}
+  constructor(private toastr: ToastrService ) {}
 
   private userService = inject(UsersService);
 
   users = signal<User[]>([]);
 
-  @ViewChild('id') div!: ElementRef;
 
   ngOnInit(): void {
     try {

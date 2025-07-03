@@ -6,22 +6,32 @@
     <table>
       <thead>
         <tr>
+          <th>Id</th>
           <th>Nom</th>
           <th>Prénom</th>
           <th>Email</th>
+          <th>Role</th>
           <th>Date CGU</th>
+          <th>Vérifié</th>
           <th>Bloquer</th>
         </tr>
       </thead>
       <tbody>
-        @for (user of users(); track user.email){
+        @for (user of users(); track $index){
         <tr>
+          <td>{{$index + 1}}</td>
           <td>{{ user.first_name }}</td>
           <td>{{ user.last_name }}</td>
           <td>{{ user.email }}</td>
+          <td>{{ user.roles[0] }}</td>
           <td>{{ user.cgu_accepted }}</td>
+          <td>{{ user.is_verified }}</td>
           <td>
-            <input type="checkbox" (click)="blockUser(user)" />
+            <input
+              type="checkbox"
+              (click)="blockUser(user)"
+              [checked]="user.is_blocked"
+            />
           </td>
         </tr>
         }
