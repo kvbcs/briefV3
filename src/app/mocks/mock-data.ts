@@ -15,7 +15,7 @@ export const mockUsers: User[] = [
     is_blocked: false,
     created_at: '2025-06-01T09:00:00Z',
     updated_at: '2025-06-20T15:00:00Z',
-    cgu_accepted_at: '2025-06-10T10:00:00Z',
+    cgu_accepted: '2025-06-10T10:00:00Z',
     token: 'mock-token-alice',
     password: 'password123' // juste pour simuler le login
   },
@@ -29,7 +29,7 @@ export const mockUsers: User[] = [
     is_blocked: false,
     created_at: '2025-01-01T00:00:00Z',
     updated_at: '2025-05-01T12:00:00Z',
-    cgu_accepted_at: '2025-01-15T00:00:00Z',
+    cgu_accepted: '2025-01-15T00:00:00Z',
     token: 'mock-token-admin',
     password: 'admin123'
   }

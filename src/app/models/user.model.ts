@@ -8,7 +8,7 @@ export interface User {
   is_blocked: boolean;
   created_at: string;         // ISO date
   updated_at?: string;        // ISO date (nullable)
-  cgu_accepted_at: string;    // ISO date
+  cgu_accepted: string;    // ISO date
   token?: string;
   password?: string;          // ⚠️ pour le mock uniquement (jamais renvoyé par l'API réelle)
 }

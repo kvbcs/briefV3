@@ -50,6 +50,7 @@ export class AuthService {
    * Supprime les données de l’utilisateur du localStorage
    */
   logout(): void {
+
   this.http.post(`${this.apiUrl}/logout`, {})
     .subscribe({
       next: () => this.clearSession(),
@@ -64,6 +65,11 @@ private clearSession(): void {
   localStorage.removeItem('currentUser');
 }
 
+  private clearSession(): void {
+    this.currentUser = null;
+    localStorage.removeItem('token');
+    localStorage.removeItem('currentUser');
+  }
 
  isLoggedIn(): boolean {
   return !!localStorage.getItem('token');
@@ -86,9 +92,9 @@ private clearSession(): void {
   }
   
   needsToAcceptTerms(): boolean {
-    if (!this.currentUser?.cgu_accepted_at) return true;
+    if (!this.currentUser?.cgu_accepted) return true;
 
-    const lastAccepted = new Date(this.currentUser.cgu_accepted_at);
+    const lastAccepted = new Date(this.currentUser.cgu_accepted);
     const thirteenMonthsAgo = new Date();
     thirteenMonthsAgo.setMonth(thirteenMonthsAgo.getMonth() - 13);
 
@@ -97,6 +103,7 @@ private clearSession(): void {
 
   // updateUser(updatedUser: Partial<User>): void {
   //   if (!this.currentUser) return;
+
 
   //   Object.assign(this.currentUser, updatedUser);
   //   localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
