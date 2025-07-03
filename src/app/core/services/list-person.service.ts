@@ -11,12 +11,33 @@ export class ListPersonService {
   private apiUrl = 'http://193.134.250.16/api';
 
   // 🔄 Créer une nouvelle personne
-  addPerson(personData: Omit<Person, 'id' | 'liste'> & { list_slug: string }): Observable<Person> {
-    return this.http.post<{ success: boolean; person: Person; token: string }>(
-      `${this.apiUrl}/person/new`,
-      { ...personData, liste: { slug: personData.list_slug } }
-    ).pipe(map(res => res.person));
-  }
+addPerson(data: {
+  list: string;
+  first_name: string;
+  last_name: string;
+  gender: string;
+  age: number;
+  french_level: number;
+  tech_level: number;
+  dwwm: boolean;
+  profile: string;
+}) {
+  return this.http.post<{ success: boolean; person: Person }>(`${this.apiUrl}/person/new`, data);
+}
+
+
+//Ancien
+  // addPerson(personData: Omit<Person, 'id' | 'liste'> & { list_slug: string }): Observable<Person> {
+  //   return this.http.post<{ success: boolean; person: Person; token: string }>(
+  //     `${this.apiUrl}/person/new`,
+  //     { ...personData, liste: { slug: personData.list_slug } }
+  //   ).pipe(map(res => res.person));
+  // }
+
+
+
+
+
 
   // ✏️ Modifier une personne (via son slug)
   updatePerson(personSlug: string, updatedData: Partial<Person>): Observable<Person> {

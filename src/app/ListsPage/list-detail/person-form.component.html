@@ -1,51 +1,40 @@
-<form [formGroup]="personForm" (ngSubmit)="formSubmitted.emit()">
-  <label>
-    Nom :
-    <input type="text" formControlName="name" />
-  </label>
+<div class="modal-wrapper">
+  <button class="close-btn" (click)="onCancel()">✕</button>
 
-  <label>
-    Genre :
-    <select formControlName="gender">
-      @for (gender of genderOptions; track gender) {
-        <option [value]="gender">{{ gender }}</option>
-      }
-    </select>
-  </label>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="person-form">
+    <h2>Ajouter une personne</h2>
 
-  <label>
-    Aisance en français :
-    <input type="number" formControlName="frenchFluency" min="1" max="4" />
-  </label>
+    <label>Prénom : <input formControlName="first_name" /></label>
+    <label>Nom : <input formControlName="last_name" /></label>
 
-  <label>
-    Ancien DWWM :
-    <input type="checkbox" formControlName="formerDWWM" />
-  </label>
+    <label>Genre :
+      <select formControlName="gender">
+        @for (g of genderOptions; track g) {
+          <option [value]="g">{{ g }}</option>
+        }
+      </select>
+    </label>
 
-  <label>
-    Niveau technique :
-    <input type="number" formControlName="technicalLevel" min="1" max="4" />
-  </label>
+    <label>Âge : <input type="number" formControlName="age" /></label>
+    <label>Aisance en français : <input type="number" formControlName="french_level" /></label>
+    <label>Niveau technique : <input type="number" formControlName="tech_level" /></label>
+    <label>Ancien DWWM : <input type="checkbox" formControlName="dwwm" /></label>
 
-  <label>
-    Profil :
-    <select formControlName="profile">
-      @for (profile of profileOptions; track profile) {
-        <option [value]="profile">{{ profile }}</option>
-      }
-    </select>
-  </label>
+    <label>Profil :
+      <select formControlName="profile">
+        @for (p of profileOptions; track p) {
+          <option [value]="p">{{ p }}</option>
+        }
+      </select>
+    </label>
 
-  <label>
-    Âge :
-    <input type="number" formControlName="age" min="1" max="99" />
-  </label>
+    <div class="modal-actions">
+      <button type="submit" class="btn-primary">Valider</button>
+      <button type="button" class="btn-secondary" (click)="onCancel()">Annuler</button>
+    </div>
 
-  <button type="submit">Valider</button>
-  <button type="button" (click)="cancelEdit.emit()">Annuler</button>
-
-  @if (errorMessage) {
-    <p class="error">{{ errorMessage }}</p>
-  }
-</form>
+    @if (errorMessage) {
+      <p class="error">{{ errorMessage }}</p>
+    }
+  </form>
+</div>

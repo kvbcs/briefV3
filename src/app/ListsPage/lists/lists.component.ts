@@ -15,7 +15,7 @@ import { List } from '../../models/list';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './lists.component.html',
-  styleUrls: ['./lists.component.scss'],
+  styleUrls: ['./lists.component.css'],
 })
 export class ListsUserComponent implements OnInit {
   lists: List[] = [];
