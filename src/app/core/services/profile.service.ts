@@ -68,14 +68,15 @@ export class ProfileService {
    * - en mock : affiche un message en console
    * - en prod : appelle l'API DELETE
    */
-  deleteUser(): Observable<void> {
-    if (this.useMock) {
-      console.log('Utilisateur supprimé (mock)');
-      return of(undefined); // déclenche bien la chaîne asynchrone
-    } else {
-      return this.http.delete<void>(`${this.API_URL}/user/delete/me`);
-    }
+ deleteUser(): Observable<void> {
+  if (this.useMock) {
+    console.log('Utilisateur supprimé (mock)');
+    return of(undefined);
+  } else {
+    return this.http.post<void>(`${this.API_URL}/user/delete/me`, null);
   }
+}
+
 
   acceptTerms(): void {
   const stored = localStorage.getItem('currentUser');

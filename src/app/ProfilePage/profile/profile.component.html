@@ -1,15 +1,22 @@
 <div class="profile-container">
   <!-- Partie gauche : infos ou formulaire -->
   <div class="profile-card">
-    @if (editMode()) {
+    @if (editMode) {
     <h2>Modifier mon profil</h2>
     <form [formGroup]="profileForm" (ngSubmit)="save()">
       <label>Email :</label>
       <input type="email" formControlName="email" />
+
       <label>Prénom :</label>
       <input type="text" formControlName="firstname" />
+
       <label>Nom :</label>
       <input type="text" formControlName="lastname" />
+
+      <div class="form-actions">
+        <button type="submit">Enregistrer</button>
+        <button type="button" (click)="toggleEditMode()">Annuler</button>
+      </div>
     </form>
     } @else if (user) {
     <h2>Mon profil</h2>
@@ -28,11 +35,8 @@
 
   <!-- Partie droite : boutons -->
   <div class="profile-actions">
-    @if (editMode()) {
-    <button type="submit" (click)="save()">Enregistrer</button>
-    <button type="button" (click)="toggleEditMode()">Annuler</button>
-    } @else if (user) {
-    <button type="button" (click)="toggleEditMode()">
+    @if (!editMode && user) {
+    <button type="button" (click)="toggleEditMode()" [disabled]="editMode">
       Modifier mes informations
     </button>
     }
