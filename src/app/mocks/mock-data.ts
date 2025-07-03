@@ -3,6 +3,7 @@
 // import { Group } from '../models/group.model';
 // import { DrawHistoryEntry } from '../models/draw-history-entry.model';
 
+
 // // 🧍 Utilisateur simulé
 // export const mockUsers: User[] = [
 //   {
@@ -34,6 +35,7 @@
 //     password: 'admin123'
 //   }
 // ];
+
 
 
 // // 📋 Listes associées à Alice

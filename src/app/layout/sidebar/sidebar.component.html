@@ -17,7 +17,7 @@
   <!-- Zone scrollable -->
   <ul class="nav-links">
     @for (link of sidebarLinks; track link.id) {
-    @if (link.roles.includes(userRole)) {
+    @if (link.roles.includes(userRole || adminRole)) {
     <li>
       <a [routerLink]="link.path" [class.active]="isActive(link.path)">
         {{ link.label }}

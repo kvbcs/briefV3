@@ -10,15 +10,19 @@ import { MentionsLegalesComponent } from './legal/mentions-legales/mentions-lega
 import { AuthenticatedLayoutComponent } from './layout/authenticated-layout/authenticated-layout.component';
 import { GroupPageComponent } from './Groups/group-page/group-page.component';
 import { DrawHistoryComponent } from './DrawHistory/draw-history/draw-history.component';
+import { AuthGuard } from './core/guards/auth.guard';
+import { NoAuthGuard } from './core/guards/no-auth.guard';
 
 export const routes: Routes = [
   {
     path: '',
     component: HomePageComponent,
+    canActivate: [NoAuthGuard]
   },
   {
     path: '',
     component: AuthenticatedLayoutComponent,
+    canActivate: [AuthGuard],
     children: [
       { path: 'lists', component: ListsUserComponent },
       { path: 'lists/:slug', component: ListDetailComponent },

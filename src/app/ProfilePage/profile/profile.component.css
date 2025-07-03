@@ -7,7 +7,7 @@
   margin: 2rem auto;
   padding: 1rem;
   width: 100%;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   box-sizing: border-box;
 }
 
@@ -47,10 +47,10 @@ form label {
 form input {
   width: 100%;
   padding: 0.6rem 0.75rem;
-  border: 1px solid #E0E0E0;
+  border: 1px solid #e0e0e0;
   border-radius: 8px;
   font-size: 1rem;
-  background-color: #F9F9FB;
+  background-color: #f9f9fb;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -64,7 +64,7 @@ form input:focus {
 
 .profile-actions button {
   width: 220px; /* ou 100%, ou max-content selon ton besoin */
-  background-color: #10333F;
+  background-color: #10333f;
   color: white;
   font-weight: 600;
   font-size: 1rem;
@@ -82,10 +82,10 @@ form input:focus {
 }
 
 button,
-button[type='submit'],
-button[type='button'],
+button[type="submit"],
+button[type="button"],
 .btn-danger {
-  background-color: #10333F;
+  background-color: #10333f;
   color: white;
   font-weight: 600;
   font-size: 1rem;
@@ -97,8 +97,8 @@ button[type='button'],
 }
 
 button:hover,
-button[type='submit']:hover,
-button[type='button']:hover,
+button[type="submit"]:hover,
+button[type="button"]:hover,
 .btn-danger:hover {
   background-color: #0d2a34;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
@@ -111,6 +111,51 @@ button[type='button']:hover,
 .btn-danger:hover {
   background-color: #d73333;
   box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+}
+
+.loader-overlay {
+  position: fixed;
+  inset: 0; /* = top/left/right/bottom: 0 */
+  background: rgba(255, 255, 255, 0.9);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bouncing-loader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.bouncing-loader div {
+  width: 18px;
+  height: 18px;
+  background-color: #0D2B36;
+  border-radius: 50%;
+  animation: bounce 0.6s infinite ease-in-out;
+}
+
+.bouncing-loader div:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.bouncing-loader div:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
 }
 
 /* === TABLETTE (768px–1023px) === */
@@ -154,5 +199,17 @@ button[type='button']:hover,
   form label,
   form input {
     font-size: 1rem;
+  }
+    .bouncing-loader-wrapper {
+    margin: auto;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bouncing-loader {
+    justify-content: center;
+    width: auto;
   }
 }

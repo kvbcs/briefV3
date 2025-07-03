@@ -32,11 +32,13 @@ export class ProfileService {
       )
       .pipe(map((res) => res.data));
   }
-
+  
   // Supprime le compte utilisateur via l'API
   deleteUser(): Observable<void> {
     return this.http.delete<void>(`${this.API_URL}/user/delete/me`);
   }
+}
+
 
   // Accepte les CGU côté front (localStorage)
   acceptTerms(): void {

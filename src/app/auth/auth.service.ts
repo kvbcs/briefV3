@@ -26,6 +26,31 @@ export class AuthService {
     }
   }
 
+  //Récupération du token
+  getToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
+  //Décodage du token pour récupérer le rôle
+  getCurrentUserRole(): 'admin' | 'user' | null {
+    const token = this.getToken();
+    if (!token) return null;
+
+    try {
+      const payload = token.split('.')[1];
+      const decoded = JSON.parse(atob(payload));
+      const roles: string[] = decoded.roles || [];
+
+      if (roles.includes('ROLE_ADMIN')) return 'admin';
+      if (roles.includes('ROLE_USER')) return 'user';
+
+      return null;
+    } catch (e) {
+      console.error('Erreur décodage token', e);
+      return null;
+    }
+  }
+
   /**
    * 🔐 Méthode de connexion
    * Envoie les identifiants de connexion à l’API et enregistre le token et l’utilisateur dans le localStorage
@@ -50,6 +75,7 @@ export class AuthService {
    * Supprime les données de l’utilisateur du localStorage
    */
   logout(): void {
+
   this.http.post(`${this.apiUrl}/logout`, {})
     .subscribe({
       next: () => this.clearSession(),
@@ -58,12 +84,11 @@ export class AuthService {
 }
 
 
-private clearSession(): void {
-  this.currentUser = null;
-  localStorage.removeItem('token');
-  localStorage.removeItem('currentUser');
-}
-
+  private clearSession(): void {
+    this.currentUser = null;
+    localStorage.removeItem('token');
+    localStorage.removeItem('currentUser');
+  }
 
  isLoggedIn(): boolean {
   return !!localStorage.getItem('token');
@@ -74,21 +99,22 @@ private clearSession(): void {
     return this.currentUser;
   }
 
-  getCurrentUserRole(): string {
-    const user = this.currentUser; // ou JSON.parse(localStorage.getItem('user'))
-    const roles = user?.roles;
+  //Commenté car le back ne renvoie pas de rôle
+  // getCurrentUserRole(): string {
+  //   const user = this.currentUser; // ou JSON.parse(localStorage.getItem('user'))
+  //   const roles = user?.roles;
 
-    if (Array.isArray(roles) && roles.includes('admin')) {
-      return 'admin';
-    }
+  //   if (Array.isArray(roles) && roles.includes('admin')) {
+  //     return 'admin';
+  //   }
 
-    return 'user';
-  }
+  //   return 'user';
+  // }
   
   needsToAcceptTerms(): boolean {
-    if (!this.currentUser?.cgu_accepted_at) return true;
+    if (!this.currentUser?.cgu_accepted) return true;
 
-    const lastAccepted = new Date(this.currentUser.cgu_accepted_at);
+    const lastAccepted = new Date(this.currentUser.cgu_accepted);
     const thirteenMonthsAgo = new Date();
     thirteenMonthsAgo.setMonth(thirteenMonthsAgo.getMonth() - 13);
 
@@ -97,6 +123,7 @@ private clearSession(): void {
 
   // updateUser(updatedUser: Partial<User>): void {
   //   if (!this.currentUser) return;
+
 
   //   Object.assign(this.currentUser, updatedUser);
   //   localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
