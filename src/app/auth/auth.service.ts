@@ -51,29 +51,32 @@ export class AuthService {
    * Supprime les données de l’utilisateur du localStorage
    */
   logout(): void {
-  const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token');
 
-  if (!token) {
-    this.clearSession();
-    return;
+    if (!token) {
+      this.clearSession();
+      return;
+    }
+
+    this.http
+      .post(
+        `${this.apiUrl}/logout`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .subscribe({
+        next: () => this.clearSession(),
+        error: () => this.clearSession(), // même en cas d'erreur, on nettoie localement
+      });
   }
 
-  this.http
-    .post(`${this.apiUrl}/logout`, {}, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-    .subscribe({
-      next: () => this.clearSession(),
-      error: () => this.clearSession(), // même en cas d'erreur, on nettoie localement
-    });
-}
-
-private clearSession(): void {
-  this.currentUser = null;
-  localStorage.removeItem('token');
-  localStorage.removeItem('currentUser');
-}
-
+  private clearSession(): void {
+    this.currentUser = null;
+    localStorage.removeItem('token');
+    localStorage.removeItem('currentUser');
+  }
 
   isLoggedIn(): boolean {
     return this.currentUser !== null;
@@ -94,9 +97,9 @@ private clearSession(): void {
     return 'user';
   }
   needsToAcceptTerms(): boolean {
-    if (!this.currentUser?.cgu_accepted_at) return true;
+    if (!this.currentUser?.cgu_accepted) return true;
 
-    const lastAccepted = new Date(this.currentUser.cgu_accepted_at);
+    const lastAccepted = new Date(this.currentUser.cgu_accepted);
     const thirteenMonthsAgo = new Date();
     thirteenMonthsAgo.setMonth(thirteenMonthsAgo.getMonth() - 13);
 
@@ -106,7 +109,7 @@ private clearSession(): void {
   acceptTerms(): void {
     if (!this.currentUser) return;
 
-    this.currentUser.cgu_accepted_at = new Date().toISOString();
+    this.currentUser.cgu_accepted = new Date().toISOString();
     localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
   }
 

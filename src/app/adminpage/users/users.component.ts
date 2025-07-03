@@ -7,12 +7,12 @@ import {
   ViewChild,
 } from '@angular/core';
 import { UsersService } from '../services/users.service';
-import { UpdateUsersComponent } from '../components/modal/update-users/update-users.component';
 import { ToastrService } from 'ngx-toastr';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-users',
-  imports: [UpdateUsersComponent],
+  imports: [],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css',
 })
@@ -20,29 +20,27 @@ export class UsersComponent implements OnInit {
   constructor(private toastr: ToastrService) {}
 
   private userService = inject(UsersService);
-  users = this.userService.getUsersSignal();
-  modalOpen = signal<boolean>(false);
-  selectedUserId = signal<number | null>(null);
+
+  users = signal<User[]>([]);
+
   @ViewChild('id') div!: ElementRef;
+
   ngOnInit(): void {
     try {
       this.userService.getUsers().subscribe((data) => {
         this.users.set(data);
+        console.log(data);
+
         this.toastr.success('Utilisateurs chargés', 'Succès');
       });
     } catch (error) {
-      this.toastr.error("Erreur serveur", "Erreur")
+      this.toastr.error('Erreur serveur', 'Erreur');
       console.log(error);
-      
     }
   }
-  openModal(id: number) {
-    this.selectedUserId.set(id);
 
-    this.modalOpen.set(true);
-  }
-
-  closeModal() {
-    this.modalOpen.set(false);
+  blockUser(user: User){
+    console.log(user);
+    
   }
 }

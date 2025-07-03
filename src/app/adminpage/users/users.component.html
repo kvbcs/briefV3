@@ -6,22 +6,22 @@
     <table>
       <thead>
         <tr>
-          <th>Id</th>
           <th>Nom</th>
           <th>Prénom</th>
           <th>Email</th>
-          <th>Suppr / Editer</th>
+          <th>Date CGU</th>
+          <th>Bloquer</th>
         </tr>
       </thead>
       <tbody>
-        @for (user of users(); track user.id){
+        @for (user of users(); track user.email){
         <tr>
-          <td class="id-column" #id>{{ user.id }}</td>
           <td>{{ user.first_name }}</td>
           <td>{{ user.last_name }}</td>
           <td>{{ user.email }}</td>
+          <td>{{ user.cgu_accepted }}</td>
           <td>
-            <button>🗑️</button><button (click)="openModal(user.id)">✏️</button>
+            <input type="checkbox" (click)="blockUser(user)" />
           </td>
         </tr>
         }
@@ -32,9 +32,3 @@
   <p>Aucun utilisateur trouvé</p>
   }
 </main>
-
-<app-update-users
-  [showModal]="modalOpen()"
-  (close)="closeModal()"
-  [userId]="selectedUserId()"
-></app-update-users>

@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { User } from '../../models/user.model';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +16,16 @@ export class UsersService {
   }
 
   //Temporaire en attendant le back
-  private baseUrl: string = 'http://localhost:3000/api/users';
+  private baseUrl: string = 'http://193.134.250.16/api/';
+
+  getHeaders() {
+    const token = localStorage.getItem('token');
+    return {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    };
+  }
 
   getUsersSignal() {
     return this.mockUsers;
@@ -27,8 +36,7 @@ export class UsersService {
   }
 
   getUsers(): Observable<User[]> {
-    return of(this.mockUsers());
-    // return this.http.get<Users[]>(`${this.baseUrl}/show`)
+    return this.http.get<{data:{ users:User[]}}>(`${this.baseUrl}admin/users`, this.getHeaders()).pipe(map(res => res.data.users))
   }
 
   getUser(id: number): Observable<User | undefined> {
