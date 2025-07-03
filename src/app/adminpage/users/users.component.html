@@ -17,20 +17,20 @@
         </tr>
       </thead>
       <tbody>
-        @for (user of users(); track $index){
+        @for (user of users(); track user.id){
         <tr>
-          <td>{{$index + 1}}</td>
+          <td>{{ user.id }}</td>
           <td>{{ user.first_name }}</td>
           <td>{{ user.last_name }}</td>
           <td>{{ user.email }}</td>
-          <td>{{ user.roles[0] }}</td>
+          <td>{{ user.roles[0] === "ROLE_USER" ? "utilisateur" : "admin" }}</td>
           <td>{{ user.cgu_accepted }}</td>
-          <td>{{ user.is_verified }}</td>
+          <td>{{ user.is_verified ? "✅": "❌"}}</td>
           <td>
             <input
               type="checkbox"
-              (click)="blockUser(user)"
               [checked]="user.is_blocked"
+              (change)="onToggleBlock(user)"
             />
           </td>
         </tr>
