@@ -40,25 +40,18 @@ export class PersonFormComponent {
     });
   }
 
-  onSubmit(): void {
-    console.log('listSlug:', this.listSlug);
+onSubmit(): void {
+  if (this.form.valid && this.data.listSlug) {
+const personData = {
+  ...this.form.value,
+  liste: { slug: this.data.listSlug },
+  age: Number(this.form.value.age),
+  french_level: Number(this.form.value.french_level),
+  tech_level: Number(this.form.value.tech_level),
+  dwwm: Boolean(this.form.value.dwwm)
+};
 
-    console.log('Form valid ?', this.form.valid);
-console.log('Form status:', this.form.status);
-console.log('Form errors:', this.form.errors);
-console.log('Form raw value:', this.form.getRawValue());
 
-  if (this.form.valid && this.listSlug) {
-    const personData = {
-      ...this.form.value,
-      list: this.listSlug,
-      age: Number(this.form.value.age),
-      french_level: Number(this.form.value.french_level),
-      tech_level: Number(this.form.value.tech_level),
-      dwwm: Boolean(this.form.value.dwwm)
-    };
-
-    console.log('Payload envoyé au backend:', personData); // tu peux le laisser pour debug
 
     this.listPersonService.addPerson(personData).subscribe({
       next: () => this.dialogRef.close('success'),
@@ -67,10 +60,9 @@ console.log('Form raw value:', this.form.getRawValue());
         this.dialogRef.close('error');
       }
     });
-  } else {
-    console.warn('Formulaire invalide ou slug manquant');
   }
 }
+
 
 
   onCancel(): void {

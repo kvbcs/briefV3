@@ -72,34 +72,34 @@ export class ListDetailComponent implements OnInit {
     });
   }
 
-loadList(): void {
-  this.isLoading = true;
+  loadList(): void {
+    this.isLoading = true;
 
-  this.listService.getListBySlug(this.listSlug).subscribe({
-    next: data => {
-      this.list = data;
+    this.listService.getListBySlug(this.listSlug).subscribe({
+      next: data => {
+        this.list = data;
 
-      // 🟢 Maintenant on récupère les personnes associées à la liste
-      this.listPersonService.getPersonsByListSlug(this.listSlug).subscribe({
-        next: persons => {
-          if (this.list) {
-            this.list.people = persons; // 👈 on attache les personnes à la propriété "people"
+        // 🟢 Maintenant on récupère les personnes associées à la liste
+        this.listPersonService.getPersonsByListSlug(this.listSlug).subscribe({
+          next: persons => {
+            if (this.list) {
+              this.list.people = persons; // 👈 on attache les personnes à la propriété "people"
+            }
+            this.isLoading = false;
+          },
+          error: err => {
+            this.errorMessage = err.message || 'Erreur chargement des personnes';
+            this.isLoading = false;
           }
-          this.isLoading = false;
-        },
-        error: err => {
-          this.errorMessage = err.message || 'Erreur chargement des personnes';
-          this.isLoading = false;
-        }
-      });
-    },
-    error: err => {
-      this.errorMessage = err.message || 'Erreur chargement liste';
-      this.router.navigate(['/lists']);
-      this.isLoading = false;
-    }
-  });
-}
+        });
+      },
+      error: err => {
+        this.errorMessage = err.message || 'Erreur chargement liste';
+        this.router.navigate(['/lists']);
+        this.isLoading = false;
+      }
+    });
+  }
 
 
   togglePersonForm(): void {
@@ -109,16 +109,18 @@ loadList(): void {
       maxHeight: '90vh',
       autoFocus: false,
       data: {
-        listSlug: this.list?.slug
+        listSlug: this.list?.slug,
+          listId: this.list?.id 
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'success') {
-        this.loadList(); // 👈 recharge la liste à partir de l'API
+        this.loadList(); // ✅ recharge uniquement si ajout réussi
       }
     });
   }
+
 
   onSubmit(): void {
 
@@ -126,17 +128,18 @@ loadList(): void {
 
     const formValue = this.personForm.value;
 
-    const personPayload = {
-      list: this.listSlug,
-      first_name: formValue.first_name?.trim(),
-      last_name: formValue.last_name?.trim(),
-      gender: formValue.gender,
-      age: formValue.age,
-      french_level: formValue.french_level,
-      tech_level: formValue.tech_level,
-      dwwm: formValue.dwwm,
-      profile: formValue.profile
-    };
+const personPayload = {
+  list: this.listSlug,
+  first_name: formValue.first_name?.trim(),
+  last_name: formValue.last_name?.trim(),
+  gender: formValue.gender,
+  age: formValue.age,
+  french_level: formValue.french_level,
+  tech_level: formValue.tech_level,
+  dwwm: formValue.dwwm,
+  profile: formValue.profile
+};
+
 
     this.listPersonService.addPerson(personPayload).subscribe({
       next: () => {

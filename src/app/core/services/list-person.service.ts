@@ -7,10 +7,11 @@ import { Observable, map } from 'rxjs';
   providedIn: 'root',
 })
 export class ListPersonService {
-  addPersonToList(listId: number, person: Person) {
-    throw new Error('Method not implemented.');
-  }
-  private http = inject(HttpClient);
+ addPersonToList(listSlug: string, personData: Partial<Person>): Observable<any> {
+  return this.http.post(`${this.apiUrl}/person/new`, personData);
+}
+
+  private readonly http = inject(HttpClient);
   private apiUrl = 'http://193.134.250.16/api';
 
   // 🔄 Créer une nouvelle personne
@@ -25,8 +26,12 @@ addPerson(data: {
   dwwm: boolean;
   profile: string;
 }) {
-  return this.http.post<{ success: boolean; person: Person }>(`${this.apiUrl}/person/new`, data);
+  return this.http.post<{ success: boolean; person: Person }>(
+    `${this.apiUrl}/person/new`, // ⬅️ c'était bien cette URL
+    data
+  );
 }
+
 
 
 //Ancien
