@@ -47,6 +47,13 @@ ShuffleMyTeam est une application Angular permettant la gestion de groupes, d'ut
   - Accéder à la page de connexion.
   - Saisir ses identifiants (email + mot de passe) pour accéder à l'application.
 
+### Gestion des listes
+
+- **Création de liste** :
+- Accéder à la page de création de listes.
+- Par défaut, sont affichées l'ensemble des listes créées par l'utilisateur
+
+- 
 ### Gestion des groupes
 
 - **Création de groupes** :
@@ -83,9 +90,9 @@ ShuffleMyTeam est une application Angular permettant la gestion de groupes, d'ut
     - VIBANCOS Kyllian
     - KUISSI Guy
   - **Groupe 2** : Mise en place du backend et de ses services.
-    - XXX Antoine
-    - XXX Arthur
-    - XXX Feras
+    - EPIARD Antoine
+    - ZULPUKHAROV Arthur
+    - ALTALEB Feras
 
 ---
 
