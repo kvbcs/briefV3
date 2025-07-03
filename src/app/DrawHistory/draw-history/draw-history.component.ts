@@ -2,6 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GroupService } from '../../core/services/group.service';
 import { DrawDetailResponse, DrawHistoryEntry, DrawSummary } from '../../models/draw-history-entry.model';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -12,6 +13,8 @@ import { DrawDetailResponse, DrawHistoryEntry, DrawSummary } from '../../models/
   styleUrls: ['./draw-history.component.css'],
 })
 export class DrawHistoryComponent implements OnInit {
+
+  constructor(private route: ActivatedRoute) {}
 
   private groupService = inject(GroupService); 
 
@@ -29,8 +32,15 @@ selectedDrawDetails = signal<DrawDetailResponse['data'] | null>(null);
 drawSummaries = signal<DrawSummary[]>([]);
 
 ngOnInit(): void {
-  const listSlug = 'le-slug-de-ta-liste'; // ou récupéré dynamiquement
-  this.loadAllDraws(listSlug);
+  this.route.paramMap.subscribe(params => {
+    const slug = params.get('slug');
+    if (slug) {
+      this.loadAllDraws(slug);
+    } else {
+      console.error('Slug de liste manquant');
+      // Tu peux afficher un message d’erreur ou rediriger
+    }
+  });
 }
 
 loadDrawDetails(drawName: string): void {
@@ -65,7 +75,7 @@ loadAllDraws(listSlug: string): void {
   // Sélectionne un tirage pour afficher ses détails
   selectEntry(entry: DrawHistoryEntry): void {
   this.selectedEntry.set(entry);
-  this.loadDrawDetails(entry.draw_name);  // Assure-toi que DrawHistoryEntry a ce champ
+  this.loadDrawDetails(entry.draw_name);
 }
 
 
