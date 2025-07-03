@@ -9,7 +9,7 @@
     </div>
 
     <!-- Liste des personnes -->
-    @if (list.people.length > 0) {
+    @if (list && list.people && list.people.length > 0) {
       <app-people-table [persons]="list.people" />
     } @else {
       <p class="empty-message">Aucune personne dans cette liste.</p>

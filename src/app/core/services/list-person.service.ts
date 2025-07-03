@@ -7,6 +7,9 @@ import { Observable, map } from 'rxjs';
   providedIn: 'root',
 })
 export class ListPersonService {
+  addPersonToList(listId: number, person: Person) {
+    throw new Error('Method not implemented.');
+  }
   private http = inject(HttpClient);
   private apiUrl = 'http://193.134.250.16/api';
 
@@ -67,4 +70,6 @@ addPerson(data: {
       `${this.apiUrl}/persons/show/${listSlug}`
     ).pipe(map(res => res.persons));
   }
+
+  
 }

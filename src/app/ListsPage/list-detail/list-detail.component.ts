@@ -44,7 +44,7 @@ export class ListDetailComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly listService: ListService,
     private readonly listPersonService: ListPersonService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -72,42 +72,56 @@ export class ListDetailComponent implements OnInit {
     });
   }
 
-  loadList(): void {
-    this.isLoading = true;
-    this.listService.getListBySlug(this.listSlug).subscribe({
-      next: data => {
-        this.list = data;
-        this.isLoading = false;
-      },
-      error: err => {
-        this.errorMessage = err.message || 'Erreur chargement liste';
-        this.router.navigate(['/lists']);
-        this.isLoading = false;
-      }
-    });
-  }
+loadList(): void {
+  this.isLoading = true;
 
-togglePersonForm(): void {
-  const dialogRef = this.dialog.open(PersonFormComponent, {
-    panelClass: 'person-form-dialog',
-    width: '90vw',
-    maxHeight: '90vh',
-    autoFocus: false,
-    data: {
-      form: this.personForm,
-      genderOptions: this.genderOptions,
-      profileOptions: this.profileOptions
-    }
-  });
+  this.listService.getListBySlug(this.listSlug).subscribe({
+    next: data => {
+      this.list = data;
 
-  dialogRef.afterClosed().subscribe(result => {
-    if (result === 'submitted') {
-      this.loadList();
+      // 🟢 Maintenant on récupère les personnes associées à la liste
+      this.listPersonService.getPersonsByListSlug(this.listSlug).subscribe({
+        next: persons => {
+          if (this.list) {
+            this.list.people = persons; // 👈 on attache les personnes à la propriété "people"
+          }
+          this.isLoading = false;
+        },
+        error: err => {
+          this.errorMessage = err.message || 'Erreur chargement des personnes';
+          this.isLoading = false;
+        }
+      });
+    },
+    error: err => {
+      this.errorMessage = err.message || 'Erreur chargement liste';
+      this.router.navigate(['/lists']);
+      this.isLoading = false;
     }
   });
 }
 
+
+  togglePersonForm(): void {
+    const dialogRef = this.dialog.open(PersonFormComponent, {
+      panelClass: 'person-form-dialog',
+      width: '90vw',
+      maxHeight: '90vh',
+      autoFocus: false,
+      data: {
+        listSlug: this.list?.slug
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'success') {
+        this.loadList(); // 👈 recharge la liste à partir de l'API
+      }
+    });
+  }
+
   onSubmit(): void {
+
     if (this.personForm.invalid) return;
 
     const formValue = this.personForm.value;
