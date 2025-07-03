@@ -15,7 +15,7 @@
   background-color: #ffffff;
   padding: 1.5rem;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  box-shadow: 3px 4px 12px rgba(8, 8, 8, 0.2);
   width: 90%;
   max-width: 100%;
   color: #333333;
@@ -29,6 +29,7 @@
   width: 90%;
   max-width: 100%;
   align-items: center;
+  width: 100%;
 }
 
 /* === Formulaire === */
@@ -54,25 +55,44 @@ form input {
 }
 
 form input:focus {
-  border-color: #5E47D2;
+  border-color: #123744;
   box-shadow: 0 0 0 2px rgba(94, 71, 210, 0.15);
   outline: none;
 }
 
 /* === Boutons === */
+
+.profile-actions button {
+  width: 220px; /* ou 100%, ou max-content selon ton besoin */
+  background-color: #10333F;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.profile-actions button:hover {
+  background-color: #0d2a34;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
 button,
 button[type='submit'],
 button[type='button'],
 .btn-danger {
-  background-color: #5E47D2;
+  background-color: #10333F;
   color: white;
   font-weight: 600;
   font-size: 1rem;
-  padding: 0.6rem 1.5rem;
+  padding: 0.6rem 1.8rem;
   border: none;
-  border-radius: 999px;
+  border-radius: 12px;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(94, 71, 210, 0.15);
   transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -80,8 +100,8 @@ button:hover,
 button[type='submit']:hover,
 button[type='button']:hover,
 .btn-danger:hover {
-  background-color: #4534A1;
-  box-shadow: 0 4px 10px rgba(94, 71, 210, 0.35);
+  background-color: #0d2a34;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
 }
 
 .btn-danger {
