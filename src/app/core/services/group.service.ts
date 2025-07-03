@@ -1,52 +1,52 @@
-import { inject, Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { mockGeneratedGroups, mockDrawHistory } from '../../mocks/mock-data';
+import { Injectable, inject } from '@angular/core';
+import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { Group, GroupGenerationConfig } from '../../models/group.model';
-import { DrawHistoryEntry } from '../../models/draw-history-entry.model';
+import { DrawResponse, Group, GroupGenerationConfig } from '../../models/group.model';
+import { DrawDetailResponse, DrawHistoryEntry, DrawsListResponse } from '../../models/draw-history-entry.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GroupService {
   private http = inject(HttpClient);
-    private isMock = true; // ← changer à false pour appeler le vrai backend
 
-
-   generateGroups(config: GroupGenerationConfig): Observable<Group[]> {
-    if (this.isMock) {
-      return of(mockGeneratedGroups); // Observable local avec groupes mockés
-    } else {
-          // Envoi la config complète au backend pour tirage réel
-      return this.http.post<Group[]>('/api/groups/draw', config, {
-        withCredentials: true
-      });
-    }
-  }
-
-
- validateGroups(groups: Group[]): Observable<{ success: boolean }> {
-    if (this.isMock) {
-      console.log('[MOCK] Groupes validés :', groups);
-      return of({ success: true }); // succès simulé
-    } else {
-          // Envoi la composition finale des groupes au backend
-      return this.http.post<{ success: boolean }>('/api/groups/validate', groups, {
-        withCredentials: true
-      });
-    }
-  }
-
-  getDrawHistory(): Observable<DrawHistoryEntry[]> {
-  if (this.isMock) {
-    return of(mockDrawHistory);
-  } else {
-    // Requête GET vers le backend
-    return this.http.get<DrawHistoryEntry[]>('/api/groups/draw-history', {
-      withCredentials: true
+  // Crée un tirage (draw) en répartissant les personnes en groupes
+  createDraw(config: GroupGenerationConfig): Observable<DrawResponse> {
+    const payload = {
+      list_slug: config.listSlug,
+      number_of_groups: config.numberOfGroups,
+      draw_name: config.drawName || null,
+    };
+    return this.http.post<DrawResponse>('/api/draw/new', payload, {
+      withCredentials: true,
     });
   }
-}
 
+  // Confirme (valide) un tirage finalisé
+  confirmDraw(groups: Group[]): Observable<{ success: boolean }> {
+    return this.http.post<{ success: boolean }>('/api/groups/validate', groups, {
+      withCredentials: true,
+    });
+  }
 
+  // Récupère l’historique des tirages
+  fetchDrawHistory(): Observable<DrawHistoryEntry[]> {
+    return this.http.get<DrawHistoryEntry[]>('/api/groups/draw-history', {
+      withCredentials: true,
+    });
+  }
+
+  // Récupère les détails d’un tirage spécifique
+  getDrawDetails(drawName: string): Observable<DrawDetailResponse> {
+    return this.http.get<DrawDetailResponse>(`http://193.134.250.16/api/draw/show/${encodeURIComponent(drawName)}`, {
+      withCredentials: true,
+    });
+  }
+
+  // Récupère tous les tirages d’une liste donnée
+  getAllDrawsForList(listSlug: string): Observable<DrawsListResponse> {
+    return this.http.get<DrawsListResponse>(`http://193.134.250.16/api/draws/show/${encodeURIComponent(listSlug)}`, {
+      withCredentials: true,
+    });
+  }
 }

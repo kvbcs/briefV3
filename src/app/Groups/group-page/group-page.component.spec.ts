@@ -11,7 +11,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { GroupService } from '../../core/services/group.service';
 import { of, throwError } from 'rxjs';
-import { GroupGenerationConfig } from '../../models/group.model';
+import { Group, GroupGenerationConfig } from '../../models/group.model';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
 
@@ -20,7 +20,7 @@ describe('GroupPageComponent', () => {
   let fixture: ComponentFixture<GroupPageComponent>;
 
   const mockConfig: GroupGenerationConfig = {
-    listId: 'mock-list-id',
+    listSlug: 'mock-list-id',
     numberOfGroups: 2,
     mixGender: true,
     mixAge: false,
@@ -30,10 +30,41 @@ describe('GroupPageComponent', () => {
   const mockRouter = {
     navigate: jasmine.createSpy('navigate'),
   };
-  const mockGroups = [
-    { name: 'Groupe 1', members: [{ id: '1', name: 'Alice' }] },
-    { name: 'Groupe 2', members: [{ id: '2', name: 'Bob' }] },
-  ];
+  const mockGroups: Group[] = [
+  {
+    name: 'Groupe 1',
+    members: [
+      {
+        id: '1',
+        first_name: 'Alice',
+        last_name: 'Dupont',
+        gender: 'Féminin',
+        age: 25,
+        dwwm: true,
+        profile: 'Leader',
+        french_level: 3,
+        tech_level: 4,
+      },
+    ],
+  },
+  {
+    name: 'Groupe 2',
+    members: [
+      {
+        id: '2',
+        first_name: 'Bob',
+        last_name: 'Martin',
+        gender: 'Masculin',
+        age: 30,
+        dwwm: false,
+        profile: 'Discret',
+        french_level: 2,
+        tech_level: 3,
+      },
+    ],
+  },
+];
+
 
   const mockGroupService = {
     generateGroups: jasmine
@@ -84,7 +115,7 @@ describe('GroupPageComponent', () => {
   });
 
   it('should receive listId from MAT_DIALOG_DATA', () => {
-    expect(component.data.listId).toBe('mock-list-id');
+    expect(component.data.listSlug).toBe('mock-list-id');
   });
 
   it('should call groupService.generateGroups when onGenerate() is called with config', () => {

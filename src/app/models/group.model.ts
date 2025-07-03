@@ -1,15 +1,16 @@
 // Représente une personne dans un groupe
 export interface Person {
   id: string;
-  name: string;
-  // Optionnel : tu peux ajouter des champs utiles pour la génération
-  gender?: string;
-  age?: number;
-  dwwm?: boolean;
-  level?: number;
-  profile?: string;
-  frenchFluency?: number;
+  first_name: string;
+  last_name: string;
+  gender: string;
+  age: number;
+  dwwm: boolean;
+  profile: string;
+  french_level: number;
+  tech_level: number;
 }
+
 
 // Groupe généré ou tiré
 export interface Group {
@@ -18,18 +19,19 @@ export interface Group {
   members: Person[];        // on normalise autour de `members`
 }
 
-// Tirage complet, stocké dans l’historique
+// Tirage complet, stocké dans l’historique, et retourné par l’API
 export interface GroupDraw {
   id: number;
-  date: string;
+  date: string;          // Date du tirage
   listId: number;
   groups: Group[];
   criteria: MixCriteria;
 }
 
-// Configuration de génération de groupes
+// Configuration envoyée au backend pour créer un tirage
 export interface GroupGenerationConfig {
-  listId: string;
+  listSlug: string;         // Slug de la liste ciblée
+  drawName?: string;        // Nom optionnel du tirage
   numberOfGroups: number;
   mixAge: boolean;
   mixDWWM: boolean;
@@ -47,4 +49,12 @@ export interface MixCriteria {
   mixLevel: boolean;
   mixProfile: boolean;
   mixAge: boolean;
+}
+
+// Réponse du backend à la création d’un tirage
+export interface DrawResponse {
+  success: boolean;
+  message: string;
+  token?: string;         // Token JWT rafraîchi
+  data?: GroupDraw;       // Tirage créé avec groupes, critères, etc.
 }

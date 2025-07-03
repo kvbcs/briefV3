@@ -22,7 +22,7 @@ export class GroupFormComponent {
 
   onSubmit(): void {
     this.generate.emit({
-      listId: '', // à compléter plus tard
+      listSlug: '', // à compléter plus tard
       numberOfGroups: this.numberOfGroups,
       mixAge: this.mixAge,
       mixDWWM: this.mixDWWM,

@@ -1,7 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GroupFormComponent } from './group-form.component';
-import { FormsModule } from '@angular/forms';
-import { By } from '@angular/platform-browser';
 import { GroupGenerationConfig } from '../../models/group.model';
 
 describe('GroupFormComponent', () => {
@@ -34,7 +32,7 @@ describe('GroupFormComponent', () => {
     component.onSubmit();
 
     const expectedConfig: GroupGenerationConfig = {
-      listId: '', // inchangé ici
+     listSlug: '', // inchangé ici
       numberOfGroups: 3,
       mixAge: true,
       mixDWWM: false,

@@ -1,14 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-
 import { ListService } from '../../core/services/list.service';
 import { ListPersonService } from '../../core/services/list-person.service';
 import { List } from '../../models/list';
 import { Person, Gender, Profile } from '../../models/person';
-
 import { GroupPageComponent } from '../../Groups/group-page/group-page.component';
 import { PersonFormComponent } from './person-form.component';
 import { PeopleTableComponent } from './people-table.component';
@@ -19,11 +22,10 @@ import { PeopleTableComponent } from './people-table.component';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    PersonFormComponent,
-    PeopleTableComponent,
-  ],
+    PeopleTableComponent
+],
   templateUrl: './list-detail.component.html',
-  styleUrls: ['./list-detail.component.scss'],
+  styleUrls: ['./list-detail.component.css'],
 })
 export class ListDetailComponent implements OnInit {
   list: List | undefined;
@@ -31,130 +33,164 @@ export class ListDetailComponent implements OnInit {
   isLoading = true;
 
   personForm!: FormGroup;
-  editingPerson: Person | null = null;
   showPersonForm = false;
+  editingPerson: Person | null = null;
+  errorMessage = '';
   genderOptions = Object.values(Gender);
   profileOptions = Object.values(Profile);
-  errorMessage = '';
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private formBuilder: FormBuilder,
-    private dialog: MatDialog,
-    private listService: ListService,
-    private listPersonService: ListPersonService,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly fb: FormBuilder,
+    private readonly dialog: MatDialog,
+    private readonly listService: ListService,
+    private readonly listPersonService: ListPersonService
   ) {}
 
   ngOnInit(): void {
     this.initForm();
     this.route.paramMap.subscribe((params) => {
-       const slug = params.get('slug'); // ✅ on récupère un string
+      const slug = params.get('slug');
       if (!slug) {
         this.router.navigate(['/lists']);
         return;
       }
-      this.listSlug = slug; // ✅ slug est bien une string
+      this.listSlug = slug;
       this.loadList();
     });
   }
 
   initForm(): void {
-    this.personForm = this.formBuilder.group({
-      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-      gender: [Gender.NOT_SPECIFIED, Validators.required],
-      frenchFluency: [1, [Validators.required, Validators.min(1), Validators.max(4)]],
-      formerDWWM: [false, Validators.required],
-      technicalLevel: [1, [Validators.required, Validators.min(1), Validators.max(4)]],
-      profile: [Profile.RESERVED, Validators.required],
-      age: [18, [Validators.required, Validators.min(1), Validators.max(99)]],
+    this.personForm = this.fb.group({
+      first_name: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(50),
+        ],
+      ],
+      last_name: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(50),
+        ],
+      ],
+      gender: ['', Validators.required],
+      age: [null, [Validators.required, Validators.min(1), Validators.max(99)]],
+      french_level: [
+        null,
+        [Validators.required, Validators.min(1), Validators.max(4)],
+      ],
+      tech_level: [
+        null,
+        [Validators.required, Validators.min(1), Validators.max(4)],
+      ],
+      dwwm: [false, Validators.required],
+      profile: ['', Validators.required],
     });
-  }
-
-  get f() {
-    return this.personForm.controls;
   }
 
   loadList(): void {
-  this.isLoading = true;
-  this.listService.getListBySlug(this.listSlug).subscribe({
-    next: (data) => {
-      this.list = data;
-      this.isLoading = false;
-    },
-    error: (err) => {
-      this.errorMessage = err.message || 'Erreur chargement liste';
-      this.router.navigate(['/lists']);
-      this.isLoading = false;
-    }
-  });
-}
+    this.isLoading = true;
 
+    this.listService.getListBySlug(this.listSlug).subscribe({
+      next: (data) => {
+        this.list = data;
+        if (this.list) {
+          this.list.people = this.list.people ?? [];
+        }
 
-  togglePersonForm(person?: Person): void {
-    this.showPersonForm = !this.showPersonForm;
-    this.errorMessage = '';
-
-    if (this.showPersonForm) {
-      if (person) {
-        this.editingPerson = person;
-        this.personForm.patchValue(person);
-      } else {
-        this.editingPerson = null;
-        this.personForm.reset({
-          gender: Gender.NOT_SPECIFIED,
-          frenchFluency: 1,
-          formerDWWM: false,
-          technicalLevel: 1,
-          profile: Profile.RESERVED,
-          age: 18,
+        // 🟢 Maintenant on récupère les personnes associées à la liste
+        this.listPersonService.getPersonsByListSlug(this.listSlug).subscribe({
+          next: (persons) => {
+            if (this.list) {
+                  console.log('Personnes reçues:', persons);  // <== Ajoute ça
+              this.list.people = persons; // 👈 on attache les personnes à la propriété "people"
+            }
+            this.isLoading = false;
+          },
+          error: (err) => {
+            this.errorMessage =
+              err.message || 'Erreur chargement des personnes';
+            this.isLoading = false;
+          },
         });
+      },
+      error: (err) => {
+        this.errorMessage = err.message || 'Erreur chargement liste';
+        this.router.navigate(['/lists']);
+        this.isLoading = false;
+      },
+    });
+  }
+
+  togglePersonForm(): void {
+    const dialogRef = this.dialog.open(PersonFormComponent, {
+      panelClass: 'person-form-dialog',
+      width: '90vw',
+      maxHeight: '90vh',
+      autoFocus: false,
+      data: {
+        listSlug: this.list?.slug,
+        listId: this.list?.id,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'success') {
+        this.loadList(); // ✅ recharge uniquement si ajout réussi
       }
-    }
+    });
   }
 
   onSubmit(): void {
-  if (this.personForm.invalid) return;
+    if (!this.listSlug) {
+      this.errorMessage = 'Liste invalide.';
+      return;
+    }
+    if (this.personForm.invalid) return;
 
-  const formValue = this.personForm.value;
+    const formValue = this.personForm.value;
 
-  if (this.editingPerson) {
-    this.listPersonService.updatePerson(this.editingPerson.slug, {
-      ...formValue,
-      list_slug: this.listSlug
-    }).subscribe({
-      next: () => {
-        this.loadList();
-        this.togglePersonForm();
-      },
-      error: (err) => this.errorMessage = err.message
-    });
-  } else {
-    this.listPersonService.addPerson({
-      ...formValue,
-      list_slug: this.listSlug
-    }).subscribe({
-      next: () => {
-        this.loadList();
-        this.togglePersonForm();
-      },
-      error: (err) => this.errorMessage = err.message
-    });
+    const personPayload = {
+      list: this.listSlug,
+      first_name: formValue.first_name?.trim(),
+      last_name: formValue.last_name?.trim(),
+      gender: formValue.gender,
+      age: formValue.age,
+      french_level: formValue.french_level,
+      tech_level: formValue.tech_level,
+      dwwm: formValue.dwwm,
+      profile: formValue.profile,
+    };
+
+    this.listPersonService
+      .addPersonToList(this.listSlug, personPayload)
+      .subscribe({
+        next: () => {
+          this.loadList();
+          this.togglePersonForm();
+        },
+        error: (err) => {
+          this.errorMessage =
+            err?.error?.errors?.first_name?.[0] ||
+            err.message ||
+            'Erreur lors de l’envoi';
+        },
+      });
   }
-}
 
-deletePerson(person: Person): void {
-  if (confirm(`Supprimer ${person.first_name} ?`)) {
-    this.listPersonService.deletePerson(person.slug).subscribe({
-      next: () => this.loadList(),
-      error: (err) => this.errorMessage = err.message
-    });
-  }
-}
-
-
-  generateGroups(): void {
-    this.router.navigate(['/lists', this.listSlug, 'generate']);
+  deletePerson(person: Person): void {
+    if (confirm(`Supprimer ${person.first_name} ${person.last_name} ?`)) {
+      this.listPersonService.deletePerson(person.slug).subscribe({
+        next: () => this.loadList(),
+        error: (err) => (this.errorMessage = err.message),
+      });
+    }
   }
 
   goBack(): void {
