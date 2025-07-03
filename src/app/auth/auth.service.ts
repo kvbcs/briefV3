@@ -1,8 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { User } from '../models/user.model';
-import { mockUsers } from '../mocks/mock-data';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable, of, throwError } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -51,26 +50,20 @@ export class AuthService {
    * Supprime les données de l’utilisateur du localStorage
    */
   logout(): void {
-    const token = localStorage.getItem('token');
 
-    if (!token) {
-      this.clearSession();
-      return;
-    }
+  this.http.post(`${this.apiUrl}/logout`, {})
+    .subscribe({
+      next: () => this.clearSession(),
+      error: () => this.clearSession(),
+    });
+}
 
-    this.http
-      .post(
-        `${this.apiUrl}/logout`,
-        {},
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      )
-      .subscribe({
-        next: () => this.clearSession(),
-        error: () => this.clearSession(), // même en cas d'erreur, on nettoie localement
-      });
-  }
+
+private clearSession(): void {
+  this.currentUser = null;
+  localStorage.removeItem('token');
+  localStorage.removeItem('currentUser');
+}
 
   private clearSession(): void {
     this.currentUser = null;
@@ -78,9 +71,10 @@ export class AuthService {
     localStorage.removeItem('currentUser');
   }
 
-  isLoggedIn(): boolean {
-    return this.currentUser !== null;
-  }
+ isLoggedIn(): boolean {
+  return !!localStorage.getItem('token');
+}
+
 
   getCurrentUser(): User | null {
     return this.currentUser;
@@ -96,6 +90,7 @@ export class AuthService {
 
     return 'user';
   }
+  
   needsToAcceptTerms(): boolean {
     if (!this.currentUser?.cgu_accepted) return true;
 
@@ -106,23 +101,13 @@ export class AuthService {
     return lastAccepted < thirteenMonthsAgo;
   }
 
-  acceptTerms(): void {
-    if (!this.currentUser) return;
+  // updateUser(updatedUser: Partial<User>): void {
+  //   if (!this.currentUser) return;
 
-    this.currentUser.cgu_accepted = new Date().toISOString();
-    localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
-  }
 
-  updateUser(updatedUser: Partial<User>): void {
-    if (!this.currentUser) return;
-
-    Object.assign(this.currentUser, updatedUser);
-    localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
-  }
-
-  deleteAccount(): void {
-    this.logout();
-  }
+  //   Object.assign(this.currentUser, updatedUser);
+  //   localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+  // }
 
   register(formData: {
     email: string;
@@ -135,6 +120,7 @@ export class AuthService {
     return this.http.post<any>(`${this.apiUrl}/register`, formData).pipe(
       map((res) => {
         if (res.success && res.user) {
+          localStorage.removeItem('token'); // ← si une ancienne session reste en cache
           localStorage.setItem('currentUser', JSON.stringify(res.user));
           this.currentUser = res.user;
           return res.user;
