@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { UsersComponent } from './adminpage/users/users.component';
 import { ProfileComponent } from './ProfilePage/profile/profile.component';
 import { StatsComponent } from './adminpage/stats/stats.component';
@@ -12,7 +11,6 @@ import { AuthenticatedLayoutComponent } from './layout/authenticated-layout/auth
 import { GroupPageComponent } from './Groups/group-page/group-page.component';
 import { DrawHistoryComponent } from './DrawHistory/draw-history/draw-history.component';
 
-
 export const routes: Routes = [
   {
     path: '',
@@ -23,29 +21,14 @@ export const routes: Routes = [
     component: AuthenticatedLayoutComponent,
     children: [
       { path: 'lists', component: ListsUserComponent },
-      // { path: 'groupes', component: GroupsComponent },
+      { path: 'lists/:slug', component: ListDetailComponent },
+      { path: 'list-preview/:slug', component: ListPreviewComponent },
       { path: 'profile', component: ProfileComponent },
-      { path: 'admin/users', component: UsersComponent },
-      { path: 'lists/:id', component: ListDetailComponent },
-      { path: 'list-preview/:id', component: ListPreviewComponent },
-      // { path: 'sidebar', component: SidebarComponent },
-      { path: 'legal', component: MentionsLegalesComponent },
-      {
-        path: 'groups',
-        component: GroupPageComponent
-      },
       { path: 'draw-history', component: DrawHistoryComponent },
-      {
-        path: 'admin/stats',
-        component: StatsComponent,
-      },
-      {
-        path: 'lists/:id',
-        component: ListDetailComponent,
-      },
-      { path: 'list-preview/:id', component: ListPreviewComponent },
-      { path: 'sidebar', component: SidebarComponent },
+      { path: 'admin/users', component: UsersComponent },
+      { path: 'admin/stats', component: StatsComponent },
       { path: 'legal', component: MentionsLegalesComponent },
+      { path: 'groups', component: GroupPageComponent },
     ],
   },
 ];

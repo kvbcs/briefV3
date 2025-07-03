@@ -12,44 +12,50 @@ import { List } from '../../models/list';
   styleUrls: ['./list-preview.component.scss'],
 })
 export class ListPreviewComponent implements OnInit {
-  list: List | undefined;
+  list: List | null = null;
   isLoading = true;
-  listId!: number;
+  slug!: string;
   errorMessage = '';
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private listService: ListService,
+    private listService: ListService
   ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
-      const id = Number(params.get('id'));
-      if (isNaN(id)) {
+      const slug = params.get('slug');
+      if (!slug) {
         this.router.navigate(['/']);
         return;
       }
-      this.listId = id;
+      this.slug = slug;
       this.loadList();
     });
   }
 
   loadList(): void {
-    try {
-      this.isLoading = true;
-      const allPublicLists = this.listService.getAllPublicLists();
-      this.list = allPublicLists.find((l: List) => l.id === this.listId);
-      this.isLoading = false;
+  this.isLoading = true;
 
-      if (!this.list) {
-        this.router.navigate(['/']);
-      }
-    } catch (error: unknown) {
-      this.errorMessage = error instanceof Error ? error.message : 'Erreur inconnue';
+  this.listService.getListBySlug(this.slug).subscribe({
+    next: (data) => {
+      this.list = {
+        ...data,
+        people: data.people ?? [],
+        draws: data.draws ?? []
+      };
       this.isLoading = false;
-    }
-  }
+    },
+    error: (err) => {
+      this.errorMessage =
+        err.message || 'Erreur lors du chargement de la liste.';
+      this.isLoading = false;
+      this.router.navigate(['/']);
+    },
+  });
+}
+
 
   goBack(): void {
     this.router.navigate(['/']);
@@ -57,7 +63,7 @@ export class ListPreviewComponent implements OnInit {
 
   login(): void {
     this.router.navigate(['/login'], {
-      queryParams: { returnUrl: `/lists/${this.listId}` },
+      queryParams: { returnUrl: `/lists/${this.slug}` },
     });
   }
 }

@@ -1,8 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { User } from '../models/user.model';
-import { mockUsers } from '../mocks/mock-data';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable, of, throwError } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -10,10 +9,11 @@ import { map, Observable, of, throwError } from 'rxjs';
 export class AuthService {
   private currentUser: User | null = null;
 
-    // 📡 Injection du client HTTP Angular via la fonction `inject()` (nouvelle syntaxe Angular)
+  // 📡 Injection du client HTTP Angular via la fonction `inject()` (nouvelle syntaxe Angular)
   private http = inject(HttpClient);
+
   // 🔒 URL de base de l’API utilisée pour les appels liés à l’authentification
-  private readonly apiUrl = 'https://v3-tirso.feras.fr/api';
+  private readonly apiUrl = 'http://193.134.250.16/api';
 
   constructor() {
     this.loadUserFromStorage();
@@ -30,69 +30,61 @@ export class AuthService {
    * 🔐 Méthode de connexion
    * Envoie les identifiants de connexion à l’API et enregistre le token et l’utilisateur dans le localStorage
    */
-  login(credentials: { email: string; password: string }): Observable<any> {
-    console.log('🧪 Appel dans AuthService', credentials);
-
-    const adaptedCredentials = {
-      username: credentials.email,
-      password: credentials.password,
-    };
-
-    // Création des en-têtes HTTP personnalisés
-
-    console.log('🧪 Données finales envoyées par HttpClient :', credentials);
-
-    // Envoi de la requête POST à l’API avec les identifiants
-    return this.http.post(`${this.apiUrl}/login`, adaptedCredentials).pipe(
-      map((res: any) => {
-        // Stockage du token et de l'utilisateur dans le localStorage
-        localStorage.setItem('token', res.token);
-        localStorage.setItem('user', JSON.stringify(res.user));
-        return res; // renvoie la réponse complète
+  login(credentials: { email: string; password: string }): Observable<User> {
+    return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
+      map((res) => {
+        if (res.success && res.token && res.user) {
+          localStorage.setItem('token', res.token);
+          localStorage.setItem('currentUser', JSON.stringify(res.user));
+          this.currentUser = res.user;
+          return res.user;
+        } else {
+          throw new Error(res.message || 'Erreur de connexion');
+        }
       })
     );
   }
 
-/**
+  /**
    * 🚪 Déconnexion
    * Supprime les données de l’utilisateur du localStorage
    */
   logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-  }
+  this.http.post(`${this.apiUrl}/logout`, {})
+    .subscribe({
+      next: () => this.clearSession(),
+      error: () => this.clearSession(),
+    });
+}
 
-  isLoggedIn(): boolean {
-    return this.currentUser !== null;
-  }
+
+private clearSession(): void {
+  this.currentUser = null;
+  localStorage.removeItem('token');
+  localStorage.removeItem('currentUser');
+}
+
+
+ isLoggedIn(): boolean {
+  return !!localStorage.getItem('token');
+}
+
 
   getCurrentUser(): User | null {
     return this.currentUser;
   }
 
-getCurrentUserRole(): string {
-  const user = this.currentUser; // ou JSON.parse(localStorage.getItem('user'))
-  const roles = user?.roles;
+  getCurrentUserRole(): string {
+    const user = this.currentUser; // ou JSON.parse(localStorage.getItem('user'))
+    const roles = user?.roles;
 
-  if (Array.isArray(roles) && roles.includes('admin')) {
-    return 'admin';
+    if (Array.isArray(roles) && roles.includes('admin')) {
+      return 'admin';
+    }
+
+    return 'user';
   }
-
-  return 'user';
-}
-
-
-
-//ANCIENNE VERSION 
-  // getCurrentUserRole(): 'admin' | 'user' {
-  //   if (!this.currentUser) return 'user';
-  //   return this.currentUser.roles.includes('ROLE_ADMIN') ? 'admin' : 'user';
-  // }
-
-
-
-
-
+  
   needsToAcceptTerms(): boolean {
     if (!this.currentUser?.cgu_accepted_at) return true;
 
@@ -103,46 +95,32 @@ getCurrentUserRole(): string {
     return lastAccepted < thirteenMonthsAgo;
   }
 
-  acceptTerms(): void {
-    if (!this.currentUser) return;
+  // updateUser(updatedUser: Partial<User>): void {
+  //   if (!this.currentUser) return;
 
-    this.currentUser.cgu_accepted_at = new Date().toISOString();
-    localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
-  }
+  //   Object.assign(this.currentUser, updatedUser);
+  //   localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+  // }
 
-  updateUser(updatedUser: Partial<User>): void {
-    if (!this.currentUser) return;
-
-    Object.assign(this.currentUser, updatedUser);
-    localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
-  }
-
-  deleteAccount(): void {
-    this.logout();
-  }
-
-  // Optionnel : inscription côté mock
-  register(formData: any): Observable<User> {
-    const existing = mockUsers.find((u) => u.email === formData.email);
-    if (existing) {
-      return throwError(() => new Error('Email déjà utilisé'));
-    }
-
-    const newUser: User = {
-      id: Date.now(),
-      first_name: formData.firstName,
-      last_name: formData.lastName,
-      email: formData.email,
-      password: formData.password,
-      roles: ['ROLE_USER'],
-      is_verified: false,
-      is_blocked: false,
-      created_at: new Date().toISOString(),
-      cgu_accepted_at: '',
-    };
-
-    mockUsers.push(newUser);
-    localStorage.setItem('currentUser', JSON.stringify(newUser));
-    return of(newUser);
+  register(formData: {
+    email: string;
+    password: string;
+    confirm_password: string;
+    first_name: string;
+    last_name: string;
+    cgu_accepted: boolean;
+  }): Observable<User> {
+    return this.http.post<any>(`${this.apiUrl}/register`, formData).pipe(
+      map((res) => {
+        if (res.success && res.user) {
+          localStorage.removeItem('token'); // ← si une ancienne session reste en cache
+          localStorage.setItem('currentUser', JSON.stringify(res.user));
+          this.currentUser = res.user;
+          return res.user;
+        } else {
+          throw new Error(res.message || 'Erreur lors de l’inscription');
+        }
+      })
+    );
   }
 }
