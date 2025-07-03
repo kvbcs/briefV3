@@ -2,7 +2,7 @@ import { Component, inject, signal, Inject, Optional } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GroupFormComponent } from '../group-form/group-form.component';
 import { GroupGenerationConfig } from '../../models/group.model';
-import { GroupService } from '../../services/group.service';
+import { GroupService } from '../../core/services/group.service';
 import { Group } from '../../models/group.model';
 import { GroupDisplayComponent } from '../group-display/group-display.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';

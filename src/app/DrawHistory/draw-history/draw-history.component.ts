@@ -1,9 +1,7 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-// import { Group } from '../../models/group.model';
-// import { GroupService } from '../../services/group.service';
-import { DrawHistoryEntry } from '../models/draw-history-entry.model';
-import { DrawHistoryService } from '../services/mock-draw-history.service';
+import { GroupService } from '../../core/services/group.service';
+import { DrawHistoryEntry } from '../../models/draw-history-entry.model';
 
 
 @Component({
@@ -14,10 +12,7 @@ import { DrawHistoryService } from '../services/mock-draw-history.service';
   styleUrls: ['./draw-history.component.css'],
 })
 export class DrawHistoryComponent implements OnInit {
-  // private groupService = inject(GroupService); à mettre après le merge avec groups
-
-  private drawHistoryService = inject(DrawHistoryService);
-
+  private groupService = inject(GroupService); 
 
   // Signal qui contiendra la liste des tirages historiques
   history = signal<DrawHistoryEntry[]>([]);
@@ -31,7 +26,7 @@ export class DrawHistoryComponent implements OnInit {
 
   // Charge l’historique depuis le backend
  loadHistory(): void {
-  this.drawHistoryService.getDrawHistory().subscribe({
+  this.groupService.getDrawHistory().subscribe({
     next: (entries) => this.history.set(entries),
     error: (err) => console.error('Erreur chargement historique', err),
   });

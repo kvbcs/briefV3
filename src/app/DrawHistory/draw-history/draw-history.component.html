@@ -3,7 +3,7 @@
 @if (history().length > 0) {
 <ul class="history-list">
   @for (entry of history(); track entry.id) {
-  <li (click)="selectEntry(entry)" class:selected={selectedEntry()===entry}>
+ <li (click)="selectEntry(entry)" [class.selected]="selectedEntry() === entry">
     <strong>Date :</strong> {{ entry.date | date:'short' }} —
     <strong>Groupes :</strong> {{ entry.numberOfGroups }} —
     <strong>Critères :</strong>

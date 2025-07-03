@@ -1,0 +1,79 @@
+<div class="lists-container">
+  <div class="header-actions">
+    <h1>Mes Listes</h1>
+    <button class="btn-red" (click)="toggleNewListForm()">
+      {{ showNewListForm ? "Annuler" : "Créer Nouvelle Liste" }}
+    </button>
+  </div>
+
+  @if (showNewListForm) {
+  <div class="new-list-form">
+    <form [formGroup]="newListForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">Nom de la liste</label>
+        <input
+          type="text"
+          id="name"
+          formControlName="name"
+          [ngClass]="{
+            'is-invalid':
+              newListForm.controls['name'].invalid &&
+              newListForm.controls['name'].touched
+          }"
+        />
+        @if (newListForm.controls['name'].invalid &&
+        newListForm.controls['name'].touched) {
+        <div class="invalid-feedback">
+          @if (newListForm.controls['name'].errors?.['required']) {
+          <div>Le nom est requis</div>
+          } @if (newListForm.controls['name'].errors?.['minlength']) {
+          <div>Minimum 3 caractères</div>
+          } @if (newListForm.controls['name'].errors?.['maxlength']) {
+          <div>Maximum 50 caractères</div>
+          }
+        </div>
+        }
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-red" [disabled]="newListForm.invalid">
+          Créer la liste
+        </button>
+      </div>
+    </form>
+
+    @if (errorMessage) {
+    <div class="error-msg">{{ errorMessage }}</div>
+    }
+  </div>
+  } @if (isLoading) {
+  <div class="loading">
+    <p>Chargement des listes...</p>
+  </div>
+  } @else { @if (lists.length === 0) {
+  <div class="no-lists">
+    <p>Vous n'avez pas encore de listes. Créez-en une pour commencer !</p>
+  </div>
+  } @else {
+  <div class="lists-grid">
+    @for (list of lists; track list.slug || list.id || $index) {
+    <div class="list-card" (click)="viewList(list.slug)">
+      <div class="list-content">
+        <h3>{{ list.name }}</h3>
+        @if (list.people && list.draws) {
+        <div class="list-stats">
+          <p>👤 {{ list.people.length }} personne(s)</p>
+          <p>👥 {{ list.draws.length }} tirage(s)</p>
+        </div>
+        }
+      </div>
+      <div class="list-actions">
+        <button class="btn-delete" (click)="deleteList($event, list.slug)">
+          <span>×</span>
+        </button>
+      </div>
+    </div>
+    }
+  </div>
+  } }
+</div>

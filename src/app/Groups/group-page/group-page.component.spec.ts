@@ -9,12 +9,11 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { provideHttpClient } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { GroupService } from '../../services/group.service';
+import { GroupService } from '../../core/services/group.service';
 import { of, throwError } from 'rxjs';
 import { GroupGenerationConfig } from '../../models/group.model';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
-import { Group } from '../../models/group.model';
 
 describe('GroupPageComponent', () => {
   let component: GroupPageComponent;
