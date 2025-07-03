@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { UsersComponent } from './adminpage/users/users.component';
 import { ProfileComponent } from './ProfilePage/profile/profile.component';
 import { StatsComponent } from './adminpage/stats/stats.component';

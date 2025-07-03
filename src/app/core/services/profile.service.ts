@@ -76,4 +76,14 @@ export class ProfileService {
       return this.http.delete<void>(`${this.API_URL}/user/delete/me`);
     }
   }
+
+  acceptTerms(): void {
+  const stored = localStorage.getItem('currentUser');
+  if (!stored) return;
+
+  const user = JSON.parse(stored);
+  user.cgu_accepted_at = new Date().toISOString();
+  localStorage.setItem('currentUser', JSON.stringify(user));
+}
+
 }

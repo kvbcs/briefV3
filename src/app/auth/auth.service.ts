@@ -1,8 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { User } from '../models/user.model';
-import { mockUsers } from '../mocks/mock-data';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable, of, throwError } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -96,23 +95,12 @@ private clearSession(): void {
     return lastAccepted < thirteenMonthsAgo;
   }
 
-  acceptTerms(): void {
-    if (!this.currentUser) return;
+  // updateUser(updatedUser: Partial<User>): void {
+  //   if (!this.currentUser) return;
 
-    this.currentUser.cgu_accepted_at = new Date().toISOString();
-    localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
-  }
-
-  updateUser(updatedUser: Partial<User>): void {
-    if (!this.currentUser) return;
-
-    Object.assign(this.currentUser, updatedUser);
-    localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
-  }
-
-  deleteAccount(): void {
-    this.logout();
-  }
+  //   Object.assign(this.currentUser, updatedUser);
+  //   localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+  // }
 
   register(formData: {
     email: string;

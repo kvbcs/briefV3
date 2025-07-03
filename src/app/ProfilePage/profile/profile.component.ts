@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -20,6 +21,7 @@ export class ProfileComponent implements OnInit {
     // Injection du service Profil et du FormBuilder (avec la syntaxe `inject()`)
   private profilService = inject(ProfileService);
   private formBuilder = inject(FormBuilder);
+  private authservice = inject(AuthService);
 
 
   // Objet utilisateur à afficher et modifier
@@ -69,17 +71,13 @@ export class ProfileComponent implements OnInit {
 
   // Suppression simulée du compte avec message de confirmation et redirection
   confirmDelete(): void {
-    const confirmed = confirm(
-      'Es-tu sûr(e) de vouloir supprimer ton compte ? Cette action est irréversible.'
-    );
-    if (confirmed) {
-      this.profilService.deleteUser().subscribe(() => {
-        this.toast.success('Compte supprimé', 'Succès');
-
-        // Redirection après suppression
-        this.router.navigate(['/']);
-        // Utilisation de router pour voir le toast 
-      });
-    }
+  const confirmed = confirm('Es-tu sûr(e) de vouloir supprimer ton compte ?');
+  if (confirmed) {
+    this.profilService.deleteUser().subscribe(() => {
+      this.toast.success('Compte supprimé', 'Succès');
+      this.authservice.logout(); // 🔥 déconnexion propre
+      this.router.navigate(['/']); // 🧭 redirection
+    });
   }
+}
 }
