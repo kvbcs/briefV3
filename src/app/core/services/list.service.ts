@@ -16,13 +16,13 @@ export class ListService {
 
  getAllLists(): Observable<List[]> {
   return this.http
-    .get<{ success: boolean; data: List[] }>(`${this.apiUrls}/show/me`)
+    .get<{ success: boolean; data: List[]; token?: string }>(`${this.apiUrls}/show/me`)
     .pipe(map((res) => res.data));
 }
 
  getListBySlug(slug: string): Observable<List> {
   return this.http
-    .get<{ success: boolean; data: List }>(`${this.apiUrl}/show/${encodeURIComponent(slug)}`)
+    .get<{ success: boolean; data: List; token?: string }>(`${this.apiUrl}/show/${encodeURIComponent(slug)}`)
     .pipe(map((res) => res.data));
 }
 

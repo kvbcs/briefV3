@@ -28,7 +28,7 @@ export const routes: Routes = [
       { path: 'lists/:slug', component: ListDetailComponent },
       { path: 'list-preview/:slug', component: ListPreviewComponent },
       { path: 'profile', component: ProfileComponent },
-      { path: 'draw-history', component: DrawHistoryComponent },
+      { path: 'draw-history/:slug', component: DrawHistoryComponent },
       { path: 'admin/users', component: UsersComponent },
       { path: 'admin/stats', component: StatsComponent },
       { path: 'legal', component: MentionsLegalesComponent },

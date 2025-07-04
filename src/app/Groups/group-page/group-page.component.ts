@@ -4,21 +4,24 @@ import { GroupFormComponent } from '../group-form/group-form.component';
 import { GroupGenerationConfig, Group, DrawResponse } from '../../models/group.model';
 import { GroupService } from '../../core/services/group.service';
 import { GroupDisplayComponent } from '../group-display/group-display.component';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-group-page',
   standalone: true,
-  imports: [CommonModule, GroupFormComponent, GroupDisplayComponent],
+  imports: [CommonModule, GroupFormComponent, GroupDisplayComponent, MatDialogModule],
   templateUrl: './group-page.component.html',
   styleUrls: ['./group-page.component.css'],
 })
 export class GroupPageComponent {
   constructor(
     @Optional() private dialogRef: MatDialogRef<GroupPageComponent>,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: { listSlug: string }
-  ) {}
+  @Optional() @Inject(MAT_DIALOG_DATA) public data: { listSlug: string }
+  ) {
+      console.log('GroupPageComponent ouvert', data);
+
+  }
 
   groups = signal<Group[]>([]);
   loading = signal(false);
@@ -32,7 +35,11 @@ export class GroupPageComponent {
   this.groupservice.createDraw(config).subscribe({
     next: (response: DrawResponse) => {
       if (response.success && response.data) {
+        // Redirige vers l’historique des tirages de la liste
+        this.router.navigate(['/draw-history', this.data.listSlug]);
         this.groups.set(response.data.groups);
+        // Ferme la modale
+        this.dialogRef?.close();
       } else {
         this.groups.set([]);
         this.errorMessage.set(response.message || 'Erreur lors de la création du tirage');
