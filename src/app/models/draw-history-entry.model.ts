@@ -9,13 +9,18 @@ export interface DrawHistoryEntry {
   mixGender: boolean;
   mixDWWM: boolean;
   mixLevel: boolean;
-  groups: Group[];
+  groups: DrawGroup[];
   createdAt: string; // Date de création du tirage
   name: string; // Nom du tirage
 }
+
+export interface SimplifiedPerson {
+  first_name: string;
+  last_name: string;
+}
 export interface DrawGroup {
   name: string;
-  persons: Array<{ first_name: string; last_name: string }>;
+  members: SimplifiedPerson[];
   persons_count: number;
 }
 

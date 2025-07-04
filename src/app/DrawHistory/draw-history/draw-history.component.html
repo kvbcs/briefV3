@@ -2,12 +2,15 @@
 
 @if (drawSummaries().length > 0) {
 <ul class="history-list">
-  @for (entry of drawSummaries(); track entry.id) {
-    <li (click)="selectEntry(entry)" [class.selected]="selectedEntry()?.id === entry.id">
-      <strong>Date :</strong> {{ entry.createdAt | date:'short' }} —
-      <strong>Nom :</strong> {{ entry.name }}
-    </li>
-  }
+ @for (group of selectedEntry()?.groups ?? []; track group.name) {
+  <h4>{{ group.name }}</h4>
+  <ul>
+    @for (member of group.members ?? []; track member.first_name) {
+      <li>{{ member.first_name }} {{ member.last_name }}</li>
+    }
+  </ul>
+}
+
 </ul>
 } @else {
 <p>Aucun tirage historique trouvé.</p>
@@ -19,7 +22,7 @@
   @for (group of selectedEntry()?.groups ?? []; track group.name) {
   <h4>{{ group.name }}</h4>
   <ul>
-    @for (member of group.members; track member.id) {
+    @for (member of group.members; track member.first_name) {
     <li>{{ member.first_name }}</li>
     }
   </ul>
