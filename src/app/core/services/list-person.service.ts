@@ -49,6 +49,5 @@ addPersonToList(listSlug: string, personData: Partial<Person>): Observable<any> 
       `${this.apiUrl}/persons/show/${listSlug}`
     ).pipe(map(res => res.persons));
   }
-
   
 }
