@@ -1,32 +1,28 @@
 <h2>Historique des tirages</h2>
 
-@if (drawSummaries().length > 0) {
-<ul class="history-list">
- @for (group of selectedEntry()?.groups ?? []; track group.name) {
-  <h4>{{ group.name }}</h4>
-  <ul>
-    @for (member of group.members ?? []; track member.first_name) {
-      <li>{{ member.first_name }} {{ member.last_name }}</li>
-    }
-  </ul>
-}
+<!-- Si aucun tirage -->
+<p *ngIf="drawSummaries().length === 0">Aucun tirage historique trouvé.</p>
 
+<!-- Liste des tirages -->
+<ul *ngIf="drawSummaries().length > 0" class="history-list">
+  <li *ngFor="let entry of drawSummaries()" (click)="selectEntry(entry)">
+    <strong>Date :</strong> {{ entry.createdAt | date: 'short' }} —
+    <strong>Nom :</strong> {{ entry.name }}
+  </li>
 </ul>
-} @else {
-<p>Aucun tirage historique trouvé.</p>
-}
 
-@if (selectedEntry() != null) {
-<div class="history-detail">
-  <h3>Détails du tirage du {{ selectedEntry()?.date | date:'fullDate' }}</h3>
-  @for (group of selectedEntry()?.groups ?? []; track group.name) {
-  <h4>{{ group.name }}</h4>
-  <ul>
-    @for (member of group.members; track member.first_name) {
-    <li>{{ member.first_name }}</li>
-    }
-  </ul>
-  }
+<!-- Détails d’un tirage sélectionné -->
+<div *ngIf="selectedEntry() !== null" class="history-detail">
+  <h3>Détails du tirage du {{ selectedEntry()?.date | date: 'fullDate' }}</h3>
+
+  <div *ngFor="let group of selectedEntry()?.groups">
+    <h4>{{ group.name }}</h4>
+    <ul>
+      <li *ngFor="let member of group.members">
+        {{ member.first_name }} {{ member.last_name }}
+      </li>
+    </ul>
+  </div>
+
   <button (click)="closeDetails()">Fermer</button>
 </div>
-}
