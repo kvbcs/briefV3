@@ -11,11 +11,12 @@ import { catchError, of } from 'rxjs';
 export class ListService {
 
   private http = inject(HttpClient);
+  private apiUrls = 'http://193.134.250.16/api/lists';
   private apiUrl = 'http://193.134.250.16/api/list';
 
  getAllLists(): Observable<List[]> {
   return this.http
-    .get<{ success: boolean; data: List[] }>(`${this.apiUrl}/show/me`)
+    .get<{ success: boolean; data: List[] }>(`${this.apiUrls}/show/me`)
     .pipe(map((res) => res.data));
 }
 
