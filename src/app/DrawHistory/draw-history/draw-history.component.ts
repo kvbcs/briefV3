@@ -39,13 +39,11 @@ ngOnInit(): void {
       this.loadAllDraws(slug);
     } else {
       console.error('Slug de liste manquant');
-      // Tu peux afficher un message d’erreur ou rediriger
     }
   });
 }
 
 loadDrawDetails(drawName: string): void {
-  console.log(drawName);
   this.groupService.getDrawDetails(drawName).subscribe({
     next: (res) => {
       if (res.success && res.data) {
@@ -61,13 +59,10 @@ loadDrawDetails(drawName: string): void {
 }
 
 loadAllDraws(listSlug: string): void {
-  console.log('Appel API lancé avec slug :', listSlug);
 
   this.groupService.getAllDrawsForList(listSlug).subscribe({
     next: (res) => {
-      console.log(listSlug);
       if (res.success && res.data) {
-        console.log(res.data);
         this.drawSummaries.set(res.data);
       } else {
         console.error('Erreur chargement des tirages:', res.message);
@@ -80,7 +75,6 @@ loadAllDraws(listSlug: string): void {
 }
   // Sélectionne un tirage pour afficher ses détails
   selectEntry(summary: DrawSummary): void {
-  this.loadDrawDetails(summary.name); // on utilise le nom du tirage
 
   // Ensuite dans loadDrawDetails:
   this.groupService.getDrawDetails(summary.name).subscribe({
@@ -92,7 +86,7 @@ loadAllDraws(listSlug: string): void {
           draw_name: summary.name,
           date: new Date(summary.createdAt),
           numberOfGroups: res.data.groups_count,
-          mixAge: false, // tu peux adapter
+          mixAge: false,
           mixGender: false,
           mixDWWM: false,
           mixLevel: false,
