@@ -87,13 +87,16 @@ ShuffleMyTeam est une application Angular permettant la gestion de groupes, d'ut
 
 ## Auteurs
 
+
 - Projet réalisé dans le cadre de la formation Simplon.
   Une équipe répartie en deux groupes :
+  
   - **Groupe 1** : Développement du Frontend, de l'interface utilisateur et de ses fonctionnalités principales:
     - BARBECHE Imane
     - MOREL Cécile
     - VIBANCOS Kyllian
     - KUISSI Guy
+    - 
   - **Groupe 2** : Mise en place du backend et de ses services.
     - EPIARD Antoine
     - ZULPUKHAROV Arthur
