@@ -2,28 +2,35 @@
   <div class="welcome-container">
     @if (editModeLogo){
     <input type="file" accept="image/*" (change)="saveLogo($event)" />
-    <button (click)="editModeLogo = false">❌</button>
+    <button class="cancel-btn" (click)="editModeLogo = false">❌</button>
 
     } @else {
     <img
       [src]="logo()"
       [alt]="title()"
       (input)="tempLogo.set($any($event.target).value)"
-    /><button (click)="editLogo()">✏️</button>
+    /><button class="edit-btn" (click)="editLogo()">✏️</button>
 
     }
-    <h1>
-      Bienvenue sur @if (editMode){
+<div class="title-row">
+  <span>Bienvenue sur</span>
+
+  <span class="title-wrapper">
+    @if (editMode) {
       <input
         type="text"
         [value]="tempTitle()"
-        (input)="tempTitle.set($any($event.target).value)"
-      /><button (click)="saveTitle()">✅</button>
-      } @else {
-      <span class="highlight">{{ title() }}</span
-      ><button (click)="editTitle()">✏️</button>
-      }
-    </h1>
+        (input)="tempTitle.set($any($event.target).value)" />
+      <button class="confirm-btn" (click)="saveTitle()">✅</button>
+    } @else {
+      <span class="highlight">{{ title() }}</span>
+      <button class="edit-btn" (click)="editTitle()">✏️</button>
+    }
+  </span>
+</div>
+
+
+
 
     <p>
       Créez un compte ou connectez-vous pour gérer vos

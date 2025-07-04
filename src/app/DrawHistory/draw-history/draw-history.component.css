@@ -9,33 +9,39 @@
 }
 
 h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
   text-align: center;
-  font-weight: 700;
-  font-size: 1.8rem;
   color: #333;
-  margin: 0;
 }
 
+/* 📜 Liste des tirages */
 .history-list {
   list-style: none;
   padding: 0;
-  margin: 0;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  overflow-y: auto;
-  max-height: 300px;
+  margin: 0 auto 2rem;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .history-list li {
-  padding: 1rem 1.25rem;
-  border-bottom: 1px solid #eee;
+  padding: 1rem 1.5rem;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  border: 1px solid #ddd;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
-.history-list li:hover,
+.history-list li:hover {
+  background-color: #eef4ff;
+}
+
 .history-list li.selected {
-  background-color: #f2f2f2;
+  background-color: #d0e5ff;
+  border-color: #7cb6ff;
 }
 
 .history-detail {
@@ -90,24 +96,34 @@ button:hover {
 /* === Vue PC : centrée à droite de la sidebar === */
 @media screen and (min-width: 768px) {
   :host {
-    position: absolute;
-    top: 50%;
-    left: 200px; /* sidebar */
-    transform: translateY(-50%);
-    width: calc(100vw - 200px);
-    padding: 0 3rem;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-start;
+    padding: 3rem 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+    box-sizing: border-box;
   }
 
+  .history-list,
   .history-detail {
-    max-width: 800px;
     width: 100%;
+    max-width: 800px;
   }
 
-  .history-list {
-    max-width: 800px;
-    width: 100%;
+  .history-detail h3 {
+    text-align: left;
+    font-size: 1.5rem;
+  }
+
+  .history-detail h4 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  button {
+    margin-top: 2rem;
+    align-self: flex-end;
   }
 }

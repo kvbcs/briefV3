@@ -137,6 +137,63 @@ img {
   color: #555;
 }
 
+/* Wrapper pour aligner le titre et le bouton sur la même ligne */
+.title-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  gap: 0.75rem;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 1.5rem;
+}
+
+
+.title-wrapper {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.title-wrapper input {
+  font-size: 1.75rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  max-width: 300px;
+  font-weight: 600;
+}
+
+/* Boutons stylisés */
+button.edit-btn,
+button.confirm-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  padding: 0 0.2rem;
+}
+
+button.edit-btn:hover {
+  color: #5e47d2;
+}
+
+button.confirm-btn {
+  color: #4caf50;
+}
+
+button.confirm-btn:hover {
+  color: #388e3c;
+}
+
+
+
 /* 💻 Responsive : 2 colonnes côte à côte sur écrans larges */
 @media (min-width: 768px) {
   

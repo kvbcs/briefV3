@@ -75,6 +75,7 @@ form.person-form {
   background-color: #c0c0c0;
 }
 
+
 /* 📱 Responsive */
 @media (min-width: 768px) {
   form.person-form {

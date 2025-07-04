@@ -176,7 +176,7 @@
     position: absolute;
     top: 50%;
     left: 200px; /* largeur de la sidebar */
-    transform: translateY(-70%); /* ✅ Valeur corrigée */
+    transform: translateY(-160%); /* ✅ Valeur corrigée */
     max-width: calc(100vw - 200px);
     width: 100%;
     display: flex;
