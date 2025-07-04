@@ -168,3 +168,25 @@ h2 {
     text-align: left;
   }
 }
+
+/* Forcer l'affichage et la visibilité de la modale Angular Material sur PC
+@media screen and (min-width: 768px) {
+  .mat-dialog-container {
+    max-width: 600px !important;
+    min-width: 400px !important;
+    width: auto !important;
+    padding: 2.5rem 2rem !important;
+    margin: 2rem auto !important;
+    max-height: 90vh !important;
+    overflow-y: auto !important;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.18) !important;
+    background: #fff !important;
+    z-index: 2000 !important;
+    display: block !important;
+    opacity: 1 !important;
+
+  }
+  .cdk-overlay-container, .cdk-global-overlay-wrapper {
+    z-index: 2000 !important;
+  }
+} */

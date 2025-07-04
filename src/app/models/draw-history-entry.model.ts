@@ -10,8 +10,9 @@ export interface DrawHistoryEntry {
   mixDWWM: boolean;
   mixLevel: boolean;
   groups: Group[];
+  createdAt: string; // Date de création du tirage
+  name: string; // Nom du tirage
 }
-
 export interface DrawGroup {
   name: string;
   persons: Array<{ first_name: string; last_name: string }>;
@@ -31,6 +32,9 @@ export interface DrawSummary {
   id: number;
   name: string;
   createdAt: string;
+  draw_name: string; // Nom du tirage
+    success: boolean;
+
 }
 
 export interface DrawsListResponse {

@@ -1,7 +1,7 @@
 <button (click)="close()" class="close-btn">✕</button>
 
-<app-group-form (generate)="onGenerate($event)"></app-group-form>
-
+<app-group-form [listSlug]="data?.listSlug || ''" (generate)="onGenerate($event)">
+</app-group-form>
 @if (groups().length > 0) {
 <section class="group-display-wrapper">
   <app-group-display

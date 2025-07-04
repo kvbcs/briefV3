@@ -1,21 +1,15 @@
 <h2>Historique des tirages</h2>
 
-@if (history().length > 0) {
+@if (drawSummaries().length > 0) {
 <ul class="history-list">
-  @for (entry of history(); track entry.id) {
- <li (click)="selectEntry(entry)" [class.selected]="selectedEntry() === entry">
-    <strong>Date :</strong> {{ entry.date | date:'short' }} —
-    <strong>Groupes :</strong> {{ entry.numberOfGroups }} —
-    <strong>Critères :</strong>
-    @if (entry.mixAge) { <span>Âge </span> }
-    @if (entry.mixGender) { <span>Genre </span> }
-    @if (entry.mixDWWM) { <span>Ancien DWWM </span> }
-    @if (entry.mixLevel) { <span>Niveau technique</span> }
-  </li>
+  @for (entry of drawSummaries(); track entry.id) {
+    <li (click)="selectEntry(entry)" [class.selected]="selectedEntry()?.id === entry.id">
+      <strong>Date :</strong> {{ entry.createdAt | date:'short' }} —
+      <strong>Nom :</strong> {{ entry.name }}
+    </li>
   }
 </ul>
-} @else
-{
+} @else {
 <p>Aucun tirage historique trouvé.</p>
 }
 

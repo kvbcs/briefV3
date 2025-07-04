@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GroupService } from '../../core/services/group.service';
-import { DrawDetailResponse, DrawHistoryEntry, DrawSummary } from '../../models/draw-history-entry.model';
+import { DrawDetailResponse, DrawHistoryEntry, DrawsListResponse, DrawSummary } from '../../models/draw-history-entry.model';
 import { ActivatedRoute } from '@angular/router';
 
 
@@ -29,7 +29,7 @@ export class DrawHistoryComponent implements OnInit {
   // Charge l’historique depuis le backend
 selectedDrawDetails = signal<DrawDetailResponse['data'] | null>(null);
 
-drawSummaries = signal<DrawSummary[]>([]);
+drawSummaries = signal<DrawsListResponse[]>([]);
 
 ngOnInit(): void {
   this.route.paramMap.subscribe(params => {
@@ -44,6 +44,7 @@ ngOnInit(): void {
 }
 
 loadDrawDetails(drawName: string): void {
+  console.log(drawName);
   this.groupService.getDrawDetails(drawName).subscribe({
     next: (res) => {
       if (res.success && res.data) {
@@ -61,7 +62,9 @@ loadDrawDetails(drawName: string): void {
 loadAllDraws(listSlug: string): void {
   this.groupService.getAllDrawsForList(listSlug).subscribe({
     next: (res) => {
+      console.log(listSlug);
       if (res.success && res.data) {
+        console.log(res.data);
         this.drawSummaries.set(res.data);
       } else {
         console.error('Erreur chargement des tirages:', res.message);

@@ -7,8 +7,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { ListService } from '../../core/services/list.service';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';import { ListService } from '../../core/services/list.service';
 import { ListPersonService } from '../../core/services/list-person.service';
 import { List } from '../../models/list';
 import { Person, Gender, Profile } from '../../models/person';
@@ -181,29 +180,29 @@ export class ListDetailComponent implements OnInit {
         },
       });
   }
-onEditPerson(person: Person): void {
-  // Exemple : ouvrir le formulaire en mode édition (à adapter selon ton besoin)
-  this.editingPerson = person;
-  // Tu peux ouvrir un dialog ici pour l’édition, comme pour l’ajout
-  // Par exemple :
-  const dialogRef = this.dialog.open(PersonFormComponent, {
-    panelClass: 'person-form-dialog',
-    width: '90vw',
-    maxHeight: '90vh',
-    autoFocus: false,
-    data: {
-      listSlug: this.listSlug,
-      listId: this.list?.id,
-      person: person // Passe la personne à éditer
-    },
-  });
+  onEditPerson(person: Person): void {
+    // Exemple : ouvrir le formulaire en mode édition (à adapter selon ton besoin)
+    this.editingPerson = person;
+    // Tu peux ouvrir un dialog ici pour l’édition, comme pour l’ajout
+    // Par exemple :
+    const dialogRef = this.dialog.open(PersonFormComponent, {
+      panelClass: 'person-form-dialog',
+      width: '90vw',
+      maxHeight: '90vh',
+      autoFocus: false,
+      data: {
+        listSlug: this.listSlug,
+        listId: this.list?.id,
+        person: person, // Passe la personne à éditer
+      },
+    });
 
-  dialogRef.afterClosed().subscribe((result) => {
-    if (result === 'success') {
-      this.loadList();
-    }
-  });
-}
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'success') {
+        this.loadList();
+      }
+    });
+  }
   deletePerson(person: Person): void {
     if (confirm(`Supprimer ${person.first_name} ${person.last_name} ?`)) {
       this.listPersonService.deletePerson(person.slug).subscribe({
@@ -217,13 +216,19 @@ onEditPerson(person: Person): void {
     this.router.navigate(['/lists']);
   }
 
-  openGroupDialog(listId: string): void {
+  openGroupDialog(listSlug: string): void {
+    console.log('openGroupDialog listSlug:', listSlug);
     this.dialog.open(GroupPageComponent, {
       panelClass: 'group-dialog',
       width: '90vw',
       maxHeight: '90vh',
       autoFocus: false,
-      data: { listId },
+      data: { listSlug }, // Passe bien le slug ici
     });
+  }
+
+  openDrawDialog(): void {
+    // Redirige vers la page d’historique des tirages pour cette liste
+    this.router.navigate(['/draw-history', this.listSlug]);
   }
 }

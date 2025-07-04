@@ -2,6 +2,10 @@
 <div class="list-detail-container">
   <!-- Header -->
   <div class="header-actions">
+    <button [disabled]="!listSlug" (click)="openGroupDialog(listSlug)">Faire un tirage</button>
+    <button class="btn-secondary" (click)="openDrawDialog()">
+      Historique tirage
+    </button>
     <button class="btn-back" (click)="goBack()">← Retour Aux Listes</button>
     <h1 class="list-title">{{ list.name }}</h1>
     <button class="btn-primary" (click)="togglePersonForm()">
