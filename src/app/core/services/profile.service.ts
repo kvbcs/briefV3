@@ -37,8 +37,6 @@ export class ProfileService {
   deleteUser(): Observable<void> {
     return this.http.delete<void>(`${this.API_URL}/user/delete/me`);
   }
-}
-
 
   // Accepte les CGU côté front (localStorage)
   acceptTerms(): void {
