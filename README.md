@@ -24,6 +24,22 @@ ShuffleMyTeam est une application Angular permettant la gestion de groupes, d'ut
 - `src/app/DrawHistory/` : Affichage de l'historique des tirages.
 - `src/app/models/` : Modèles de données (utilisateur, groupe, historique, etc.).
 
+src/
+└── app/
+    ├── adminpage/            ← Interface dédiée admin
+    ├── auth/                 ← Connexion / inscription
+    ├── core/                 ← Services, guards, utils partagés
+    ├── DrawHistory/          ← Composant historique des tirages
+    ├── Groups/               ← Gestion des groupes (création, affichage, drag & drop)
+    ├── layout/               ← Header, sidebar, structure globale
+    ├── legal/                ← CGU, mentions légales
+    ├── ListsPage/            ← Liste principale avec CRUD personnes + tirages
+    ├── mocks/                ← Données de test temporaires
+    ├── models/               ← Interfaces TypeScript (User, Person, Group, etc.)
+    ├── ProfilePage/          ← Page de profil utilisateur
+    └── shared/
+        └── footer/           ← Composant footer réutilisable
+
 ## Installation et lancement
 
 1. **Cloner le dépôt**
