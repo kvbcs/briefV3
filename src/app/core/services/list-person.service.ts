@@ -7,7 +7,7 @@ import { Observable, map } from 'rxjs';
   providedIn: 'root',
 })
 export class ListPersonService {
-  
+
     private readonly http = inject(HttpClient);
     private apiUrl = 'http://193.134.250.16/api';
 
@@ -43,11 +43,12 @@ addPersonToList(listSlug: string, personData: Partial<Person>): Observable<any> 
     ).pipe(map(res => res.person));
   }
 
-  // 👥 Récupérer toutes les personnes d'une liste
+  // 👥 Récupérer toutes les personnes d'une liste - UPDATED to match API doc
   getPersonsByListSlug(listSlug: string): Observable<Person[]> {
-    return this.http.get<{ success: boolean; persons: Person[]; token: string }>(
-      `${this.apiUrl}/persons/show/${listSlug}`
-    ).pipe(map(res => res.persons));
+    return this.http.get<{ success: boolean; data: Person[]; token?: string }>(
+      `${this.apiUrl}/list/show/${encodeURIComponent(listSlug)}`
+    ).pipe(map(res => res.data || []));
   }
-  
+
+
 }

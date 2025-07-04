@@ -52,13 +52,11 @@ export class ListDetailComponent implements OnInit {
     this.initForm();
     this.route.paramMap.subscribe((params) => {
       const slug = params.get('slug');
-      
       if (!slug) {
         this.router.navigate(['/lists']);
         return;
       }
       this.listSlug = slug;
-      
       this.loadList();
     });
   }
@@ -97,36 +95,40 @@ export class ListDetailComponent implements OnInit {
   }
 
   loadList(): void {
-  this.isLoading = true;
+    this.isLoading = true;
 
-  // 🔵 Étape 1 : Récupérer les infos de la liste
-  this.listService.getListBySlug(this.listSlug).subscribe({
-    next: (data) => {
-      this.list = data;
+    this.listService.getListBySlug(this.listSlug).subscribe({
+      next: (data) => {
+        this.list = data;
+        if (this.list) {
+          this.list.people = this.list.people ?? [];
+        }
 
-      // 🔵 Étape 2 : Récupérer les personnes liées à la liste
-      this.listPersonService.getPersonsByListSlug(this.listSlug).subscribe({
-        next: (persons) => {
-          this.list.people = persons ?? []; // ✅ on initialise ici, pas avant
-          console.log('Slug :', this.listSlug);
-          console.log('Personnes reçues :', this.list.people);
-
-          this.isLoading = false;
-        },
-        error: (err) => {
-          this.errorMessage = err.message || 'Erreur chargement des personnes';
-          this.isLoading = false;
-        },
-      });
-    },
-    error: (err) => {
-      this.errorMessage = err.message || 'Erreur chargement liste';
-      this.router.navigate(['/lists']);
-      this.isLoading = false;
-    },
-  });
-}
-
+        // 🟢 Get persons using the correct API endpoint
+        this.listPersonService.getPersonsByListSlug(this.listSlug).subscribe({
+          next: (persons) => {
+            if (this.list) {
+              console.log('Personnes reçues:', persons);
+              this.list.people = persons;
+            }
+            this.isLoading = false;
+          },
+          error: (err) => {
+            console.warn('Aucune personne trouvée ou erreur:', err.message);
+            if (this.list) {
+              this.list.people = []; // Set empty array if no persons found
+            }
+            this.isLoading = false;
+          },
+        });
+      },
+      error: (err) => {
+        this.errorMessage = err.message || 'Erreur chargement liste';
+        this.router.navigate(['/lists']);
+        this.isLoading = false;
+      },
+    });
+  }
 
   togglePersonForm(): void {
     const dialogRef = this.dialog.open(PersonFormComponent, {
@@ -147,47 +149,42 @@ export class ListDetailComponent implements OnInit {
     });
   }
 
- onSubmit(): void {
-  this.errorMessage = '';
+  onSubmit(): void {
+    if (!this.listSlug) {
+      this.errorMessage = 'Liste invalide.';
+      return;
+    }
+    if (this.personForm.invalid) return;
 
-  if (!this.listSlug) {
-    this.errorMessage = 'Liste invalide.';
-    return;
+    const formValue = this.personForm.value;
+
+    const personPayload = {
+      list: this.listSlug,
+      first_name: formValue.first_name?.trim(),
+      last_name: formValue.last_name?.trim(),
+      gender: formValue.gender,
+      age: formValue.age,
+      french_level: formValue.french_level,
+      tech_level: formValue.tech_level,
+      dwwm: formValue.dwwm,
+      profile: formValue.profile,
+    };
+
+    this.listPersonService
+      .addPersonToList(this.listSlug, personPayload)
+      .subscribe({
+        next: () => {
+          this.loadList();
+          this.togglePersonForm();
+        },
+        error: (err) => {
+          this.errorMessage =
+            err?.error?.errors?.first_name?.[0] ||
+            err.message ||
+            'Erreur lors de l’envoi';
+        },
+      });
   }
-
-  if (this.personForm.invalid) return;
-
-  const formValue = this.personForm.value;
-
-  const personPayload = {
-    list: this.listSlug,
-    first_name: formValue.first_name?.trim(),
-    last_name: formValue.last_name?.trim(),
-    gender: formValue.gender,
-    age: formValue.age,
-    french_level: formValue.french_level,
-    tech_level: formValue.tech_level,
-    dwwm: formValue.dwwm,
-    profile: formValue.profile,
-  };
-
-  this.listPersonService
-    .addPersonToList(this.listSlug, personPayload)
-    .subscribe({
-      next: () => {
-        this.loadList();                // ✅ recharge les personnes
-        this.showPersonForm = false;   // ✅ ferme le formulaire classique
-        this.personForm.reset();       // ✅ reset le formulaire
-      },
-      error: (err) => {
-        this.errorMessage =
-          err?.error?.errors?.first_name?.[0] ||
-          err.message ||
-          'Erreur lors de l’envoi';
-      },
-    });
-}
-
 
   deletePerson(person: Person): void {
     if (confirm(`Supprimer ${person.first_name} ${person.last_name} ?`)) {
