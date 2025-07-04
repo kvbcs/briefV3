@@ -29,7 +29,7 @@ export class DrawHistoryComponent implements OnInit {
   // Charge l’historique depuis le backend
 selectedDrawDetails = signal<DrawDetailResponse['data'] | null>(null);
 
-drawSummaries = signal<DrawsListResponse[]>([]);
+drawSummaries = signal<DrawSummary[]>([]);
 
 ngOnInit(): void {
   this.route.paramMap.subscribe(params => {

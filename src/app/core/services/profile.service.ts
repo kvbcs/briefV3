@@ -35,7 +35,7 @@ export class ProfileService {
   
   // Supprime le compte utilisateur via l'API
   deleteUser(): Observable<void> {
-    return this.http.delete<void>(`${this.API_URL}/user/delete/me`);
+    return this.http.post<void>(`${this.API_URL}/user/delete/me`, {});
   }
 
   // Accepte les CGU côté front (localStorage)
