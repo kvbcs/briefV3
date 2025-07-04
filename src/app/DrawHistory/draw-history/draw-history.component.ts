@@ -32,6 +32,7 @@ selectedDrawDetails = signal<DrawDetailResponse['data'] | null>(null);
 drawSummaries = signal<DrawSummary[]>([]);
 
 ngOnInit(): void {
+  
   this.route.paramMap.subscribe(params => {
     const slug = params.get('slug');
     if (slug) {
@@ -60,6 +61,8 @@ loadDrawDetails(drawName: string): void {
 }
 
 loadAllDraws(listSlug: string): void {
+  console.log('Appel API lancé avec slug :', listSlug);
+
   this.groupService.getAllDrawsForList(listSlug).subscribe({
     next: (res) => {
       console.log(listSlug);
@@ -76,10 +79,38 @@ loadAllDraws(listSlug: string): void {
   });
 }
   // Sélectionne un tirage pour afficher ses détails
-  selectEntry(entry: DrawHistoryEntry): void {
-  this.selectedEntry.set(entry);
-  this.loadDrawDetails(entry.draw_name);
+  selectEntry(summary: DrawSummary): void {
+  this.loadDrawDetails(summary.name); // on utilise le nom du tirage
+
+  // Ensuite dans loadDrawDetails:
+  this.groupService.getDrawDetails(summary.name).subscribe({
+    next: (res) => {
+      if (res.success && res.data) {
+        const fullEntry: DrawHistoryEntry = {
+          ...summary,
+          id: String(summary.id),
+          draw_name: summary.name,
+          date: new Date(summary.createdAt),
+          numberOfGroups: res.data.groups_count,
+          mixAge: false, // tu peux adapter
+          mixGender: false,
+          mixDWWM: false,
+          mixLevel: false,
+          groups: res.data.groups.map(g => ({
+            name: g.name,
+            members: (g as any).persons,
+            persons_count: g.persons_count
+          })),
+          createdAt: summary.createdAt,
+          name: summary.name,
+        };
+
+        this.selectedEntry.set(fullEntry);
+      }
+    }
+  });
 }
+
 
 
   // Désélectionne pour fermer les détails
