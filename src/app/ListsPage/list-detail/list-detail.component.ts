@@ -19,11 +19,7 @@ import { PeopleTableComponent } from './people-table.component';
 @Component({
   selector: 'app-list-detail',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    PeopleTableComponent
-],
+  imports: [CommonModule, ReactiveFormsModule, PeopleTableComponent],
   templateUrl: './list-detail.component.html',
   styleUrls: ['./list-detail.component.css'],
 })
@@ -137,7 +133,7 @@ export class ListDetailComponent implements OnInit {
       maxHeight: '90vh',
       autoFocus: false,
       data: {
-        listSlug: this.list?.slug,
+        listSlug: this.listSlug,
         listId: this.list?.id,
       },
     });
@@ -185,7 +181,29 @@ export class ListDetailComponent implements OnInit {
         },
       });
   }
+onEditPerson(person: Person): void {
+  // Exemple : ouvrir le formulaire en mode édition (à adapter selon ton besoin)
+  this.editingPerson = person;
+  // Tu peux ouvrir un dialog ici pour l’édition, comme pour l’ajout
+  // Par exemple :
+  const dialogRef = this.dialog.open(PersonFormComponent, {
+    panelClass: 'person-form-dialog',
+    width: '90vw',
+    maxHeight: '90vh',
+    autoFocus: false,
+    data: {
+      listSlug: this.listSlug,
+      listId: this.list?.id,
+      person: person // Passe la personne à éditer
+    },
+  });
 
+  dialogRef.afterClosed().subscribe((result) => {
+    if (result === 'success') {
+      this.loadList();
+    }
+  });
+}
   deletePerson(person: Person): void {
     if (confirm(`Supprimer ${person.first_name} ${person.last_name} ?`)) {
       this.listPersonService.deletePerson(person.slug).subscribe({
