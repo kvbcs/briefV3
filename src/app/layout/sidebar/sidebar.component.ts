@@ -75,14 +75,9 @@ export class SidebarComponent implements OnInit {
   closeSidebar(): void {
     this.isOpen.set(false);
   }
-  // logout(): void {
-  //   this.auth.logout(); // ← déconnecte proprement via le service
-  //   this.router.navigate(['/']);
-  // }
 
   logout(): void {
-  this.auth.logout(); // 🔁 Appelle le service de logout
-  
+  this.auth.logout(); // 🔁 Appelle le service de logout 
   
 }
 
