@@ -40,11 +40,7 @@ export class ListPreviewComponent implements OnInit {
 
   this.listService.getListBySlug(this.slug).subscribe({
     next: (data) => {
-      this.list = {
-        ...data,
-        people: data.people ?? [],
-        draws: data.draws ?? []
-      };
+      this.list = data;
       this.isLoading = false;
     },
     error: (err) => {

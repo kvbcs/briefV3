@@ -62,17 +62,6 @@ export class SidebarComponent implements OnInit {
       this.isOpen.set(true);
     }
   }
-
-  //ANCIENNE VERSION
-  //   ngOnInit(): void {
-  //   // Récupération du rôle de l'utilisateur via AuthService
-  //   this.userRole = this.auth.getCurrentUserRole();
-  //   // En mode desktop, la sidebar est toujours visible
-  //   if (window.innerWidth >= 768) {
-  //     this.isOpen.set(true);
-  //   }
-  // }
-
   // Détermine si l'utilisateur courant est un admin
   isAdmin(): boolean {
     return this.userRole === 'admin';
@@ -86,10 +75,12 @@ export class SidebarComponent implements OnInit {
   closeSidebar(): void {
     this.isOpen.set(false);
   }
+
   logout(): void {
-    this.auth.logout(); // ← déconnecte proprement via le service
-    this.router.navigate(['/']);
-  }
+  this.auth.logout(); // 🔁 Appelle le service de logout 
+  
+}
+
   isMobile(): boolean {
     return window.innerWidth < 768;
   }

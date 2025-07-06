@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { GroupGenerationConfig } from '../../models/group.model';
+import { Input } from '@angular/core';
 
 @Component({
   selector: 'app-group-form',
@@ -11,6 +12,8 @@ import { GroupGenerationConfig } from '../../models/group.model';
   styleUrls: ['./group-form.component.css'],
 })
 export class GroupFormComponent {
+  @Input() listSlug: string = '';
+
   numberOfGroups = 2;
 
   mixAge = false;
@@ -22,7 +25,7 @@ export class GroupFormComponent {
 
   onSubmit(): void {
     this.generate.emit({
-      listId: '', // à compléter plus tard
+      listSlug: this.listSlug,
       numberOfGroups: this.numberOfGroups,
       mixAge: this.mixAge,
       mixDWWM: this.mixDWWM,

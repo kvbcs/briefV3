@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GroupDisplayComponent } from './group-display.component';
-import { DragDropModule } from '@angular/cdk/drag-drop';
 import { Group } from '../../models/group.model';
 
 describe('GroupDisplayComponent', () => {
@@ -8,9 +7,40 @@ describe('GroupDisplayComponent', () => {
   let fixture: ComponentFixture<GroupDisplayComponent>;
 
   const mockGroups: Group[] = [
-    { name: 'Groupe 1', members: [{ id: '1', name: 'Alice' }] },
-    { name: 'Groupe 2', members: [{ id: '2', name: 'Bob' }] },
-  ];
+  {
+    name: 'Groupe 1',
+    members: [
+      {
+        id: '1',
+        first_name: 'Alice',
+        last_name: 'Dupont',
+        gender: 'Féminin',
+        age: 25,
+        dwwm: true,
+        profile: 'Leader',
+        french_level: 3,
+        tech_level: 4,
+      },
+    ],
+  },
+  {
+    name: 'Groupe 2',
+    members: [
+      {
+        id: '2',
+        first_name: 'Bob',
+        last_name: 'Martin',
+        gender: 'Masculin',
+        age: 30,
+        dwwm: false,
+        profile: 'Discret',
+        french_level: 2,
+        tech_level: 3,
+      },
+    ],
+  },
+];
+
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

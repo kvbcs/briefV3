@@ -24,10 +24,14 @@ export class StatsComponent implements OnInit {
     });
   }
 
-  // nombre de listes créées par utilisateur
+  // Nombre total d'utilisateurs
+  userCount = computed(() => {
+    return this.users().length;
+  });
+
+  // Nombre total de listes
   listCount = computed(() => {
-    const count = this.lists().length;
-    return count;
+    return this.lists().length;
   });
 
   // ◦ nombre de personnes par liste en moyenne
