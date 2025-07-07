@@ -8,6 +8,8 @@ ShuffleMyTeam est une application Angular permettant la gestion de groupes, d'ut
 
 - **Inscription** : Les nouveaux utilisateurs peuvent s'inscrire via un formulaire dédié.
 - **Connexion** : Authentification sécurisée pour accéder à l'application.
+- **Création de liste** : Ajout et nommage de liste par l'utilisateur.
+- **Création des profils** : Ajout et paramétrage des propriétés des personnes par l'utilisateur.
 - **Création de groupes** : Génération automatique de groupes à partir d'une configuration personnalisée.
 - **Affichage des groupes** : Visualisation des groupes générés ou existants.
 - **Validation des groupes** : Possibilité de valider la composition des groupes.
@@ -20,8 +22,23 @@ ShuffleMyTeam est une application Angular permettant la gestion de groupes, d'ut
 - `src/app/core/services/` : Services pour la gestion des groupes, listes, profils, etc.
 - `src/app/Groups/` : Composants liés à la gestion et à l'affichage des groupes.
 - `src/app/DrawHistory/` : Affichage de l'historique des tirages.
-- `src/app/mocks/` : Données mockées pour le développement sans backend.
 - `src/app/models/` : Modèles de données (utilisateur, groupe, historique, etc.).
+
+src/
+└── app/
+    ├── adminpage/            ← Interface dédiée admin
+    ├── auth/                 ← Connexion / inscription
+    ├── core/                 ← Services, guards, utils partagés
+    ├── DrawHistory/          ← Composant historique des tirages
+    ├── Groups/               ← Gestion des groupes (création, affichage, drag & drop)
+    ├── layout/               ← Header, sidebar, structure globale
+    ├── legal/                ← CGU, mentions légales
+    ├── ListsPage/            ← Liste principale avec CRUD personnes + tirages
+    ├── mocks/                ← Données de test temporaires
+    ├── models/               ← Interfaces TypeScript (User, Person, Group, etc.)
+    ├── ProfilePage/          ← Page de profil utilisateur
+    └── shared/
+        └── footer/           ← Composant footer réutilisable
 
 ## Installation et lancement
 
@@ -47,6 +64,17 @@ ShuffleMyTeam est une application Angular permettant la gestion de groupes, d'ut
   - Accéder à la page de connexion.
   - Saisir ses identifiants (email + mot de passe) pour accéder à l'application.
 
+### Gestion des listes
+
+- **Création de liste** :
+- Accéder à la page de création de listes.
+- Afficher l'historique des listes créées par l'utilisateur connecté, réparti dans un ordre chronologique inversé (la liste la plus récente en haut).
+- Créer et nommer une nouvelle liste. Renvoie à la page d'historique, avec la liste qui vient d'être créée en premier choix.
+
+- **Création des personnes** :
+- Afficher les personnes d'une liste et leurs caractéristiques.
+- Accéder à la page de création d'une personne et aux modifications de ses caractéristiques.
+
 ### Gestion des groupes
 
 - **Création de groupes** :
@@ -57,14 +85,14 @@ ShuffleMyTeam est une application Angular permettant la gestion de groupes, d'ut
   - Visualiser les groupes générés.
   - Valider la composition si elle convient.
 
-### Historique des tirages
+### Gestion des tirages
 
 - Accéder à la page d'historique pour consulter les anciens tirages et leurs résultats.
+- Générer des tirages en fonction des listes choisies
 
 ## Configuration du backend
 
-- Par défaut, l'application utilise des données mockées (`isMock = true` dans les services).
-- Pour connecter à un vrai backend, passer `isMock` à `false` dans les services concernés.
+- Un backend est généré sur un serveur API auquel sont liés les différentes fonctionnalités du frontend.
 
 ## Technologies utilisées
 
@@ -75,17 +103,20 @@ ShuffleMyTeam est une application Angular permettant la gestion de groupes, d'ut
 
 ## Auteurs
 
+
 - Projet réalisé dans le cadre de la formation Simplon.
   Une équipe répartie en deux groupes :
+  
   - **Groupe 1** : Développement du Frontend, de l'interface utilisateur et de ses fonctionnalités principales:
     - BARBECHE Imane
     - MOREL Cécile
     - VIBANCOS Kyllian
     - KUISSI Guy
+      
   - **Groupe 2** : Mise en place du backend et de ses services.
-    - XXX Antoine
-    - XXX Arthur
-    - XXX Feras
+    - EPIARD Antoine
+    - ZULPUKHAROV Arthur
+    - ALTALEB Feras
 
 ---
 
