@@ -112,7 +112,7 @@ src/
     - MOREL Cécile
     - VIBANCOS Kyllian
     - KUISSI Guy
-    - 
+      
   - **Groupe 2** : Mise en place du backend et de ses services.
     - EPIARD Antoine
     - ZULPUKHAROV Arthur
